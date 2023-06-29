@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		69FC27ACBC6F737C06FBFCD0 /* Pods_Daily_Capture.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9747CD6059BB6E2FBEC9F6A0 /* Pods_Daily_Capture.framework */; };
 		B45C26BD2A4DA163009333AB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B45C26BC2A4DA163009333AB /* AppDelegate.swift */; };
 		B45C26BF2A4DA163009333AB /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B45C26BE2A4DA163009333AB /* SceneDelegate.swift */; };
 		B45C26C12A4DA163009333AB /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B45C26C02A4DA163009333AB /* ViewController.swift */; };
@@ -15,6 +16,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		36DB8119B44D278052C39CF2 /* Pods-Daily-Capture.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Daily-Capture.debug.xcconfig"; path = "Target Support Files/Pods-Daily-Capture/Pods-Daily-Capture.debug.xcconfig"; sourceTree = "<group>"; };
+		5925226EC2DC87D94BF8E1DC /* Pods-Daily-Capture.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Daily-Capture.release.xcconfig"; path = "Target Support Files/Pods-Daily-Capture/Pods-Daily-Capture.release.xcconfig"; sourceTree = "<group>"; };
+		9747CD6059BB6E2FBEC9F6A0 /* Pods_Daily_Capture.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Daily_Capture.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B45C26B92A4DA163009333AB /* Daily-Capture.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Daily-Capture.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B45C26BC2A4DA163009333AB /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B45C26BE2A4DA163009333AB /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -29,17 +33,28 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				69FC27ACBC6F737C06FBFCD0 /* Pods_Daily_Capture.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		2F5EC3ACD8C6BECFAA4E77FF /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				9747CD6059BB6E2FBEC9F6A0 /* Pods_Daily_Capture.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		B45C26B02A4DA163009333AB = {
 			isa = PBXGroup;
 			children = (
 				B45C26BB2A4DA163009333AB /* Daily-Capture */,
 				B45C26BA2A4DA163009333AB /* Products */,
+				E939F9E4351A97F7756D1390 /* Pods */,
+				2F5EC3ACD8C6BECFAA4E77FF /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -96,6 +111,15 @@
 			path = MainView;
 			sourceTree = "<group>";
 		};
+		E939F9E4351A97F7756D1390 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				36DB8119B44D278052C39CF2 /* Pods-Daily-Capture.debug.xcconfig */,
+				5925226EC2DC87D94BF8E1DC /* Pods-Daily-Capture.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -103,9 +127,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = B45C26CD2A4DA164009333AB /* Build configuration list for PBXNativeTarget "Daily-Capture" */;
 			buildPhases = (
+				6BCA109918E0C4B1F4F8E2F7 /* [CP] Check Pods Manifest.lock */,
 				B45C26B52A4DA163009333AB /* Sources */,
 				B45C26B62A4DA163009333AB /* Frameworks */,
 				B45C26B72A4DA163009333AB /* Resources */,
+				2AFD3FE4854C8733C95F3DD4 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -160,6 +186,48 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		2AFD3FE4854C8733C95F3DD4 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Daily-Capture/Pods-Daily-Capture-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Daily-Capture/Pods-Daily-Capture-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Daily-Capture/Pods-Daily-Capture-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		6BCA109918E0C4B1F4F8E2F7 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Daily-Capture-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		B45C26B52A4DA163009333AB /* Sources */ = {
@@ -302,6 +370,7 @@
 		};
 		B45C26CE2A4DA164009333AB /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 36DB8119B44D278052C39CF2 /* Pods-Daily-Capture.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -330,6 +399,7 @@
 		};
 		B45C26CF2A4DA164009333AB /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 5925226EC2DC87D94BF8E1DC /* Pods-Daily-Capture.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
