@@ -28,6 +28,7 @@
 		B45C26C82A4DA164009333AB /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		B45C26CA2A4DA164009333AB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B4FC76102A4EB0C800C19FF0 /* Diary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Diary.swift; sourceTree = "<group>"; };
+		B4FC76172A4EBA7400C19FF0 /* ReusableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReusableView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -93,6 +94,7 @@
 				B45C26D22A4DA1C8009333AB /* App */,
 				B45C26D32A4DA1CF009333AB /* MainView */,
 				B4FC760F2A4EB0B700C19FF0 /* Model */,
+				B4FC76162A4EBA3F00C19FF0 /* Util */,
 			);
 			path = Source;
 			sourceTree = "<group>";
@@ -120,6 +122,14 @@
 				B4FC76102A4EB0C800C19FF0 /* Diary.swift */,
 			);
 			path = Model;
+			sourceTree = "<group>";
+		};
+		B4FC76162A4EBA3F00C19FF0 /* Util */ = {
+			isa = PBXGroup;
+			children = (
+				B4FC76172A4EBA7400C19FF0 /* ReusableView.swift */,
+			);
+			path = Util;
 			sourceTree = "<group>";
 		};
 		E939F9E4351A97F7756D1390 /* Pods */ = {
@@ -249,6 +259,7 @@
 				B45C26BD2A4DA163009333AB /* AppDelegate.swift in Sources */,
 				B45C26BF2A4DA163009333AB /* SceneDelegate.swift in Sources */,
 				B4FC76112A4EB0C800C19FF0 /* Diary.swift in Sources */,
+				B4FC76182A4EBA7400C19FF0 /* ReusableView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
