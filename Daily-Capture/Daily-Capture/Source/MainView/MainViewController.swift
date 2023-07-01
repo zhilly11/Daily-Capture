@@ -9,7 +9,13 @@ import RxCocoa
 
 final class MainViewController: UIViewController {
     // MARK: - Properties
+    private var userSelectedDate: Date? {
+        didSet {
+            viewModel.setupDiary(date: userSelectedDate)
+        }
+    }
     private let viewModel: MainViewModel
+    private let disposeBag: DisposeBag = .init()
     
     // MARK: - UI Components
     
@@ -57,6 +63,8 @@ final class MainViewController: UIViewController {
     private func configure() {
         setupView()
         setupLayout()
+        setupCalendar()
+        bindTableViewData()
     }
     
     private func setupView() {
@@ -76,6 +84,39 @@ final class MainViewController: UIViewController {
         tableView.snp.makeConstraints {
             $0.top.equalTo(calendarView.snp.bottom)
             $0.leading.trailing.bottom.equalTo(safeArea)
+        }
+    }
+    
+    private func setupCalendar() {
+        let dateSelection: UICalendarSelectionSingleDate = .init(delegate: self)
+        let currentDate: Date = .init()
+        let calendar: Calendar = Calendar.current
+        let year: Int = calendar.component(.year, from: currentDate)
+        let month: Int = calendar.component(.month, from: currentDate)
+        let day: Int = calendar.component(.day, from: currentDate)
+        
+        dateSelection.setSelected(DateComponents(year: year, month: month, day: day),
+                                  animated: false)
+        calendarView.selectionBehavior = dateSelection
+    }
+    
+    private func bindTableViewData() {
+        viewModel.diaryList
+            .observe(on: MainScheduler.instance)
+            .bind(to: tableView.rx.items(cellIdentifier: DiaryTableViewCell.reuseIdentifier,
+                                         cellType: DiaryTableViewCell.self)) { index, item, cell in
+                cell.configure(with: item)
+            }.disposed(by: disposeBag)
+    }
+}
+
+extension MainViewController: UICalendarSelectionSingleDateDelegate {
+    func dateSelection(
+        _ selection: UICalendarSelectionSingleDate,
+        didSelectDate dateComponents: DateComponents?
+    ) {
+        if let nowSelectedDate = dateComponents {
+            self.userSelectedDate = nowSelectedDate.date
         }
     }
 }
