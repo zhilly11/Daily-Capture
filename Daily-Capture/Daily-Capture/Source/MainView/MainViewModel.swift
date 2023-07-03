@@ -8,7 +8,8 @@ final class MainViewModel {
     let diaryList: BehaviorSubject<[Diary]> = .init(value: [])
     private let disposeBag: DisposeBag = .init()
     
-    init(nowDate: Date) {
+    init() {
+        let nowDate: Date = .init()
         setupDiary(date: nowDate)
     }
     
