@@ -39,6 +39,22 @@ final class MainViewController: UIViewController {
         return tableView
     }()
     
+    private let floatingButton: UIButton = {
+        let button: UIButton = .init(type: .custom)
+        let configuration: UIImage.SymbolConfiguration = .init(pointSize: 65,
+                                                               weight: .regular,
+                                                               scale: .default)
+        
+        button.layer.cornerRadius = button.frame.width / 2
+        button.imageView?.contentMode = .scaleAspectFit
+        button.setImage(UIImage(systemName: "plus.circle.fill",
+                                withConfiguration: configuration), for: .normal)
+        button.tintColor = .tintColor
+        button.clipsToBounds = true
+        
+        return button
+    }()
+    
     // MARK: - Initializer
     
     init(viewModel: MainViewModel) {
@@ -74,7 +90,7 @@ final class MainViewController: UIViewController {
     private func setupLayout() {
         let safeArea: UILayoutGuide = view.safeAreaLayoutGuide
         
-        [calendarView, tableView].forEach(view.addSubview(_:))
+        [calendarView, tableView, floatingButton].forEach(view.addSubview(_:))
         
         calendarView.snp.makeConstraints {
             $0.top.leading.trailing.equalTo(safeArea)
@@ -84,6 +100,11 @@ final class MainViewController: UIViewController {
         tableView.snp.makeConstraints {
             $0.top.equalTo(calendarView.snp.bottom)
             $0.leading.trailing.bottom.equalTo(safeArea)
+        }
+        
+        floatingButton.snp.makeConstraints {
+            $0.width.height.equalTo(100)
+            $0.bottom.trailing.equalTo(safeArea).offset(-30)
         }
     }
     
