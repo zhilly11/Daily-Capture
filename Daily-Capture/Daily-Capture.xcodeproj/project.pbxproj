@@ -100,11 +100,9 @@
 		B45C26D12A4DA1BD009333AB /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				B4FC761C2A54099F00C19FF0 /* View */,
 				B45C26D22A4DA1C8009333AB /* App */,
-				B45C26D32A4DA1CF009333AB /* MainView */,
 				B4FC760F2A4EB0B700C19FF0 /* Model */,
-				98B8ADCA2A4EC95700100051 /* DiaryDetailViewController.swift */,
-				98B8ADCC2A4ED01200100051 /* DiaryDetailViewModel.swift */,
 				B4FC76162A4EBA3F00C19FF0 /* Util */,
 			);
 			path = Source;
@@ -143,6 +141,24 @@
 				B4FC76172A4EBA7400C19FF0 /* ReusableView.swift */,
 			);
 			path = Util;
+			sourceTree = "<group>";
+		};
+		B4FC761C2A54099F00C19FF0 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				B45C26D32A4DA1CF009333AB /* MainView */,
+				B4FC761D2A5409A900C19FF0 /* DetailView */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		B4FC761D2A5409A900C19FF0 /* DetailView */ = {
+			isa = PBXGroup;
+			children = (
+				98B8ADCA2A4EC95700100051 /* DiaryDetailViewController.swift */,
+				98B8ADCC2A4ED01200100051 /* DiaryDetailViewModel.swift */,
+			);
+			path = DetailView;
 			sourceTree = "<group>";
 		};
 		E939F9E4351A97F7756D1390 /* Pods */ = {
@@ -275,8 +291,8 @@
 				B4FC76112A4EB0C800C19FF0 /* Diary.swift in Sources */,
 				B4FC76182A4EBA7400C19FF0 /* ReusableView.swift in Sources */,
 				B4FC76152A4EBA1E00C19FF0 /* DiaryTableViewCell.swift in Sources */,
-        98B8ADCD2A4ED01200100051 /* DiaryDetailViewModel.swift in Sources */,
-        98B8ADCB2A4EC95700100051 /* DiaryDetailViewController.swift in Sources */,
+				98B8ADCD2A4ED01200100051 /* DiaryDetailViewModel.swift in Sources */,
+				98B8ADCB2A4EC95700100051 /* DiaryDetailViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
