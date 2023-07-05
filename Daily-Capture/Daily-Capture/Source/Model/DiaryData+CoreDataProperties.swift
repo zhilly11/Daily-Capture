@@ -1,5 +1,5 @@
-//   - DiaryData+CoreDataProperties.swift
-//  Created by zhilly on 2023/07/05
+//  Daily-Capture - DiaryData+CoreDataProperties.swift
+//  Created by zhilly, vetto on 2023/07/05
 //
 
 import Foundation
@@ -17,5 +17,9 @@ extension DiaryData {
     @NSManaged public var pictures: Data?
     @NSManaged public var title: String?
     @NSManaged public var weather: Data?
+
+}
+
+extension DiaryData : Identifiable {
 
 }
