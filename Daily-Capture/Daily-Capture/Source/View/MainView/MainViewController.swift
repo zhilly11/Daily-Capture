@@ -124,7 +124,7 @@ final class MainViewController: UIViewController {
     
     private func setupFloatingButton() {
         let buttonAction: UIAction = UIAction { action in
-            let editDiaryViewController: EditDiaryViewController = .init(nibName: nil, bundle: nil)
+            let editDiaryViewController: EditDiaryViewController = .init(viewModel: DiaryViewModel(diary: Diary(pictures: [], title: "hi", createdAt: Date())))
             
             self.present(editDiaryViewController, animated: true)
         }

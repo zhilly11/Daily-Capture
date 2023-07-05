@@ -1,9 +1,9 @@
-//  Daily-Capture - DiaryDetailViewModel.swift
+//  Daily-Capture - DiaryViewModel.swift
 //  Created by zhilly, vetto on 2023/06/30
 
 import Foundation
 
-final class DiaryDetailViewModel {
+final class DiaryViewModel {
     var diary: Diary?
     
     init(diary: Diary) {
