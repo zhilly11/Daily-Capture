@@ -3,6 +3,8 @@
 
 import Foundation
 import UIKit
+import Photos
+import PhotosUI
 
 final class EditDiaryViewController: UIViewController {
     private var DiaryViewModel: DiaryViewModel?
@@ -157,7 +159,27 @@ final class EditDiaryViewController: UIViewController {
             print("button2")
         }), for: .touchUpInside)
         button3.addAction(UIAction(handler: { _ in
-            print("button3")
+            var configuration: PHPickerConfiguration = {
+                var configuration: PHPickerConfiguration = .init()
+                
+                configuration.selectionLimit = 5
+                configuration.filter = .any(of: [.images])
+                
+                return configuration
+            }()
+            
+            let picker = PHPickerViewController(configuration: configuration)
+            picker.delegate = self
+            self.present(picker, animated: true)
         }), for: .touchUpInside)
+    }
+}
+
+extension EditDiaryViewController: PHPickerViewControllerDelegate {
+    func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
+        picker.dismiss(animated: true) // 1
+        
+        let itemProvider = results.first?.itemProvider // 2
+        
     }
 }
