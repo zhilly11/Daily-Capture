@@ -3,7 +3,7 @@
     <entity name="DiaryData" representedClassName="DiaryData" syncable="YES">
         <attribute name="content" optional="YES" attributeType="String"/>
         <attribute name="createdAt" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
-        <attribute name="pictures" optional="YES" attributeType="Binary"/>
+        <attribute name="pictures" optional="YES" attributeType="Transformable" customClassName="[Data]"/>
         <attribute name="title" optional="YES" attributeType="String"/>
         <attribute name="weather" optional="YES" attributeType="Binary"/>
     </entity>
