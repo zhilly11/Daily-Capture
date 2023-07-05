@@ -43,7 +43,7 @@ final class DiaryManager: CoreDataManageable {
         
         diaryObject.setValue(diary.title, forKey: "title")
         diaryObject.setValue(diary.content, forKey: "content")
-        diaryObject.setValue(diary.createdAt, forKey: "createdAd")
+        diaryObject.setValue(diary.createdAt, forKey: "createdAt")
         diaryObject.setValue(diary.weather, forKey: "weather")
         diaryObject.setValue(imageData, forKey: "pictures")
         
@@ -55,7 +55,7 @@ final class DiaryManager: CoreDataManageable {
     func fetchObjects(date: Date) throws -> [Diary] {
         let startDate: Date = date.startOfDay()
         let endDate: Date = date.endOfDay()
-        let predicate: NSPredicate = .init(format: "dateAttribute >= %@ AND dateAttribute <= %@",
+        let predicate: NSPredicate = .init(format: "createdAt >= %@ AND createdAt <= %@",
                                            startDate as NSDate,
                                            endDate as NSDate)
         
