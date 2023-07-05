@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		69FC27ACBC6F737C06FBFCD0 /* Pods_Daily_Capture.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9747CD6059BB6E2FBEC9F6A0 /* Pods_Daily_Capture.framework */; };
+		980285452A5550E2008ABB8F /* EditDiaryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 980285442A5550E2008ABB8F /* EditDiaryViewController.swift */; };
 		98B8ADCB2A4EC95700100051 /* DiaryDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98B8ADCA2A4EC95700100051 /* DiaryDetailViewController.swift */; };
 		98B8ADCD2A4ED01200100051 /* DiaryDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98B8ADCC2A4ED01200100051 /* DiaryDetailViewModel.swift */; };
 		B45C26BD2A4DA163009333AB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B45C26BC2A4DA163009333AB /* AppDelegate.swift */; };
@@ -25,6 +26,7 @@
 		36DB8119B44D278052C39CF2 /* Pods-Daily-Capture.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Daily-Capture.debug.xcconfig"; path = "Target Support Files/Pods-Daily-Capture/Pods-Daily-Capture.debug.xcconfig"; sourceTree = "<group>"; };
 		5925226EC2DC87D94BF8E1DC /* Pods-Daily-Capture.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Daily-Capture.release.xcconfig"; path = "Target Support Files/Pods-Daily-Capture/Pods-Daily-Capture.release.xcconfig"; sourceTree = "<group>"; };
 		9747CD6059BB6E2FBEC9F6A0 /* Pods_Daily_Capture.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Daily_Capture.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		980285442A5550E2008ABB8F /* EditDiaryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditDiaryViewController.swift; sourceTree = "<group>"; };
 		98B8ADCA2A4EC95700100051 /* DiaryDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryDetailViewController.swift; sourceTree = "<group>"; };
 		98B8ADCC2A4ED01200100051 /* DiaryDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryDetailViewModel.swift; sourceTree = "<group>"; };
 		B45C26B92A4DA163009333AB /* Daily-Capture.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Daily-Capture.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -58,6 +60,14 @@
 				9747CD6059BB6E2FBEC9F6A0 /* Pods_Daily_Capture.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		980285432A5550AE008ABB8F /* EditView */ = {
+			isa = PBXGroup;
+			children = (
+				980285442A5550E2008ABB8F /* EditDiaryViewController.swift */,
+			);
+			path = EditView;
 			sourceTree = "<group>";
 		};
 		B45C26B02A4DA163009333AB = {
@@ -148,6 +158,7 @@
 			children = (
 				B45C26D32A4DA1CF009333AB /* MainView */,
 				B4FC761D2A5409A900C19FF0 /* DetailView */,
+				980285432A5550AE008ABB8F /* EditView */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -288,6 +299,7 @@
 				B45C26C12A4DA163009333AB /* MainViewController.swift in Sources */,
 				B45C26BD2A4DA163009333AB /* AppDelegate.swift in Sources */,
 				B45C26BF2A4DA163009333AB /* SceneDelegate.swift in Sources */,
+				980285452A5550E2008ABB8F /* EditDiaryViewController.swift in Sources */,
 				B4FC76112A4EB0C800C19FF0 /* Diary.swift in Sources */,
 				B4FC76182A4EBA7400C19FF0 /* ReusableView.swift in Sources */,
 				B4FC76152A4EBA1E00C19FF0 /* DiaryTableViewCell.swift in Sources */,
