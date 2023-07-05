@@ -11,7 +11,9 @@ final class MainViewController: UIViewController {
     // MARK: - Properties
     private var userSelectedDate: Date? {
         didSet {
-            viewModel.setupDiary(date: userSelectedDate)
+            if let date = userSelectedDate {
+                viewModel.setupDiary(date: date)
+            }
         }
     }
     private let viewModel: MainViewModel

@@ -7,14 +7,20 @@ import RxSwift
 final class MainViewModel {
     let diaryList: BehaviorSubject<[Diary]> = .init(value: [])
     private let disposeBag: DisposeBag = .init()
+    private let diaryManager: DiaryManager = DiaryManager.shared
     
     init() {
         let nowDate: Date = .init()
         setupDiary(date: nowDate)
     }
     
-    // TODO: CoreData에서 날씨로 검색해서 데이터 가져온 후에 List에 넣어주기
-    func setupDiary(date createAt: Date?) {
-        print("setup Diary!")
+    func setupDiary(date createAt: Date) {
+        do {
+            let diaries: [Diary] = try diaryManager.fetchObjects(date: createAt)
+            diaryList.onNext(diaries)
+        } catch {
+            // TODO: 오류처리 구현 ex) Alert으로 사용자에게 알려주기
+            NSLog("Diaries Fetch Failed")
+        }
     }
 }
