@@ -11,10 +11,4 @@ final class DiaryViewModel {
     var content: BehaviorSubject<String?> = .init(value: nil)
     var createdAt: BehaviorSubject<Date> = .init(value: Date())
     var weather: BehaviorSubject<UIImage?> = .init(value: nil)
-    
-    var diary: Diary?
-    
-    init(diary: Diary) {
-        self.diary = diary
-    }
 }
