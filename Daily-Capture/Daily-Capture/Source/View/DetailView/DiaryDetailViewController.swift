@@ -5,7 +5,7 @@ import UIKit
 import SnapKit
 
 final class DiaryDetailViewController: UIViewController {
-    private var diaryDetailViewModel: DiaryDetailViewModel?
+    private var diaryViewModel: DiaryViewModel?
     
     private let navigationImageView: UIImageView = {
         let imageView: UIImageView = .init()
@@ -30,7 +30,6 @@ final class DiaryDetailViewController: UIViewController {
         let stackView: UIStackView = .init()
         
         stackView.axis = .vertical
-//        stackView.translatesAutoresizingMaskIntoConstraints = false
         
         return stackView
     }()
@@ -39,7 +38,6 @@ final class DiaryDetailViewController: UIViewController {
         let scrollView: UIScrollView = .init()
         
         scrollView.isPagingEnabled = true
-        scrollView.backgroundColor = .red
         
         return scrollView
     }()
@@ -58,24 +56,19 @@ final class DiaryDetailViewController: UIViewController {
     private let titleTextField: UITextField = {
         let textField: UITextField = .init()
         
-        textField.translatesAutoresizingMaskIntoConstraints = false
-        textField.backgroundColor = .green
-        
         return textField
     }()
     
     private let contentTextView: UITextView = {
         let textView: UITextView = .init()
         
-        textView.translatesAutoresizingMaskIntoConstraints = false
-        textView.backgroundColor = .blue
         textView.text = "hi"
         
         return textView
     }()
     
-    init(diaryDetailViewModel: DiaryDetailViewModel) {
-        self.diaryDetailViewModel = diaryDetailViewModel
+    init(viewModel: DiaryViewModel) {
+        self.diaryViewModel = viewModel
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -128,7 +121,6 @@ final class DiaryDetailViewController: UIViewController {
         
         return stackView
     }
-    
 }
 
 extension DiaryDetailViewController: UIScrollViewDelegate {

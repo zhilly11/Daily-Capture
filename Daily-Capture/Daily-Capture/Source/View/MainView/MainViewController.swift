@@ -82,6 +82,7 @@ final class MainViewController: UIViewController {
         setupView()
         setupLayout()
         setupCalendar()
+        setupFloatingButton()
         bindTableViewData()
     }
     
@@ -121,6 +122,16 @@ final class MainViewController: UIViewController {
         dateSelection.setSelected(DateComponents(year: year, month: month, day: day),
                                   animated: false)
         calendarView.selectionBehavior = dateSelection
+    }
+    
+    private func setupFloatingButton() {
+        let buttonAction: UIAction = UIAction { action in
+            let editDiaryViewController: EditDiaryViewController = .init(viewModel: DiaryViewModel(diary: Diary(pictures: [], title: "hi", createdAt: Date())))
+            
+            self.present(editDiaryViewController, animated: true)
+        }
+        
+        floatingButton.addAction(buttonAction, for: .touchUpInside)
     }
     
     private func bindTableViewData() {
