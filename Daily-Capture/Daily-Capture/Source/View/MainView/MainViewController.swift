@@ -129,7 +129,7 @@ final class MainViewController: UIViewController {
             let viewModel: DiaryViewModel = .init()
             let editDiaryViewController: EditDiaryViewController = .init(viewModel: viewModel)
             
-            self.present(editDiaryViewController, animated: true)
+            self.navigationController?.pushViewController(editDiaryViewController, animated: true)
         }
         
         floatingButton.addAction(buttonAction, for: .touchUpInside)
