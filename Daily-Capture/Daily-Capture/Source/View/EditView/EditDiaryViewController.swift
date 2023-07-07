@@ -7,7 +7,7 @@ import Photos
 import PhotosUI
 
 final class EditDiaryViewController: UIViewController {
-    private var DiaryViewModel: DiaryViewModel?
+    private var diaryViewModel: DiaryViewModel?
     
     private let navigationImageView: UIImageView = {
         let imageView: UIImageView = .init()
@@ -32,6 +32,7 @@ final class EditDiaryViewController: UIViewController {
         let stackView: UIStackView = .init()
         
         stackView.axis = .vertical
+        stackView.spacing = 8
         
         return stackView
     }()
@@ -47,6 +48,7 @@ final class EditDiaryViewController: UIViewController {
     private let pageControl: UIPageControl = {
         let pageControl: UIPageControl = .init()
         
+        pageControl.hidesForSinglePage = true
         pageControl.backgroundColor = .gray
         pageControl.pageIndicatorTintColor = .black
         pageControl.currentPageIndicatorTintColor = .white
@@ -77,6 +79,7 @@ final class EditDiaryViewController: UIViewController {
         let button: UIButton = .init()
         
         button.backgroundColor = .systemGray
+        button.setTitle("날씨", for: .normal)
         
         return button
     }()
@@ -85,6 +88,7 @@ final class EditDiaryViewController: UIViewController {
         let button: UIButton = .init()
         
         button.backgroundColor = .systemGray2
+        button.setTitle("날짜", for: .normal)
         
         return button
     }()
@@ -93,6 +97,7 @@ final class EditDiaryViewController: UIViewController {
         let button: UIButton = .init()
         
         button.backgroundColor = .systemGray3
+        button.setTitle("사진", for: .normal)
         
         return button
     }()
@@ -107,7 +112,7 @@ final class EditDiaryViewController: UIViewController {
     }()
     
     init(viewModel: DiaryViewModel) {
-        self.DiaryViewModel = viewModel
+        self.diaryViewModel = viewModel
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -123,26 +128,44 @@ final class EditDiaryViewController: UIViewController {
         configure()
     }
     
+    private let imageView = {
+        let imageView: UIImageView = .init(image: UIImage(systemName: "circle"))
+        
+        return imageView
+    }()
+    
     private func configure() {
         let safeArea = view.safeAreaLayoutGuide
         
         [imageScrollView, titleTextField, contentTextView, stackView].forEach(diaryDetailStackView.addArrangedSubview(_:))
+        imageScrollView.addSubview(imageView)
+        imageScrollView.addSubview(pageControl)
         diaryDetailScrollView.addSubview(diaryDetailStackView)
         view.addSubview(diaryDetailScrollView)
         
         diaryDetailScrollView.snp.makeConstraints { make in
-            make.edges.equalTo(safeArea)
+            make.top.leading.equalTo(safeArea).offset(16)
+            make.bottom.trailing.equalTo(safeArea).offset(-16)
         }
         diaryDetailStackView.snp.makeConstraints { make in
             make.edges.equalTo(diaryDetailScrollView.contentLayoutGuide)
         }
         imageScrollView.snp.makeConstraints { make in
             make.width.equalTo(diaryDetailScrollView)
-            make.height.equalTo(300)
+            make.height.equalTo(safeArea).multipliedBy(0.5)
         }
         contentTextView.snp.makeConstraints { make in
             make.width.height.equalTo(200)
         }
+        imageView.snp.makeConstraints {
+            $0.height.equalToSuperview()
+            $0.width.equalToSuperview()
+        }
+    }
+    
+    private func setupImageScrollView() {
+        imageScrollView.subviews.forEach({ $0.removeFromSuperview() })
+        
     }
     
     private func setupView() {
@@ -159,9 +182,10 @@ final class EditDiaryViewController: UIViewController {
             print("button2")
         }), for: .touchUpInside)
         button3.addAction(UIAction(handler: { _ in
-            var configuration: PHPickerConfiguration = {
+            let configuration: PHPickerConfiguration = {
                 var configuration: PHPickerConfiguration = .init()
                 
+                configuration.selection = .ordered
                 configuration.selectionLimit = 5
                 configuration.filter = .any(of: [.images])
                 
@@ -169,17 +193,40 @@ final class EditDiaryViewController: UIViewController {
             }()
             
             let picker = PHPickerViewController(configuration: configuration)
+            
             picker.delegate = self
+            
             self.present(picker, animated: true)
         }), for: .touchUpInside)
+    }
+    
+    private func setupBindData() {
+    }
+    
+    private func setupPageControl() {
+        pageControl.addAction(UIAction(handler: { _ in
+            print(self.pageControl.currentPage)
+        }), for: .valueChanged)
     }
 }
 
 extension EditDiaryViewController: PHPickerViewControllerDelegate {
     func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
-        picker.dismiss(animated: true) // 1
+        picker.dismiss(animated: true)
         
-        let itemProvider = results.first?.itemProvider // 2
-        
+//        for result in results {
+//            let itemProvider = result.itemProvider
+//
+//            if itemProvider.canLoadObject(ofClass: UIImage.self) {
+//                itemProvider.loadObject(ofClass: UIImage.self) { image, error in
+//                    if let diaryImage = image as? UIImage {
+//                    }
+//                }
+//            }
+//        }
     }
+}
+
+extension EditDiaryViewController: UIScrollViewDelegate {
+    
 }
