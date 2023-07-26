@@ -81,6 +81,7 @@ final class MainViewController: UIViewController {
     private func configure() {
         setupView()
         setupLayout()
+        setupNavigationBar()
         setupCalendar()
         setupFloatingButton()
         bindTableViewData()
@@ -109,6 +110,18 @@ final class MainViewController: UIViewController {
             $0.width.height.equalTo(100)
             $0.bottom.trailing.equalTo(safeArea).offset(-30)
         }
+    }
+    
+    private func setupNavigationBar() {
+        let searchAction: UIAction = .init { action in
+            //TODO: SearchController로 이동
+        }
+        
+        let searchButton: UIBarButtonItem = .init(systemItem: .search,
+                                                  primaryAction: searchAction)
+        
+        self.navigationItem.rightBarButtonItem = searchButton
+        self.navigationItem.title = "Daily Capture"
     }
     
     private func setupCalendar() {
