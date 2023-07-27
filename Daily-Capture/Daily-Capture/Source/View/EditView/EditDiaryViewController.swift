@@ -226,16 +226,17 @@ final class EditDiaryViewController: UIViewController {
     }
     
     private func changeWeather() {
-        let weatherPickerViewController: WeatherPickerViewController = .init()
-
-        self.present(weatherPickerViewController, animated: true)
+        let weatherViewController: WeatherPickerViewController = .init()
+        let navigationViewController: UINavigationController = .init(rootViewController: weatherViewController)
+        
+        self.present(navigationViewController, animated: true)
     }
     
     private func changeDate() {
         let calendarViewController: CalendarViewController = .init()
-        let navigationCalendar: UINavigationController = .init(rootViewController: calendarViewController)
+        let navigationViewController: UINavigationController = .init(rootViewController: calendarViewController)
         
-        self.present(navigationCalendar, animated: true)
+        self.present(navigationViewController, animated: true)
     }
     
     private func changePicture() {

@@ -14,18 +14,6 @@ final class WeatherPickerViewController: UIViewController {
         return pickerView
     }()
     
-    private let weatherLabel: UILabel = {
-        let label: UILabel = .init()
-        
-        label.text = "clear"
-        label.adjustsFontForContentSizeCategory = true
-        label.font = .preferredFont(forTextStyle: .title2)
-        label.textColor = .systemBlue
-        label.textAlignment = .center
-        
-        return label
-    }()
-    
     private let weatherImageView: UIImageView = {
         let imageView: UIImageView = .init(frame: .zero)
         
@@ -53,7 +41,7 @@ final class WeatherPickerViewController: UIViewController {
     }
     
     private func setupView() {
-        self.view.backgroundColor = .systemBackground
+        view.backgroundColor = .systemBackground
         pickerView.delegate = self
         pickerView.dataSource = self
     }
@@ -61,14 +49,10 @@ final class WeatherPickerViewController: UIViewController {
     private func setupLayout() {
         let safeArea: UILayoutGuide = view.safeAreaLayoutGuide
         
-        [weatherImageView, weatherLabel, pickerView].forEach(view.addSubview(_:))
+        [weatherImageView, pickerView].forEach(view.addSubview(_:))
         weatherImageView.snp.makeConstraints { make in
             make.top.leading.trailing.equalTo(safeArea)
             make.bottom.equalTo(safeArea).multipliedBy(0.5)
-        }
-        weatherLabel.snp.makeConstraints { make in
-            make.top.equalTo(weatherImageView.snp.bottom)
-            make.leading.trailing.equalTo(safeArea)
         }
         pickerView.snp.makeConstraints { make in
             make.top.equalTo(weatherImageView.snp.bottom)
@@ -77,25 +61,38 @@ final class WeatherPickerViewController: UIViewController {
     }
     
     private func configureNavigationBarButton() {
-        let button: UIButton = UIButton(type: .custom)
-        button.setTitle("Save", for: .normal)
-        button.setTitleColor(.systemBlue, for: .normal)
-        button.addAction(UIAction(handler: { _ in
-            self.tappedChoiceButton()
+        let rightButton: UIButton = UIButton(type: .custom)
+        rightButton.setTitle("Change", for: .normal)
+        rightButton.setTitleColor(.systemBlue, for: .normal)
+        rightButton.addAction(UIAction(handler: { _ in
+            self.tappedChangeButton()
         }), for: .touchUpInside)
         
-        navigationItem.rightBarButtonItem = UIBarButtonItem(customView: button)
+        let leftButton: UIButton = UIButton(type: .custom)
+        leftButton.setTitle("Cancel", for: .normal)
+        leftButton.setTitleColor(.systemBlue, for: .normal)
+        leftButton.addAction(UIAction(handler: { _ in
+            self.tappedCancelButton()
+        }), for: .touchUpInside)
+        
+        navigationItem.title = "clear"
+        navigationItem.rightBarButtonItem = UIBarButtonItem(customView: rightButton)
+        navigationItem.leftBarButtonItem = UIBarButtonItem(customView: leftButton)
     }
     
-    private func tappedChoiceButton() {
-        navigationController?.popViewController(animated: true)
+    private func tappedCancelButton() {
+        dismiss(animated: true)
+    }
+    
+    private func tappedChangeButton() {
+        dismiss(animated: true)
     }
 }
 
 extension WeatherPickerViewController: UIPickerViewDelegate {
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         weatherImageView.image = UIImage(named: weatherNameList[row])
-        weatherLabel.text = weatherNameList[row]
+        navigationItem.title = weatherNameList[row]
     }
     
     func pickerView(_ pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int, reusing view: UIView?) -> UIView {

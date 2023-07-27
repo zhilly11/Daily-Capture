@@ -32,6 +32,7 @@ final class CalendarViewController: UIViewController {
         
         setupView()
         setupLayout()
+        configureNavigationBarButton()
     }
     
     private func setupView() {
@@ -46,6 +47,33 @@ final class CalendarViewController: UIViewController {
         calendarView.snp.makeConstraints { make in
             make.top.leading.trailing.bottom.equalTo(safeArea)
         }
+    }
+    
+    private func configureNavigationBarButton() {
+        let rightButton: UIButton = UIButton(type: .custom)
+        rightButton.setTitle("Change", for: .normal)
+        rightButton.setTitleColor(.systemBlue, for: .normal)
+        rightButton.addAction(UIAction(handler: { _ in
+            self.tappedChangeButton()
+        }), for: .touchUpInside)
+        
+        let leftButton: UIButton = UIButton(type: .custom)
+        leftButton.setTitle("Cancel", for: .normal)
+        leftButton.setTitleColor(.systemBlue, for: .normal)
+        leftButton.addAction(UIAction(handler: { _ in
+            self.tappedCancelButton()
+        }), for: .touchUpInside)
+        
+        navigationItem.rightBarButtonItem = UIBarButtonItem(customView: rightButton)
+        navigationItem.leftBarButtonItem = UIBarButtonItem(customView: leftButton)
+    }
+    
+    private func tappedCancelButton() {
+        dismiss(animated: true)
+    }
+    
+    private func tappedChangeButton() {
+        dismiss(animated: true)
     }
 }
 
