@@ -8,6 +8,9 @@ import RxSwift
 import RxCocoa
 
 final class CalendarViewController: UIViewController {
+    private let viewModel: CalendarViewModel
+    private let disposeBag: DisposeBag = .init()
+    
     private let calendarView: UICalendarView = {
         let calendarView: UICalendarView = .init()
         let gregorianCalendar: Calendar = .init(identifier: .gregorian)
@@ -19,7 +22,8 @@ final class CalendarViewController: UIViewController {
         return calendarView
     }()
     
-    init() {
+    init(viewModel: CalendarViewModel) {
+        self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -31,12 +35,23 @@ final class CalendarViewController: UIViewController {
         super.viewDidLoad()
         
         setupView()
+        setupCalendarView()
         setupLayout()
+        setupBindData()
         configureNavigationBarButton()
     }
     
     private func setupView() {
-        self.view.backgroundColor = .systemBackground
+        view.backgroundColor = .systemBackground
+    }
+    
+    private func setupCalendarView() {
+        let singleDateSelection = UICalendarSelectionSingleDate(delegate: self)
+        
+        calendarView.delegate = self
+        calendarView.selectionBehavior = singleDateSelection
+        
+//        singleDateSelection.setSelected(Date, animated: <#T##Bool#>)
     }
     
     private func setupLayout() {
@@ -47,6 +62,12 @@ final class CalendarViewController: UIViewController {
         calendarView.snp.makeConstraints { make in
             make.top.leading.trailing.bottom.equalTo(safeArea)
         }
+    }
+    
+    private func setupBindData() {
+        viewModel.dateText
+            .bind(to: navigationItem.rx.title)
+            .disposed(by: disposeBag)
     }
     
     private func configureNavigationBarButton() {
@@ -77,10 +98,11 @@ final class CalendarViewController: UIViewController {
     }
 }
 
-extension CalendarViewController: UICalendarSelectionSingleDateDelegate {
+extension CalendarViewController: UICalendarSelectionSingleDateDelegate, UICalendarViewDelegate {
     func dateSelection(
         _ selection: UICalendarSelectionSingleDate,
         didSelectDate dateComponents: DateComponents?
     ) {
+        viewModel.changeDate(date: dateComponents?.date)
     }
 }

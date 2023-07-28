@@ -227,14 +227,19 @@ final class EditDiaryViewController: UIViewController {
     
     private func changeWeather() {
         let weatherViewController: WeatherPickerViewController = .init()
-        let navigationViewController: UINavigationController = .init(rootViewController: weatherViewController)
+        let navigationViewController: UINavigationController = .init(
+            rootViewController: weatherViewController
+        )
         
         self.present(navigationViewController, animated: true)
     }
     
     private func changeDate() {
-        let calendarViewController: CalendarViewController = .init()
-        let navigationViewController: UINavigationController = .init(rootViewController: calendarViewController)
+        let viewModel: CalendarViewModel = .init()
+        let calendarViewController: CalendarViewController = .init(viewModel: viewModel)
+        let navigationViewController: UINavigationController = .init(
+            rootViewController: calendarViewController
+        )
         
         self.present(navigationViewController, animated: true)
     }
@@ -258,8 +263,6 @@ final class EditDiaryViewController: UIViewController {
     }
     
     private func saveDiary() {
-        let coreDataManager: DiaryManager = .shared
-        
     }
 }
 

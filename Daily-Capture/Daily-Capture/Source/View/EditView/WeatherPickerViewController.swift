@@ -36,12 +36,16 @@ final class WeatherPickerViewController: UIViewController {
         super.viewDidLoad()
         
         setupView()
+        setupPickerView()
         setupLayout()
         configureNavigationBarButton()
     }
     
     private func setupView() {
         view.backgroundColor = .systemBackground
+    }
+    
+    private func setupPickerView() {
         pickerView.delegate = self
         pickerView.dataSource = self
     }
