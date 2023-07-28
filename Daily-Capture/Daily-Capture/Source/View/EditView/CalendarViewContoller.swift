@@ -50,8 +50,6 @@ final class CalendarViewController: UIViewController {
         
         calendarView.delegate = self
         calendarView.selectionBehavior = singleDateSelection
-        
-//        singleDateSelection.setSelected(Date, animated: <#T##Bool#>)
     }
     
     private func setupLayout() {
