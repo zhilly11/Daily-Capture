@@ -9,7 +9,7 @@ import RxSwift
 import RxCocoa
 
 final class EditDiaryViewController: UIViewController {
-    private var diaryViewModel: DiaryViewModel?
+    private var diaryViewModel: DiaryViewModel
     private var disposeBag: DisposeBag = .init()
     
     private let diaryDetailScrollView: UIScrollView = {
@@ -27,13 +27,7 @@ final class EditDiaryViewController: UIViewController {
     }()
     
     private let weatherImageView: UIImageView = .init(frame: .zero)
-    private let dateLabel: UILabel = {
-        let label: UILabel = .init()
-        
-        label.text = "날짜"
-        
-        return label
-    }()
+    private let dateLabel: UILabel = .init(frame: .zero)
     
     private let imageScrollView: UIScrollView = {
         let scrollView: UIScrollView = .init()
@@ -58,6 +52,8 @@ final class EditDiaryViewController: UIViewController {
     
     private let imageView: UIImageView = {
         let view: UIImageView = .init(image: UIImage(systemName: "photo"))
+        
+        view.contentMode = .scaleAspectFit
         
         return view
     }()
@@ -191,16 +187,23 @@ final class EditDiaryViewController: UIViewController {
     }
     
     private func setupBindData() {
-        diaryViewModel?.title
+        diaryViewModel.title
             .bind(to: titleTextView.rx.text)
             .disposed(by: disposeBag)
         
-        diaryViewModel?.content
+        diaryViewModel.content
             .bind(to: contentTextView.rx.text)
             .disposed(by: disposeBag)
         
-        diaryViewModel?.weather
+        diaryViewModel.weather
             .bind(to: weatherImageView.rx.image)
+            .disposed(by: disposeBag)
+        
+        diaryViewModel.createdAt
+            .map {
+                DateManger.shared.convertToDate(from: $0)
+            }
+            .bind(to: dateLabel.rx.text)
             .disposed(by: disposeBag)
     }
     
@@ -282,4 +285,8 @@ extension EditDiaryViewController: PHPickerViewControllerDelegate {
 //            }
 //        }
     }
+}
+
+extension EditDiaryViewController {
+    
 }
