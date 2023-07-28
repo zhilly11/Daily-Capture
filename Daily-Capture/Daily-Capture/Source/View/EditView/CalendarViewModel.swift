@@ -5,11 +5,11 @@ import RxSwift
 
 final class CalendarViewModel {
     private var selectedDate: Date {
-        didSet(date) {
-            dateText.onNext(DateManger.shared.convertToDate(from: date))
+        didSet {
+            dateText.onNext(DateManger.shared.convertToDate(from: selectedDate))
         }
     }
-    let dateText: BehaviorSubject<String?> = .init(value: nil)
+    let dateText: BehaviorSubject<String?>
     var getSelectedDate: Date {
         get {
             return selectedDate
@@ -18,6 +18,7 @@ final class CalendarViewModel {
     
     init(date: Date = Date()) {
         self.selectedDate = date
+        self.dateText = .init(value: DateManger.shared.convertToDate(from: date))
     }
     
     func changeDate(date: Date?) {

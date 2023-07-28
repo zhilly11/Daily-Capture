@@ -83,7 +83,6 @@ final class CalendarViewController: UIViewController {
             self.tappedCancelButton()
         }), for: .touchUpInside)
         
-        navigationItem.title = DateManger.shared.convertToDate(from: viewModel.getSelectedDate)
         navigationItem.rightBarButtonItem = UIBarButtonItem(customView: rightButton)
         navigationItem.leftBarButtonItem = UIBarButtonItem(customView: leftButton)
     }

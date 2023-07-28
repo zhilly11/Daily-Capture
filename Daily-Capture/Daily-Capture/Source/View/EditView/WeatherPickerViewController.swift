@@ -8,6 +8,9 @@ import RxSwift
 import RxCocoa
 
 final class WeatherPickerViewController: UIViewController {
+    private let viewModel: WeatherPickerViewModel
+    private let disposeBag: DisposeBag = .init()
+    
     private let pickerView: UIPickerView = {
         let pickerView: UIPickerView = .init(frame: .zero)
         
@@ -24,7 +27,8 @@ final class WeatherPickerViewController: UIViewController {
     
     private let weatherNameList: [String] = ["clear", "cloudy-rainny", "cloudy-sunny", "cloudy", "fullmoon", "heavyrain-storm", "night-rain", "night", "night-clear", "rain", "sunny", "thunder"]
     
-    init() {
+    init(viewModel: WeatherPickerViewModel) {
+        self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -38,6 +42,7 @@ final class WeatherPickerViewController: UIViewController {
         setupView()
         setupPickerView()
         setupLayout()
+        setupBindData()
         configureNavigationBarButton()
     }
     
@@ -64,6 +69,12 @@ final class WeatherPickerViewController: UIViewController {
         }
     }
     
+    private func setupBindData() {
+        viewModel.weatherText
+            .bind(to: navigationItem.rx.title)
+            .disposed(by: disposeBag)
+    }
+    
     private func configureNavigationBarButton() {
         let rightButton: UIButton = UIButton(type: .custom)
         rightButton.setTitle("Change", for: .normal)
@@ -79,7 +90,6 @@ final class WeatherPickerViewController: UIViewController {
             self.tappedCancelButton()
         }), for: .touchUpInside)
         
-        navigationItem.title = "clear"
         navigationItem.rightBarButtonItem = UIBarButtonItem(customView: rightButton)
         navigationItem.leftBarButtonItem = UIBarButtonItem(customView: leftButton)
     }
@@ -96,11 +106,12 @@ final class WeatherPickerViewController: UIViewController {
 extension WeatherPickerViewController: UIPickerViewDelegate {
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         weatherImageView.image = UIImage(named: weatherNameList[row])
-        navigationItem.title = weatherNameList[row]
+        viewModel.weatherText.onNext(weatherNameList[row])
     }
     
     func pickerView(_ pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int, reusing view: UIView?) -> UIView {
         let imageView = UIImageView(image: UIImage(named: weatherNameList[row]))
+        
         imageView.frame = CGRect(x: 0, y: 0, width: 80, height: 80)
         
         return imageView

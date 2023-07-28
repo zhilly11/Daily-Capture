@@ -226,7 +226,8 @@ final class EditDiaryViewController: UIViewController {
     }
     
     private func changeWeather() {
-        let weatherViewController: WeatherPickerViewController = .init()
+        let viewModel: WeatherPickerViewModel = .init()
+        let weatherViewController: WeatherPickerViewController = .init(viewModel: viewModel)
         let navigationViewController: UINavigationController = .init(
             rootViewController: weatherViewController
         )
