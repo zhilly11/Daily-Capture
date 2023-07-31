@@ -10,6 +10,7 @@
 		69FC27ACBC6F737C06FBFCD0 /* Pods_Daily_Capture.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9747CD6059BB6E2FBEC9F6A0 /* Pods_Daily_Capture.framework */; };
 		980285452A5550E2008ABB8F /* EditDiaryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 980285442A5550E2008ABB8F /* EditDiaryViewController.swift */; };
 		98B8ADCB2A4EC95700100051 /* DiaryDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98B8ADCA2A4EC95700100051 /* DiaryDetailViewController.swift */; };
+		B445FD9E2A712E9D0028D370 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B445FD9D2A712E9D0028D370 /* SearchViewController.swift */; };
 		B45C26BD2A4DA163009333AB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B45C26BC2A4DA163009333AB /* AppDelegate.swift */; };
 		B45C26BF2A4DA163009333AB /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B45C26BE2A4DA163009333AB /* SceneDelegate.swift */; };
 		B45C26C12A4DA163009333AB /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B45C26C02A4DA163009333AB /* MainViewController.swift */; };
@@ -37,6 +38,7 @@
 		980285442A5550E2008ABB8F /* EditDiaryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditDiaryViewController.swift; sourceTree = "<group>"; };
 		98B8ADCA2A4EC95700100051 /* DiaryDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryDetailViewController.swift; sourceTree = "<group>"; };
 		98B8ADCC2A4ED01200100051 /* DiaryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryViewModel.swift; sourceTree = "<group>"; };
+		B445FD9D2A712E9D0028D370 /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
 		B45C26B92A4DA163009333AB /* Daily-Capture.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Daily-Capture.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B45C26BC2A4DA163009333AB /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B45C26BE2A4DA163009333AB /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -84,6 +86,14 @@
 				980285442A5550E2008ABB8F /* EditDiaryViewController.swift */,
 			);
 			path = EditView;
+			sourceTree = "<group>";
+		};
+		B445FD9C2A712E850028D370 /* SearchView */ = {
+			isa = PBXGroup;
+			children = (
+				B445FD9D2A712E9D0028D370 /* SearchViewController.swift */,
+			);
+			path = SearchView;
 			sourceTree = "<group>";
 		};
 		B45C26B02A4DA163009333AB = {
@@ -213,6 +223,7 @@
 			isa = PBXGroup;
 			children = (
 				B45C26D32A4DA1CF009333AB /* MainView */,
+				B445FD9C2A712E850028D370 /* SearchView */,
 				B4FC761D2A5409A900C19FF0 /* DetailView */,
 				980285432A5550AE008ABB8F /* EditView */,
 				98B8ADCC2A4ED01200100051 /* DiaryViewModel.swift */,
@@ -355,6 +366,7 @@
 				B4FC76132A4EB28500C19FF0 /* MainViewModel.swift in Sources */,
 				B4B3B9FD2A5546A50096A206 /* DiaryData+CoreDataClass.swift in Sources */,
 				B45C26C12A4DA163009333AB /* MainViewController.swift in Sources */,
+				B445FD9E2A712E9D0028D370 /* SearchViewController.swift in Sources */,
 				B45C26BD2A4DA163009333AB /* AppDelegate.swift in Sources */,
 				B4B3BA002A554AED0096A206 /* ManagedObjectModel.swift in Sources */,
 				B45C26BF2A4DA163009333AB /* SceneDelegate.swift in Sources */,

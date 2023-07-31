@@ -21,6 +21,17 @@ final class MainViewController: UIViewController {
     
     // MARK: - UI Components
     
+    private let searchBar: UISearchBar = {
+        let searchBar: UISearchBar = .init()
+        let backgroundImage: UIImage = .init()
+        
+        searchBar.backgroundImage = backgroundImage
+        searchBar.placeholder = "검색"
+        searchBar.setValue("취소", forKey: "cancelButtonText")
+        
+        return searchBar
+    }()
+    
     private let calendarView: UICalendarView = {
         let calendarView: UICalendarView = .init()
         let gregorianCalendar: Calendar = .init(identifier: .gregorian)
@@ -56,7 +67,7 @@ final class MainViewController: UIViewController {
         
         return button
     }()
-  
+    
     // MARK: - Initializer
     
     init(viewModel: MainViewModel) {
@@ -81,23 +92,30 @@ final class MainViewController: UIViewController {
     private func configure() {
         setupView()
         setupLayout()
-        setupNavigationBar()
+        setupDelegate()
         setupCalendar()
         setupFloatingButton()
         bindTableViewData()
     }
     
     private func setupView() {
-        self.view.backgroundColor = .systemBackground
+        view.backgroundColor = .systemBackground
+        navigationController?.navigationBar.isHidden = true
     }
     
     private func setupLayout() {
         let safeArea: UILayoutGuide = view.safeAreaLayoutGuide
         
-        [calendarView, tableView, floatingButton].forEach(view.addSubview(_:))
+        [searchBar, calendarView, tableView, floatingButton].forEach(view.addSubview(_:))
+        
+        searchBar.snp.makeConstraints {
+            $0.top.leading.trailing.equalTo(safeArea)
+            $0.height.equalTo(50)
+        }
         
         calendarView.snp.makeConstraints {
-            $0.top.leading.trailing.equalTo(safeArea)
+            $0.top.equalTo(self.searchBar.snp_bottomMargin)
+            $0.leading.trailing.equalTo(safeArea)
             $0.bottom.equalTo(self.view.snp.centerYWithinMargins)
         }
         
@@ -112,16 +130,8 @@ final class MainViewController: UIViewController {
         }
     }
     
-    private func setupNavigationBar() {
-        let searchAction: UIAction = .init { action in
-            //TODO: SearchController로 이동
-        }
-        
-        let searchButton: UIBarButtonItem = .init(systemItem: .search,
-                                                  primaryAction: searchAction)
-        
-        self.navigationItem.rightBarButtonItem = searchButton
-        self.navigationItem.title = "Daily Capture"
+    private func setupDelegate() {
+        searchBar.delegate = self
     }
     
     private func setupCalendar() {
@@ -166,5 +176,23 @@ extension MainViewController: UICalendarSelectionSingleDateDelegate {
         if let nowSelectedDate = dateComponents {
             self.userSelectedDate = nowSelectedDate.date
         }
+    }
+}
+
+extension MainViewController: UISearchBarDelegate {
+    func searchBarShouldBeginEditing(_ searchBar: UISearchBar) -> Bool {
+        searchBar.setShowsCancelButton(true, animated: true)
+        return true
+    }
+    
+    func searchBarShouldEndEditing(_ searchBar: UISearchBar) -> Bool {
+        searchBar.setShowsCancelButton(false, animated: true)
+        searchBar.endEditing(true)
+        return true
+    }
+    
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        searchBar.setShowsCancelButton(false, animated: true)
+        searchBar.endEditing(true)
     }
 }
