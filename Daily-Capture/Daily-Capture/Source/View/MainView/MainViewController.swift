@@ -130,6 +130,33 @@ final class MainViewController: UIViewController {
         }
     }
     
+    private func setupSearchLayout() {
+        let safeArea: UILayoutGuide = view.safeAreaLayoutGuide
+        
+        calendarView.isHidden = true
+        floatingButton.isHidden = true
+        
+        tableView.snp.removeConstraints()
+        tableView.bringSubviewToFront(calendarView)
+        tableView.snp.makeConstraints {
+            $0.top.equalTo(searchBar.snp.bottom)
+            $0.leading.trailing.bottom.equalTo(safeArea)
+        }
+    }
+    
+    private func endSearch() {
+        let safeArea: UILayoutGuide = view.safeAreaLayoutGuide
+        
+        calendarView.isHidden = false
+        floatingButton.isHidden = false
+        
+        tableView.snp.removeConstraints()
+        tableView.snp.makeConstraints {
+            $0.top.equalTo(calendarView.snp.bottom)
+            $0.leading.trailing.bottom.equalTo(safeArea)
+        }
+    }
+    
     private func setupDelegate() {
         searchBar.delegate = self
     }
@@ -182,17 +209,20 @@ extension MainViewController: UICalendarSelectionSingleDateDelegate {
 extension MainViewController: UISearchBarDelegate {
     func searchBarShouldBeginEditing(_ searchBar: UISearchBar) -> Bool {
         searchBar.setShowsCancelButton(true, animated: true)
+        setupSearchLayout()
         return true
     }
     
     func searchBarShouldEndEditing(_ searchBar: UISearchBar) -> Bool {
         searchBar.setShowsCancelButton(false, animated: true)
         searchBar.endEditing(true)
+        endSearch()
         return true
     }
     
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         searchBar.setShowsCancelButton(false, animated: true)
         searchBar.endEditing(true)
+        endSearch()
     }
 }
