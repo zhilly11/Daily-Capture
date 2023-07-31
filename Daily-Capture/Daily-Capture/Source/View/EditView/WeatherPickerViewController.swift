@@ -11,12 +11,7 @@ final class WeatherPickerViewController: UIViewController {
     private let viewModel: WeatherPickerViewModel
     private let disposeBag: DisposeBag = .init()
     
-    private let pickerView: UIPickerView = {
-        let pickerView: UIPickerView = .init(frame: .zero)
-        
-        return pickerView
-    }()
-    
+    private let pickerView: UIPickerView = .init()
     private let weatherImageView: UIImageView = {
         let imageView: UIImageView = .init(frame: .zero)
         
@@ -60,18 +55,25 @@ final class WeatherPickerViewController: UIViewController {
         
         [weatherImageView, pickerView].forEach(view.addSubview(_:))
         weatherImageView.snp.makeConstraints { make in
-            make.top.leading.trailing.equalTo(safeArea)
+            make.top.left.right.equalTo(safeArea)
             make.bottom.equalTo(safeArea).multipliedBy(0.5)
         }
         pickerView.snp.makeConstraints { make in
             make.top.equalTo(weatherImageView.snp.bottom)
-            make.leading.trailing.bottom.equalTo(safeArea)
+            make.left.right.bottom.equalTo(safeArea)
         }
     }
     
     private func setupBindData() {
         viewModel.weatherText
             .bind(to: navigationItem.rx.title)
+            .disposed(by: disposeBag)
+        
+        viewModel.weatherText
+            .map {
+                UIImage(named: $0)
+            }
+            .bind(to: weatherImageView.rx.image)
             .disposed(by: disposeBag)
     }
     
@@ -105,7 +107,6 @@ final class WeatherPickerViewController: UIViewController {
 
 extension WeatherPickerViewController: UIPickerViewDelegate {
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        weatherImageView.image = UIImage(named: weatherNameList[row])
         viewModel.weatherText.onNext(weatherNameList[row])
     }
     
