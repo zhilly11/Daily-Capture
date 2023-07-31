@@ -14,6 +14,7 @@
 		981B434F2A7282FD000F25CA /* CalendarViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 981B434E2A7282FD000F25CA /* CalendarViewModel.swift */; };
 		981B43512A73A6A7000F25CA /* DateManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 981B43502A73A6A7000F25CA /* DateManager.swift */; };
 		981B43532A73BDF9000F25CA /* WeatherPickerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 981B43522A73BDF9000F25CA /* WeatherPickerViewModel.swift */; };
+		981B43592A779996000F25CA /* DataSendableDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 981B43582A779996000F25CA /* DataSendableDelegate.swift */; };
 		98B8ADCB2A4EC95700100051 /* DiaryDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98B8ADCA2A4EC95700100051 /* DiaryDetailViewController.swift */; };
 		B45C26BD2A4DA163009333AB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B45C26BC2A4DA163009333AB /* AppDelegate.swift */; };
 		B45C26BF2A4DA163009333AB /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B45C26BE2A4DA163009333AB /* SceneDelegate.swift */; };
@@ -45,6 +46,7 @@
 		981B434E2A7282FD000F25CA /* CalendarViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarViewModel.swift; sourceTree = "<group>"; };
 		981B43502A73A6A7000F25CA /* DateManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateManager.swift; sourceTree = "<group>"; };
 		981B43522A73BDF9000F25CA /* WeatherPickerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherPickerViewModel.swift; sourceTree = "<group>"; };
+		981B43582A779996000F25CA /* DataSendableDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataSendableDelegate.swift; sourceTree = "<group>"; };
 		98B8ADCA2A4EC95700100051 /* DiaryDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryDetailViewController.swift; sourceTree = "<group>"; };
 		98B8ADCC2A4ED01200100051 /* DiaryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryViewModel.swift; sourceTree = "<group>"; };
 		B45C26B92A4DA163009333AB /* Daily-Capture.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Daily-Capture.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -220,6 +222,7 @@
 				B4FC76172A4EBA7400C19FF0 /* ReusableView.swift */,
 				B4B3B9FF2A554AED0096A206 /* ManagedObjectModel.swift */,
 				981B43502A73A6A7000F25CA /* DateManager.swift */,
+				981B43582A779996000F25CA /* DataSendableDelegate.swift */,
 			);
 			path = Util;
 			sourceTree = "<group>";
@@ -366,6 +369,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				981B43592A779996000F25CA /* DataSendableDelegate.swift in Sources */,
 				B4E648FA2A58052D00DE9E91 /* DiaryViewModel.swift in Sources */,
 				B4FC76132A4EB28500C19FF0 /* MainViewModel.swift in Sources */,
 				B4B3B9FD2A5546A50096A206 /* DiaryData+CoreDataClass.swift in Sources */,

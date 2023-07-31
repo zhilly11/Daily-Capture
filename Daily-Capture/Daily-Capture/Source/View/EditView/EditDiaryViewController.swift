@@ -8,7 +8,7 @@ import PhotosUI
 import RxSwift
 import RxCocoa
 
-final class EditDiaryViewController: UIViewController {
+final class EditDiaryViewController: UIViewController, UINavigationControllerDelegate {
     private var diaryViewModel: DiaryViewModel
     private var disposeBag: DisposeBag = .init()
     
@@ -220,6 +220,9 @@ final class EditDiaryViewController: UIViewController {
         navigationItem.titleView = createStackView()
     }
     
+    private func saveDiary() {
+    }
+    
     private func createStackView() -> UIStackView {
         let stackView: UIStackView = .init(arrangedSubviews: [weatherImageView, dateLabel])
         
@@ -234,6 +237,7 @@ final class EditDiaryViewController: UIViewController {
         let navigationViewController: UINavigationController = .init(
             rootViewController: weatherViewController
         )
+        weatherViewController.delegate = self
         
         self.present(navigationViewController, animated: true)
     }
@@ -244,6 +248,7 @@ final class EditDiaryViewController: UIViewController {
         let navigationViewController: UINavigationController = .init(
             rootViewController: calendarViewController
         )
+        calendarViewController.delegate = self
         
         self.present(navigationViewController, animated: true)
     }
@@ -265,9 +270,6 @@ final class EditDiaryViewController: UIViewController {
         
         self.present(picker, animated: true)
     }
-    
-    private func saveDiary() {
-    }
 }
 
 extension EditDiaryViewController: PHPickerViewControllerDelegate {
@@ -287,6 +289,12 @@ extension EditDiaryViewController: PHPickerViewControllerDelegate {
     }
 }
 
-extension EditDiaryViewController {
+extension EditDiaryViewController: DataSendableDelegate {
+    func sendDate(image: UIImage?) {
+        self.diaryViewModel.changeWeather(image: image)
+    }
     
+    func sendDate(date: Date) {
+        self.diaryViewModel.changeCreatedAt(date: date)
+    }
 }

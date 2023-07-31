@@ -22,6 +22,8 @@ final class CalendarViewController: UIViewController {
         return calendarView
     }()
     
+    weak var delegate: DataSendableDelegate?
+    
     init(viewModel: CalendarViewModel) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
@@ -92,6 +94,7 @@ final class CalendarViewController: UIViewController {
     }
     
     private func tappedChangeButton() {
+        delegate?.sendDate(date: viewModel.getSelectedDate)
         dismiss(animated: true)
     }
 }

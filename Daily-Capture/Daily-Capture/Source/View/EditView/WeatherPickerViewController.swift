@@ -22,6 +22,8 @@ final class WeatherPickerViewController: UIViewController {
     
     private let weatherNameList: [String] = ["clear", "cloudy-rainny", "cloudy-sunny", "cloudy", "fullmoon", "heavyrain-storm", "night-rain", "night", "night-clear", "rain", "sunny", "thunder"]
     
+    weak var delegate: DataSendableDelegate?
+    
     init(viewModel: WeatherPickerViewModel) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
@@ -101,6 +103,7 @@ final class WeatherPickerViewController: UIViewController {
     }
     
     private func tappedChangeButton() {
+        delegate?.sendDate(image: viewModel.weatherImage)
         dismiss(animated: true)
     }
 }
