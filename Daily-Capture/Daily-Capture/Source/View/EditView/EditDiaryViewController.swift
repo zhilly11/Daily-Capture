@@ -1,17 +1,18 @@
 //  Daily-Capture - EditDiaryViewController.swift
 //  Created by zhilly, vetto on 2023/07/05
 
-import Foundation
 import UIKit
 import Photos
 import PhotosUI
 import RxSwift
 import RxCocoa
 
-final class EditDiaryViewController: UIViewController, UINavigationControllerDelegate {
+final class EditDiaryViewController: UIViewController {
     private var diaryViewModel: DiaryViewModel
     private var disposeBag: DisposeBag = .init()
     
+    private let weatherImageView: UIImageView =  .init()
+    private let dateLabel: UILabel = .init(frame: .zero)
     private let diaryDetailScrollView: UIScrollView = {
         let scrollView: UIScrollView = .init()
         
@@ -19,45 +20,15 @@ final class EditDiaryViewController: UIViewController, UINavigationControllerDel
         
         return scrollView
     }()
-    
-    private let diaryDetailView: UIView = {
-        let view: UIView = .init()
-        
-        return view
-    }()
-    
-    private let weatherImageView: UIImageView = .init(frame: .zero)
-    private let dateLabel: UILabel = .init(frame: .zero)
-    
+    private let diaryDetailView: UIView = .init(frame: .zero)
     private let imageScrollView: UIScrollView = {
         let scrollView: UIScrollView = .init()
 
         scrollView.isPagingEnabled = true
-        scrollView.isScrollEnabled = true
+        scrollView.showsHorizontalScrollIndicator = false
         
         return scrollView
     }()
-    
-    private let pageControl: UIPageControl = {
-        let pageControl: UIPageControl = .init()
-        
-        pageControl.hidesForSinglePage = true
-        pageControl.backgroundColor = .gray
-        pageControl.pageIndicatorTintColor = .black
-        pageControl.currentPageIndicatorTintColor = .white
-        pageControl.currentPage = 0
-        
-        return pageControl
-    }()
-    
-    private let imageView: UIImageView = {
-        let view: UIImageView = .init(image: UIImage(systemName: "photo"))
-        
-        view.contentMode = .scaleAspectFit
-        
-        return view
-    }()
-    
     private let titleTextView: UITextView = {
         let textView: UITextView = .init()
         
@@ -66,7 +37,6 @@ final class EditDiaryViewController: UIViewController, UINavigationControllerDel
         
         return textView
     }()
-    
     private let contentTextView: UITextView = {
         let textView: UITextView = .init()
         
@@ -75,35 +45,34 @@ final class EditDiaryViewController: UIViewController, UINavigationControllerDel
         
         return textView
     }()
-    
-    private let button1: UIButton = {
+    private let changeWeatherButton: UIButton = {
         let button: UIButton = .init()
         
+        button.setImage(UIImage(systemName: "sun.min"), for: .normal)
         button.setTitle("날씨 선택", for: .normal)
         button.setTitleColor(.systemBlue, for: .normal)
         
         return button
     }()
-    
-    private let button2: UIButton = {
+    private let changeCreateAtButton: UIButton = {
         let button: UIButton = .init()
         
+        button.setImage(UIImage(systemName: "calendar"), for: .normal)
         button.setTitle("날짜 선택", for: .normal)
         button.setTitleColor(.systemBlue, for: .normal)
         
         return button
     }()
-    
-    private let button3: UIButton = {
+    private let changePhotoButton: UIButton = {
         let button: UIButton = .init()
         
+        button.setImage(UIImage(systemName: "photo.on.rectangle"), for: .normal)
         button.setTitle("사진 선택", for: .normal)
         button.setTitleColor(.systemBlue, for: .normal)
         
         return button
     }()
-    
-    private let stackView: UIStackView = {
+    private let buttonStackView: UIStackView = {
         let stackView: UIStackView = .init()
         
         stackView.axis = .horizontal
@@ -134,7 +103,9 @@ final class EditDiaryViewController: UIViewController, UINavigationControllerDel
     private func configureLayout() {
         let safeArea = view.safeAreaLayoutGuide
         
-        [imageView, titleTextView, contentTextView, stackView].forEach(diaryDetailView.addSubview(_:))
+        [imageScrollView, titleTextView, contentTextView, buttonStackView].forEach {
+            diaryDetailView.addSubview($0)
+        }
         diaryDetailScrollView.addSubview(diaryDetailView)
         view.addSubview(diaryDetailScrollView)
         
@@ -148,12 +119,16 @@ final class EditDiaryViewController: UIViewController, UINavigationControllerDel
             make.edges.equalTo(diaryDetailScrollView.contentLayoutGuide)
             make.width.equalTo(diaryDetailScrollView.frameLayoutGuide)
         }
-        imageView.snp.makeConstraints { make in
+        imageScrollView.snp.makeConstraints { make in
             make.top.left.right.equalToSuperview()
-            make.height.equalTo(safeArea).multipliedBy(0.5)
+            make.height.equalTo(safeArea).multipliedBy(0.6)
+        }
+        buttonStackView.snp.makeConstraints { make in
+            make.top.equalTo(imageScrollView.snp.bottom).offset(8)
+            make.left.right.equalToSuperview()
         }
         titleTextView.snp.makeConstraints { make in
-            make.top.equalTo(imageView.snp.bottom).offset(8)
+            make.top.equalTo(buttonStackView.snp.bottom).offset(8)
             make.leading.equalToSuperview().offset(8)
             make.trailing.equalToSuperview().offset(-8)
         }
@@ -161,10 +136,7 @@ final class EditDiaryViewController: UIViewController, UINavigationControllerDel
             make.top.equalTo(titleTextView.snp.bottom).offset(8)
             make.leading.equalToSuperview().offset(8)
             make.trailing.equalToSuperview().offset(-8)
-        }
-        stackView.snp.makeConstraints { make in
-            make.top.equalTo(contentTextView.snp.bottom).offset(16)
-            make.left.right.bottom.equalToSuperview()
+            make.bottom.equalToSuperview()
         }
     }
     
@@ -173,15 +145,15 @@ final class EditDiaryViewController: UIViewController, UINavigationControllerDel
     }
     
     private func setupStackView() {
-        [button1, button2, button3].forEach(stackView.addArrangedSubview(_:))
+        [changeWeatherButton, changeCreateAtButton, changePhotoButton].forEach(buttonStackView.addArrangedSubview(_:))
         
-        button1.addAction(UIAction(handler: { [weak self] _ in
+        changeWeatherButton.addAction(UIAction(handler: { [weak self] _ in
             self?.changeWeather()
         }), for: .touchUpInside)
-        button2.addAction(UIAction(handler: { [weak self] _ in
+        changeCreateAtButton.addAction(UIAction(handler: { [weak self] _ in
             self?.changeDate()
         }), for: .touchUpInside)
-        button3.addAction(UIAction(handler: { [weak self] _ in
+        changePhotoButton.addAction(UIAction(handler: { [weak self] _ in
             self?.changePicture()
         }), for: .touchUpInside)
     }
@@ -205,6 +177,35 @@ final class EditDiaryViewController: UIViewController, UINavigationControllerDel
             }
             .bind(to: dateLabel.rx.text)
             .disposed(by: disposeBag)
+        
+        diaryViewModel.selectedPictures
+            .observe(on: MainScheduler.instance)
+            .subscribe(onNext: { [weak self] images in
+                self?.setupImageScrollView(pictures: images)
+            })
+            .disposed(by: disposeBag)
+    }
+    
+    private func setupImageScrollView(pictures: [UIImage]) {
+        let safeAreaWidth = view.safeAreaLayoutGuide.layoutFrame.width
+        let safeAreaHeight = view.safeAreaLayoutGuide.layoutFrame.height
+        
+        imageScrollView.subviews.forEach { view in
+            view.removeFromSuperview()
+        }
+        imageScrollView.contentSize.width = safeAreaWidth * CGFloat(pictures.count)
+        imageScrollView.contentSize.height = safeAreaHeight * 0.5
+        
+        for index in 0..<pictures.count {
+            let imageView = UIImageView()
+            let xPosition = safeAreaWidth * CGFloat(index)
+            
+            imageView.contentMode = .scaleAspectFit
+            imageView.frame = CGRect(x: xPosition, y: 0, width: safeAreaWidth, height: safeAreaHeight * 0.5)
+            imageView.image = pictures[index]
+            
+            imageScrollView.addSubview(imageView)
+        }
     }
     
     private func configureNavigationBarButton() {
@@ -227,6 +228,7 @@ final class EditDiaryViewController: UIViewController, UINavigationControllerDel
         let stackView: UIStackView = .init(arrangedSubviews: [weatherImageView, dateLabel])
         
         stackView.axis = .horizontal
+        stackView.spacing = 4
         
         return stackView
     }
@@ -276,16 +278,25 @@ extension EditDiaryViewController: PHPickerViewControllerDelegate {
     func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
         picker.dismiss(animated: true)
         
-//        for result in results {
-//            let itemProvider = result.itemProvider
-//
-//            if itemProvider.canLoadObject(ofClass: UIImage.self) {
-//                itemProvider.loadObject(ofClass: UIImage.self) { image, error in
-//                    if let diaryImage = image as? UIImage {
-//                    }
-//                }
-//            }
-//        }
+        var pictures: [UIImage] = []
+        
+        let picture = results.map { phpicker in
+            let item = phpicker.itemProvider
+        }
+        for result in results {
+            let itemProvider = result.itemProvider
+
+            if itemProvider.canLoadObject(ofClass: UIImage.self) {
+                itemProvider.loadObject(ofClass: UIImage.self) { image, error in
+                    DispatchQueue.main.async {
+                        if let diaryImage = image as? UIImage {
+                            pictures.append(diaryImage)
+                        }
+                    }
+                }
+            }
+        }
+        diaryViewModel.updatePictures(pictures: pictures)
     }
 }
 
