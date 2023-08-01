@@ -23,4 +23,14 @@ final class MainViewModel {
             NSLog("Diaries Fetch Failed")
         }
     }
+    
+    func searchDiary(keyword: String) {
+        do {
+            let diaries: [Diary] = try diaryManager.search(keyword: keyword)
+            diaryList.onNext(diaries)
+        } catch {
+            // TODO: 오류처리 구현 ex) Alert으로 사용자에게 알려주기
+            NSLog("Diaries Fetch Failed")
+        }
+    }
 }

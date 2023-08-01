@@ -225,4 +225,8 @@ extension MainViewController: UISearchBarDelegate {
         searchBar.endEditing(true)
         endSearch()
     }
+    
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        viewModel.searchDiary(keyword: searchText)
+    }
 }
