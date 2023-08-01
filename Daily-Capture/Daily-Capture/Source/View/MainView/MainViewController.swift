@@ -155,6 +155,10 @@ final class MainViewController: UIViewController {
             $0.top.equalTo(calendarView.snp.bottom)
             $0.leading.trailing.bottom.equalTo(safeArea)
         }
+        
+        if let date = userSelectedDate {
+            viewModel.setupDiary(date: date)
+        }
     }
     
     private func setupDelegate() {
@@ -223,6 +227,7 @@ extension MainViewController: UISearchBarDelegate {
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         searchBar.setShowsCancelButton(false, animated: true)
         searchBar.endEditing(true)
+        searchBar.searchTextField.text = nil
         endSearch()
     }
     
