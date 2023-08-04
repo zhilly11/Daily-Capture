@@ -21,6 +21,17 @@ final class MainViewController: UIViewController {
     
     // MARK: - UI Components
     
+    private let searchBar: UISearchBar = {
+        let searchBar: UISearchBar = .init()
+        let backgroundImage: UIImage = .init()
+        
+        searchBar.backgroundImage = backgroundImage
+        searchBar.placeholder = "검색"
+        searchBar.setValue("취소", forKey: "cancelButtonText")
+        
+        return searchBar
+    }()
+    
     private let calendarView: UICalendarView = {
         let calendarView: UICalendarView = .init()
         let gregorianCalendar: Calendar = .init(identifier: .gregorian)
@@ -56,7 +67,7 @@ final class MainViewController: UIViewController {
         
         return button
     }()
-  
+    
     // MARK: - Initializer
     
     init(viewModel: MainViewModel) {
@@ -81,22 +92,30 @@ final class MainViewController: UIViewController {
     private func configure() {
         setupView()
         setupLayout()
+        setupDelegate()
         setupCalendar()
         setupFloatingButton()
         bindTableViewData()
     }
     
     private func setupView() {
-        self.view.backgroundColor = .systemBackground
+        view.backgroundColor = .systemBackground
+        navigationController?.navigationBar.isHidden = true
     }
     
     private func setupLayout() {
         let safeArea: UILayoutGuide = view.safeAreaLayoutGuide
         
-        [calendarView, tableView, floatingButton].forEach(view.addSubview(_:))
+        [searchBar, calendarView, tableView, floatingButton].forEach(view.addSubview(_:))
+        
+        searchBar.snp.makeConstraints {
+            $0.top.leading.trailing.equalTo(safeArea)
+            $0.height.equalTo(50)
+        }
         
         calendarView.snp.makeConstraints {
-            $0.top.leading.trailing.equalTo(safeArea)
+            $0.top.equalTo(self.searchBar.snp_bottomMargin)
+            $0.leading.trailing.equalTo(safeArea)
             $0.bottom.equalTo(self.view.snp.centerYWithinMargins)
         }
         
@@ -109,6 +128,41 @@ final class MainViewController: UIViewController {
             $0.width.height.equalTo(100)
             $0.bottom.trailing.equalTo(safeArea).offset(-30)
         }
+    }
+    
+    private func setupSearchLayout() {
+        let safeArea: UILayoutGuide = view.safeAreaLayoutGuide
+        
+        calendarView.isHidden = true
+        floatingButton.isHidden = true
+        
+        tableView.snp.removeConstraints()
+        tableView.bringSubviewToFront(calendarView)
+        tableView.snp.makeConstraints {
+            $0.top.equalTo(searchBar.snp.bottom)
+            $0.leading.trailing.bottom.equalTo(safeArea)
+        }
+    }
+    
+    private func endSearch() {
+        let safeArea: UILayoutGuide = view.safeAreaLayoutGuide
+        
+        calendarView.isHidden = false
+        floatingButton.isHidden = false
+        
+        tableView.snp.removeConstraints()
+        tableView.snp.makeConstraints {
+            $0.top.equalTo(calendarView.snp.bottom)
+            $0.leading.trailing.bottom.equalTo(safeArea)
+        }
+        
+        if let date = userSelectedDate {
+            viewModel.setupDiary(date: date)
+        }
+    }
+    
+    private func setupDelegate() {
+        searchBar.delegate = self
     }
     
     private func setupCalendar() {
@@ -153,5 +207,31 @@ extension MainViewController: UICalendarSelectionSingleDateDelegate {
         if let nowSelectedDate = dateComponents {
             self.userSelectedDate = nowSelectedDate.date
         }
+    }
+}
+
+extension MainViewController: UISearchBarDelegate {
+    func searchBarShouldBeginEditing(_ searchBar: UISearchBar) -> Bool {
+        searchBar.setShowsCancelButton(true, animated: true)
+        setupSearchLayout()
+        return true
+    }
+    
+    func searchBarShouldEndEditing(_ searchBar: UISearchBar) -> Bool {
+        searchBar.setShowsCancelButton(false, animated: true)
+        searchBar.endEditing(true)
+        endSearch()
+        return true
+    }
+    
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        searchBar.setShowsCancelButton(false, animated: true)
+        searchBar.endEditing(true)
+        searchBar.searchTextField.text = nil
+        endSearch()
+    }
+    
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        viewModel.searchDiary(keyword: searchText)
     }
 }
