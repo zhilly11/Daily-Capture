@@ -9,6 +9,12 @@
 /* Begin PBXBuildFile section */
 		69FC27ACBC6F737C06FBFCD0 /* Pods_Daily_Capture.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9747CD6059BB6E2FBEC9F6A0 /* Pods_Daily_Capture.framework */; };
 		980285452A5550E2008ABB8F /* EditDiaryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 980285442A5550E2008ABB8F /* EditDiaryViewController.swift */; };
+		981B434B2A71125B000F25CA /* CalendarViewContoller.swift in Sources */ = {isa = PBXBuildFile; fileRef = 981B434A2A71125B000F25CA /* CalendarViewContoller.swift */; };
+		981B434D2A711C78000F25CA /* WeatherPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 981B434C2A711C78000F25CA /* WeatherPickerViewController.swift */; };
+		981B434F2A7282FD000F25CA /* CalendarViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 981B434E2A7282FD000F25CA /* CalendarViewModel.swift */; };
+		981B43512A73A6A7000F25CA /* DateManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 981B43502A73A6A7000F25CA /* DateManager.swift */; };
+		981B43532A73BDF9000F25CA /* WeatherPickerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 981B43522A73BDF9000F25CA /* WeatherPickerViewModel.swift */; };
+		981B43592A779996000F25CA /* DataSendableDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 981B43582A779996000F25CA /* DataSendableDelegate.swift */; };
 		98B8ADCB2A4EC95700100051 /* DiaryDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98B8ADCA2A4EC95700100051 /* DiaryDetailViewController.swift */; };
 		B45C26BD2A4DA163009333AB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B45C26BC2A4DA163009333AB /* AppDelegate.swift */; };
 		B45C26BF2A4DA163009333AB /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B45C26BE2A4DA163009333AB /* SceneDelegate.swift */; };
@@ -35,6 +41,12 @@
 		5925226EC2DC87D94BF8E1DC /* Pods-Daily-Capture.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Daily-Capture.release.xcconfig"; path = "Target Support Files/Pods-Daily-Capture/Pods-Daily-Capture.release.xcconfig"; sourceTree = "<group>"; };
 		9747CD6059BB6E2FBEC9F6A0 /* Pods_Daily_Capture.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Daily_Capture.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		980285442A5550E2008ABB8F /* EditDiaryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditDiaryViewController.swift; sourceTree = "<group>"; };
+		981B434A2A71125B000F25CA /* CalendarViewContoller.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarViewContoller.swift; sourceTree = "<group>"; };
+		981B434C2A711C78000F25CA /* WeatherPickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherPickerViewController.swift; sourceTree = "<group>"; };
+		981B434E2A7282FD000F25CA /* CalendarViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarViewModel.swift; sourceTree = "<group>"; };
+		981B43502A73A6A7000F25CA /* DateManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateManager.swift; sourceTree = "<group>"; };
+		981B43522A73BDF9000F25CA /* WeatherPickerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherPickerViewModel.swift; sourceTree = "<group>"; };
+		981B43582A779996000F25CA /* DataSendableDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataSendableDelegate.swift; sourceTree = "<group>"; };
 		98B8ADCA2A4EC95700100051 /* DiaryDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryDetailViewController.swift; sourceTree = "<group>"; };
 		98B8ADCC2A4ED01200100051 /* DiaryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryViewModel.swift; sourceTree = "<group>"; };
 		B45C26B92A4DA163009333AB /* Daily-Capture.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Daily-Capture.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -82,6 +94,10 @@
 			isa = PBXGroup;
 			children = (
 				980285442A5550E2008ABB8F /* EditDiaryViewController.swift */,
+				981B434A2A71125B000F25CA /* CalendarViewContoller.swift */,
+				981B434E2A7282FD000F25CA /* CalendarViewModel.swift */,
+				981B434C2A711C78000F25CA /* WeatherPickerViewController.swift */,
+				981B43522A73BDF9000F25CA /* WeatherPickerViewModel.swift */,
 			);
 			path = EditView;
 			sourceTree = "<group>";
@@ -205,6 +221,8 @@
 				B4B3BA0A2A557C420096A206 /* Extensions */,
 				B4FC76172A4EBA7400C19FF0 /* ReusableView.swift */,
 				B4B3B9FF2A554AED0096A206 /* ManagedObjectModel.swift */,
+				981B43502A73A6A7000F25CA /* DateManager.swift */,
+				981B43582A779996000F25CA /* DataSendableDelegate.swift */,
 			);
 			path = Util;
 			sourceTree = "<group>";
@@ -351,11 +369,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				981B43592A779996000F25CA /* DataSendableDelegate.swift in Sources */,
 				B4E648FA2A58052D00DE9E91 /* DiaryViewModel.swift in Sources */,
 				B4FC76132A4EB28500C19FF0 /* MainViewModel.swift in Sources */,
 				B4B3B9FD2A5546A50096A206 /* DiaryData+CoreDataClass.swift in Sources */,
 				B45C26C12A4DA163009333AB /* MainViewController.swift in Sources */,
+				981B434B2A71125B000F25CA /* CalendarViewContoller.swift in Sources */,
 				B45C26BD2A4DA163009333AB /* AppDelegate.swift in Sources */,
+				981B434F2A7282FD000F25CA /* CalendarViewModel.swift in Sources */,
+				981B43512A73A6A7000F25CA /* DateManager.swift in Sources */,
 				B4B3BA002A554AED0096A206 /* ManagedObjectModel.swift in Sources */,
 				B45C26BF2A4DA163009333AB /* SceneDelegate.swift in Sources */,
 				980285452A5550E2008ABB8F /* EditDiaryViewController.swift in Sources */,
@@ -367,7 +389,9 @@
 				B4B3BA092A555A000096A206 /* CoreDataError.swift in Sources */,
 				B4B3BA0D2A557C570096A206 /* Date+.swift in Sources */,
 				98B8ADCB2A4EC95700100051 /* DiaryDetailViewController.swift in Sources */,
+				981B434D2A711C78000F25CA /* WeatherPickerViewController.swift in Sources */,
 				B4B3BA032A5553680096A206 /* CoreDataManager.swift in Sources */,
+				981B43532A73BDF9000F25CA /* WeatherPickerViewModel.swift in Sources */,
 				B4B3B9FE2A5546A50096A206 /* DiaryData+CoreDataProperties.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
