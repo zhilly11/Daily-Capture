@@ -102,6 +102,7 @@ final class EditDiaryViewController: UIViewController {
 
     private func configureLayout() {
         let safeArea = view.safeAreaLayoutGuide
+        let keyboardArea = view.keyboardLayoutGuide
         
         [imageScrollView, titleTextView, contentTextView, buttonStackView].forEach {
             diaryDetailView.addSubview($0)
@@ -113,7 +114,8 @@ final class EditDiaryViewController: UIViewController {
             make.width.equalTo(weatherImageView.snp.height)
         }
         diaryDetailScrollView.snp.makeConstraints { make in
-            make.edges.equalTo(safeArea)
+            make.top.leading.trailing.equalTo(safeArea)
+            make.bottom.equalTo(keyboardArea.snp.top)
         }
         diaryDetailView.snp.makeConstraints { make in
             make.edges.equalTo(diaryDetailScrollView.contentLayoutGuide)
@@ -255,13 +257,18 @@ final class EditDiaryViewController: UIViewController {
         self.present(navigationViewController, animated: true)
     }
     
+    private var selections: [String: PHPickerResult] = [:]
+    private var selectedAssetIdentifiers: [String] = []
+    
     private func changePicture() {
         let configuration: PHPickerConfiguration = {
-            var configuration: PHPickerConfiguration = .init()
+            var configuration: PHPickerConfiguration = .init(photoLibrary: .shared())
             
             configuration.selection = .ordered
             configuration.selectionLimit = 5
             configuration.filter = .any(of: [.images])
+            configuration.preferredAssetRepresentationMode = .current
+            configuration.preselectedAssetIdentifiers = selectedAssetIdentifiers
             
             return configuration
         }()
@@ -277,26 +284,45 @@ final class EditDiaryViewController: UIViewController {
 extension EditDiaryViewController: PHPickerViewControllerDelegate {
     func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
         picker.dismiss(animated: true)
-        
-        var pictures: [UIImage] = []
-        
-        let picture = results.map { phpicker in
-            let item = phpicker.itemProvider
-        }
+        var newSelections: [String: PHPickerResult] = [:]
         for result in results {
+            if let identifier = result.assetIdentifier {
+                newSelections[identifier] = selections[identifier] ?? result
+            }
+        }
+        selections = newSelections
+        selectedAssetIdentifiers = results.compactMap { $0.assetIdentifier }
+        
+        changePictures()
+    }
+    
+    private func changePictures() {
+        let dispatchGroup = DispatchGroup()
+        var imageDictionary: [String: UIImage] = [:]
+        
+        for (identifier, result) in selections {
+            dispatchGroup.enter()
             let itemProvider = result.itemProvider
 
             if itemProvider.canLoadObject(ofClass: UIImage.self) {
-                itemProvider.loadObject(ofClass: UIImage.self) { image, error in
-                    DispatchQueue.main.async {
-                        if let diaryImage = image as? UIImage {
-                            pictures.append(diaryImage)
-                        }
+                itemProvider.loadObject(ofClass: UIImage.self) { loadImage, error in
+                    if let image = loadImage as? UIImage {
+                        imageDictionary[identifier] = image
+                        dispatchGroup.leave()
                     }
                 }
             }
         }
-        diaryViewModel.updatePictures(pictures: pictures)
+        dispatchGroup.notify(queue: DispatchQueue.main) {
+            var pictures: [UIImage] = []
+            
+            for identifier in self.selectedAssetIdentifiers {
+                if let image = imageDictionary[identifier] {
+                    pictures.append(image)
+                }
+            }
+            self.diaryViewModel.updatePictures(pictures: pictures)
+        }
     }
 }
 

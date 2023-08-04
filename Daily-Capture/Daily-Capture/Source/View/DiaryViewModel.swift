@@ -23,7 +23,6 @@ final class DiaryViewModel {
     }
     
     func updatePictures(pictures: [UIImage]) {
-        selectedPictures.onNext([])
         selectedPictures.onNext(pictures)
     }
 }
