@@ -188,6 +188,7 @@ final class MainViewController: UIViewController {
             let viewModel: DiaryViewModel = .init()
             let editDiaryViewController: EditDiaryViewController = .init(viewModel: viewModel)
             
+            self.navigationItem.backButtonTitle = "뒤로"
             self.navigationController?.pushViewController(editDiaryViewController, animated: true)
         }
         
