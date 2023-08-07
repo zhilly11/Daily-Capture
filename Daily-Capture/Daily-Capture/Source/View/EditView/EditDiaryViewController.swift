@@ -8,8 +8,12 @@ import RxSwift
 import RxCocoa
 
 final class EditDiaryViewController: UIViewController {
+    // MARK: - Properties
+    
     private var diaryViewModel: DiaryViewModel
     private var disposeBag: DisposeBag = .init()
+    
+    // MARK: - UI Components
     
     private let weatherImageView: UIImageView =  .init()
     private let dateLabel: UILabel = .init(frame: .zero)
@@ -23,7 +27,7 @@ final class EditDiaryViewController: UIViewController {
     private let diaryDetailView: UIView = .init(frame: .zero)
     private let imageScrollView: UIScrollView = {
         let scrollView: UIScrollView = .init()
-
+        
         scrollView.isPagingEnabled = true
         scrollView.showsHorizontalScrollIndicator = false
         
@@ -81,6 +85,8 @@ final class EditDiaryViewController: UIViewController {
         return stackView
     }()
     
+    // MARK: - Initializer
+    
     init(viewModel: DiaryViewModel) {
         self.diaryViewModel = viewModel
         super.init(nibName: nil, bundle: nil)
@@ -89,6 +95,8 @@ final class EditDiaryViewController: UIViewController {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    // MARK: - View Life Cycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -99,7 +107,9 @@ final class EditDiaryViewController: UIViewController {
         setupBindData()
         configureNavigationBarButton()
     }
-
+    
+    // MARK: - Methods
+    
     private func configureLayout() {
         let safeArea = view.safeAreaLayoutGuide
         let keyboardArea = view.keyboardLayoutGuide
@@ -226,6 +236,11 @@ final class EditDiaryViewController: UIViewController {
     }
     
     private func saveDiary() {
+        do {
+            try diaryViewModel.saveDiary()
+        } catch {
+            print(error.localizedDescription.description)
+        }
     }
     
     private func createStackView() -> UIStackView {
@@ -305,7 +320,7 @@ extension EditDiaryViewController: PHPickerViewControllerDelegate {
         for (identifier, result) in selections {
             dispatchGroup.enter()
             let itemProvider = result.itemProvider
-
+            
             if itemProvider.canLoadObject(ofClass: UIImage.self) {
                 itemProvider.loadObject(ofClass: UIImage.self) { loadImage, error in
                     if let image = loadImage as? UIImage {
