@@ -87,6 +87,11 @@ final class MainViewController: UIViewController {
         configure()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        setupView()
+    }
+    
     // MARK: - Methods
     
     private func configure() {
