@@ -8,11 +8,13 @@ import RxSwift
 import RxCocoa
 
 final class EditDiaryViewController: UIViewController {
-    // MARK: viewModel
+    // MARK: - Properties
+    
     private var diaryViewModel: DiaryViewModel
     private var disposeBag: DisposeBag = .init()
     
-    // MARK: - view
+    // MARK: - UI Components
+
     private let weatherImageView: UIImageView =  .init()
     private let dateLabel: UILabel = .init(frame: .zero)
     private let diaryDetailScrollView: UIScrollView = {
@@ -25,7 +27,7 @@ final class EditDiaryViewController: UIViewController {
     private let diaryDetailView: UIView = .init(frame: .zero)
     private let imageScrollView: UIScrollView = {
         let scrollView: UIScrollView = .init()
-
+        
         scrollView.isPagingEnabled = true
         scrollView.showsHorizontalScrollIndicator = false
         
@@ -97,6 +99,8 @@ final class EditDiaryViewController: UIViewController {
     private var selections: [String: PHPickerResult] = [:]
     private var selectedAssetIdentifiers: [String] = []
     
+    // MARK: - Initializer
+    
     init(viewModel: DiaryViewModel) {
         self.diaryViewModel = viewModel
         super.init(nibName: nil, bundle: nil)
@@ -105,6 +109,8 @@ final class EditDiaryViewController: UIViewController {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    // MARK: - View Life Cycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -124,6 +130,8 @@ final class EditDiaryViewController: UIViewController {
     private func setupView() {
         view.backgroundColor = .systemBackground
     }
+
+    // MARK: - Methods
 
     private func setupLayout() {
         let safeArea = view.safeAreaLayoutGuide
@@ -259,7 +267,27 @@ final class EditDiaryViewController: UIViewController {
         }
     }
     
+    private func configureNavigationBarButton() {
+        navigationController?.navigationBar.isHidden = false
+        
+        let button: UIButton = .init(type: .custom)
+        button.setTitle("저장", for: .normal)
+        button.setTitleColor(.systemBlue, for: .normal)
+        button.addAction(UIAction(handler: { _ in
+            self.saveDiary()
+            self.navigationController?.popViewController(animated: true)
+        }), for: .touchUpInside)
+        
+        navigationItem.rightBarButtonItem = UIBarButtonItem(customView: button)
+        navigationItem.titleView = createStackView()
+    }
+    
     private func saveDiary() {
+        do {
+            try diaryViewModel.saveDiary()
+        } catch {
+            print(error.localizedDescription.description)
+        }
     }
     
     private func createStackView() -> UIStackView {
@@ -336,7 +364,7 @@ extension EditDiaryViewController: PHPickerViewControllerDelegate {
         for (identifier, result) in selections {
             dispatchGroup.enter()
             let itemProvider = result.itemProvider
-
+            
             if itemProvider.canLoadObject(ofClass: UIImage.self) {
                 itemProvider.loadObject(ofClass: UIImage.self) { loadImage, error in
                     if let image = loadImage as? UIImage {

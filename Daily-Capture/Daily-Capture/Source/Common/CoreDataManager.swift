@@ -25,7 +25,7 @@ final class DiaryManager: CoreDataManageable {
     
     private init() {}
     
-    func add(_ diary: Diary) throws {
+    func add(_ diary: Diary?) throws {
         guard let entity: NSEntityDescription = NSEntityDescription.entity(
             forEntityName: "DiaryData", in: context
         ) else {
@@ -35,16 +35,18 @@ final class DiaryManager: CoreDataManageable {
         let diaryObject: NSManagedObject = .init(entity: entity, insertInto: context)
         var imageData: [Data] = .init()
         
-        diary.pictures.forEach { picture in
-            if let data = picture.jpegData(compressionQuality: 1.0) {
-                imageData.append(data)
+        if let diary = diary {
+            diary.pictures.forEach { picture in
+                if let data = picture.jpegData(compressionQuality: 1.0) {
+                    imageData.append(data)
+                }
             }
         }
         
-        diaryObject.setValue(diary.title, forKey: "title")
-        diaryObject.setValue(diary.content, forKey: "content")
-        diaryObject.setValue(diary.createdAt, forKey: "createdAt")
-        diaryObject.setValue(diary.weather, forKey: "weather")
+        diaryObject.setValue(diary?.title, forKey: "title")
+        diaryObject.setValue(diary?.content, forKey: "content")
+        diaryObject.setValue(diary?.createdAt, forKey: "createdAt")
+        diaryObject.setValue(diary?.weather?.pngData(), forKey: "weather")
         diaryObject.setValue(imageData, forKey: "pictures")
         
         if context.hasChanges {

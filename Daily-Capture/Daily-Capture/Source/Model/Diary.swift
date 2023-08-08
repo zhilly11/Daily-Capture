@@ -36,4 +36,16 @@ struct Diary: ManagedObjectModel {
         self.createdAt = createdAt
         self.content = diaryData.content
     }
+    
+    init(pictures: [UIImage],
+         title: String,
+         content: String?,
+         createdAt: Date,
+         weather: UIImage?) {
+        self.pictures = pictures
+        self.title = title
+        self.content = content
+        self.createdAt = createdAt
+        self.weather = weather
+    }
 }
