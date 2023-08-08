@@ -19,6 +19,18 @@ final class DiaryViewModel {
     var content: BehaviorSubject<String?> = .init(value: "내용을 입력하세요.")
     var createdAt: BehaviorSubject<Date> = .init(value: Date())
     var weather: BehaviorSubject<UIImage?> = .init(value: UIImage(systemName: "sun.min"))
+    var numberOfPictures: Int {
+        get {
+            do {
+                let pictures: [UIImage] = try selectedPictures.value()
+                
+                return pictures.count
+            } catch {
+                print("error")
+            }
+            return 0
+        }
+    }
     
     init() {
         self.diary = Diary(pictures: [],
@@ -27,12 +39,12 @@ final class DiaryViewModel {
                            createdAt: .init(),
                            weather: nil)
     }
-    
-    func changeCreatedAt(date: Date) {
+
+    func updateDate(date: Date) {
         createdAt.onNext(date)
     }
     
-    func changeWeather(image: UIImage?) {
+    func updateWeather(image: UIImage?) {
         weather.onNext(image)
     }
     
