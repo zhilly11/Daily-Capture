@@ -197,8 +197,10 @@ final class EditDiaryViewController: UIViewController {
     }
     
     private func setupNavigationBarButton() {
-        let button: UIButton = UIButton(type: .custom)
-        button.setTitle("Save", for: .normal)
+        navigationController?.navigationBar.isHidden = false
+        
+        let button: UIButton = .init(type: .custom)
+        button.setTitle("저장", for: .normal)
         button.setTitleColor(.systemBlue, for: .normal)
         button.addAction(UIAction(handler: { _ in
             self.saveDiary()
