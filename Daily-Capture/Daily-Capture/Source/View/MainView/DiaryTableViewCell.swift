@@ -34,6 +34,7 @@ final class DiaryTableViewCell: UITableViewCell, ReusableView {
         label.textAlignment = .left
         label.font = .preferredFont(forTextStyle: .body)
         label.lineBreakMode = .byWordWrapping
+        label.numberOfLines = 5
         
         return label
     }()
@@ -51,7 +52,7 @@ final class DiaryTableViewCell: UITableViewCell, ReusableView {
         let label: UILabel = .init()
         
         label.textColor = .black
-        label.textAlignment = .left
+        label.textAlignment = .right
         label.font = .preferredFont(forTextStyle: .caption2)
         
         return label
@@ -62,17 +63,6 @@ final class DiaryTableViewCell: UITableViewCell, ReusableView {
         
         stackView.axis = .vertical
         stackView.spacing = 8
-        
-        return stackView
-    }()
-    
-    private let weatherAndCreatedAtStackView: UIStackView = {
-        let stackView: UIStackView = .init()
-        
-        stackView.axis = .vertical
-        stackView.spacing = 8
-        stackView.alignment = .trailing
-        stackView.distribution = .fill
         
         return stackView
     }()
@@ -96,29 +86,31 @@ final class DiaryTableViewCell: UITableViewCell, ReusableView {
     // MARK: - Methods
     
     private func setupViews() {
-        [titleLabel, bodyLabel].forEach(titleAndBodyStackView.addArrangedSubview(_:))
-        [weatherImage, createdAtLabel].forEach(weatherAndCreatedAtStackView.addArrangedSubview(_:))
+        [titleLabel,
+         bodyLabel].forEach(titleAndBodyStackView.addArrangedSubview(_:))
         [thumbnail,
          titleAndBodyStackView,
-         weatherAndCreatedAtStackView].forEach(contentView.addSubview(_:))
+         weatherImage,
+         createdAtLabel].forEach(contentView.addSubview(_:))
         
         thumbnail.snp.makeConstraints {
-            $0.width.height.equalTo(50).priority(.high)
-            $0.top.leading.equalToSuperview().inset(10).priority(.high)
-        }
-        
-        titleAndBodyStackView.snp.makeConstraints {
-            $0.top.bottom.equalTo(contentView.layoutMarginsGuide)
-            $0.leading.equalTo(thumbnail.snp_trailingMargin).offset(10)
+            $0.width.height.equalTo(50)
+            $0.top.leading.equalTo(contentView.layoutMarginsGuide)
         }
         
         weatherImage.snp.makeConstraints {
             $0.width.height.equalTo(20)
+            $0.top.trailing.equalTo(contentView.layoutMarginsGuide)
         }
         
-        weatherAndCreatedAtStackView.snp.makeConstraints {
-            $0.leading.equalTo(titleAndBodyStackView.snp_trailingMargin).priority(.high)
-            $0.trailing.bottom.top.equalTo(contentView.layoutMarginsGuide).priority(.high)
+        createdAtLabel.snp.makeConstraints {
+            $0.trailing.bottom.equalTo(contentView.layoutMarginsGuide)
+        }
+        
+        titleAndBodyStackView.snp.makeConstraints {
+            $0.top.bottom.equalTo(contentView.layoutMarginsGuide)
+            $0.leading.equalTo(thumbnail.snp_trailingMargin).offset(20)
+            $0.trailing.equalTo(createdAtLabel.snp_leadingMargin).offset(-20)
         }
     }
     

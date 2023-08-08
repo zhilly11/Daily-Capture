@@ -54,8 +54,10 @@ final class MainViewController: UIViewController {
     }()
     
     private let tableView: UITableView = {
-        let tableView: UITableView = .init(frame: .zero, style: .plain)
+        let tableView: UITableView = .init(frame: .zero, style: .insetGrouped)
         
+        tableView.rowHeight = UITableView.automaticDimension
+        tableView.estimatedRowHeight = 100
         tableView.register(DiaryTableViewCell.self,
                            forCellReuseIdentifier: DiaryTableViewCell.reuseIdentifier)
         
