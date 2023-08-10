@@ -14,10 +14,20 @@ final class CalendarViewController: UIViewController {
     private let calendarView: UICalendarView = {
         let calendarView: UICalendarView = .init()
         let gregorianCalendar: Calendar = .init(identifier: .gregorian)
+        let fromDateComponents: DateComponents = .init(calendar: Calendar(identifier: .gregorian),
+                                                       year: 2022,
+                                                       month: 1,
+                                                       day: 1)
+        guard let fromDate = fromDateComponents.date else {
+            return UICalendarView()
+        }
+        
+        let calendarViewDateRange: DateInterval = .init(start: fromDate, end: Date())
         
         calendarView.calendar = gregorianCalendar
         calendarView.locale = Locale(identifier: "ko_KR")
         calendarView.fontDesign = .rounded
+        calendarView.availableDateRange = calendarViewDateRange
         
         return calendarView
     }()

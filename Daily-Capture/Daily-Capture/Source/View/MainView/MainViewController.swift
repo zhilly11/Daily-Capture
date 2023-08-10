@@ -180,6 +180,7 @@ final class MainViewController: UIViewController {
     
     private func setupDelegate() {
         searchBar.delegate = self
+        tableView.delegate = self
     }
     
     private func setupCalendar() {
@@ -197,13 +198,17 @@ final class MainViewController: UIViewController {
     
     private func setupFloatingButton() {
         let buttonAction: UIAction = UIAction { action in
-            let viewModel: DiaryViewModel = .init()
-            let editDiaryViewController: EditDiaryViewController = .init(viewModel: viewModel)
+            let storyboard = UIStoryboard(name: "EditTableViewController", bundle: nil)
             
-            self.navigationItem.backButtonTitle = "뒤로"
-            self.navigationController?.pushViewController(editDiaryViewController, animated: true)
+            guard let editDiaryViewController = storyboard.instantiateInitialViewController() else {
+                return
+            }
+            
+            let navigationController = UINavigationController(rootViewController: editDiaryViewController)
+            
+            self.present(navigationController, animated: true, completion: nil)
         }
-        
+            
         floatingButton.addAction(buttonAction, for: .touchUpInside)
     }
     
@@ -214,6 +219,12 @@ final class MainViewController: UIViewController {
                                          cellType: DiaryTableViewCell.self)) { index, item, cell in
                 cell.configure(with: item)
             }.disposed(by: disposeBag)
+    }
+}
+
+extension MainViewController: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: false)
     }
 }
 

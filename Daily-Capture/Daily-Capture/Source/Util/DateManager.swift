@@ -22,3 +22,14 @@ struct DateManger {
         return dateFormatter.string(from: date)
     }
 }
+
+extension DateFormatter {
+    static func convertToDate(from date: Date) -> String {
+        let dateFormatter = DateFormatter()
+        
+        dateFormatter.locale = Locale.current
+        dateFormatter.dateFormat = "yyyy.MM.dd."
+        
+        return dateFormatter.string(from: date)
+    }
+}
