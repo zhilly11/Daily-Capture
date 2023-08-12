@@ -6,7 +6,7 @@ import RxSwift
 final class CalendarViewModel {
     private var selectedDate: Date {
         didSet {
-            dateText.onNext(DateManger.shared.convertToDate(from: selectedDate))
+            dateText.onNext(DateFormatter.convertToDate(from: selectedDate))
         }
     }
     let dateText: BehaviorSubject<String?>
@@ -18,7 +18,7 @@ final class CalendarViewModel {
     
     init(date: Date = Date()) {
         self.selectedDate = date
-        self.dateText = .init(value: DateManger.shared.convertToDate(from: date))
+        self.dateText = .init(value: DateFormatter.convertToDate(from: date))
     }
     
     func changeDate(date: Date?) {
