@@ -37,7 +37,7 @@
 
 | 메인 화면 | 작성화면1 | 작성화면2 | 검색화면 |
 | :--------: | :--------: | :--------: | :--------: | 
-| <img src = "https://hackmd.io/_uploads/S1fVZOv32.png" width=300 height=360> | <img src = "https://hackmd.io/_uploads/H193f_D2h.jpg" width=300 height=360> | <img src = "https://hackmd.io/_uploads/HJqJ7OP22.jpg" width=300 height=360> | <img src = "https://hackmd.io/_uploads/HkNlm_vhn.png" width=300 height=360> |
+| <img src = "https://hackmd.io/_uploads/S1fVZOv32.png" width=300 height=430> | <img src = "https://hackmd.io/_uploads/H193f_D2h.jpg" width=300 height=430> | <img src = "https://hackmd.io/_uploads/HJqJ7OP22.jpg" width=300 height=430> | <img src = "https://hackmd.io/_uploads/HkNlm_vhn.png" width=300 height=430> |
 
 
 <br>
