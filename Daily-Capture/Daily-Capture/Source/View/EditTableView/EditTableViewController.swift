@@ -66,6 +66,7 @@ final class EditTableViewController: UITableViewController {
         
         navigationItem.leftBarButtonItem = cancelButton
         navigationItem.rightBarButtonItem = saveButton
+        navigationItem.rightBarButtonItem?.isEnabled = false
     }
     
     private func setupLayout() {
@@ -133,6 +134,13 @@ final class EditTableViewController: UITableViewController {
             .distinctUntilChanged()
             .bind(to: viewModel.content)
             .disposed(by: disposeBag)
+        
+        guard let saveButton = navigationItem.rightBarButtonItem else { return }
+        
+        viewModel.isSavable
+            .bind(to: saveButton.rx.isEnabled)
+            .disposed(by: disposeBag)
+        
     }
     
     private func configureImageScrollView(pictures: [UIImage]) {
@@ -197,12 +205,22 @@ final class EditTableViewController: UITableViewController {
     }
     
     @objc func cancelButtonTapped() {
-        print("Left button tapped!")
+        let defaultAction: UIAlertAction = .init(title: "변경사항 폐기", style: .destructive) { _ in
+            self.dismiss(animated: true)
+        }
+        let cancelAction: UIAlertAction = .init(title: "계속 편집하기", style: .cancel, handler: nil)
+        let alert: UIAlertController = .init(title: nil,
+                                             message: "새로운 일기를 폐기하시겠어요?",
+                                             preferredStyle: .actionSheet)
+        
+        [defaultAction, cancelAction].forEach(alert.addAction(_:))
+        present(alert, animated: true)
     }
     
     @objc func saveButtonTapped() {
         do {
             try viewModel.saveDiary()
+            dismiss(animated: true)
         } catch {
             print(error.localizedDescription.description)
         }

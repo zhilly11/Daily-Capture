@@ -31,6 +31,19 @@ final class EditViewModel {
         }
     }
     
+    var isSavable: Observable<Bool> {
+        return Observable.combineLatest(title, content)
+            .map { title, content in
+                guard let content = content else { return false }
+                
+                if title.count > 0 && content.count > 0 && content != "내용을 입력하세요." {
+                    return true
+                } else {
+                    return false
+                }
+            }
+    }
+    
     init() {
         self.diary = Diary(pictures: [],
                            title: .init(),
