@@ -15,7 +15,7 @@
 
 ## 🗣 프로젝트 및 개발자 소개
 >소개 : 
-프로젝트 기간 : 2023-07 ~ 2023-08
+프로젝트 기간 : 2023-07 ~ 2023-08 (4주)
 
 |[최지혁(@zhilly)](https://github.com/zhilly11)|[이주명(@vetto)](https://github.com/vetto)|
 |:---:|:---:|
@@ -53,17 +53,17 @@
 
 ## 🎯 트러블 슈팅 및 고민
 ### CoreData 모델 구현 중 보안설정 에러 
-- CoreData transformable한 친구를 만들때 보안설정을 해줘야하는 경고 발생
+- CoreData transformable한 변수를 만들때 보안설정을 해줘야하는 경고 발생했다.
 - transformer에서 NSSecureUnarchiveFromData값으로 설정해주었다.
 ![](https://hackmd.io/_uploads/HkXsS_w2h.png)
 
 ### CoreData 'Create NSMangedObject Subclass' 버그
-- CoreData NSMangedObject Subclass 파일을 만들때 `xcworkspace` 환경에서 만들면 설정한 folder로 생성 되지 않고 프로젝트 최상위로 생성 되어서 파일 위치를 옮기지 못하고 복사할 때에도 파일이 두개처럼 보이는 버그가 존재함. 실제로는 옮겨지긴하나 xcode상에서는 계속 존재함
-- `xcodeproj` 환경에서 작업하니 정상 동작 하였음
+- CoreData NSMangedObject Subclass 파일을 만들때 `xcworkspace` 환경에서 만들면 설정한 folder로 생성 되지 않고 프로젝트 최상위로 생성 되어서 파일 위치를 옮기지 못하고 복사할 때에도 파일이 두개처럼 보이는 버그가 존재했다. 실제로는 이동이 되나 xcode상에서는 계속 존재했다.
+- `xcodeproj` 환경에서 작업하니 정상 동작 하였다.
 
 ### 의존성 관리 도구
 - 라이브러리 의존성 도구를 어떤것으로 사용할지 고민했다.
-- SPM으로 RxSwift를 설치하기에는 종속성 에러가 발생한다고 문서에 기재되어있어 CoCoaPods을 사용하기로 결정했다.
+- SPM으로 RxSwift를 설치하기에는 종속성 에러가 발생한다고 문서에 기재되어있어 CocoaPods을 사용하기로 결정했다.
 
 ### TableView Static Cell
 - Static Cell로 작업을 해야하는 상황에서 코드로 UI를 작성할 때 비효율 적인 코드들이 많이 발생했다.
@@ -77,9 +77,9 @@
 
 ## 💡 프로젝트 수행 중 핵심 경험
 
-- `RxSwift`를 활용한 MVVM 패턴 구현
+- `RxSwift`를 활용한 `MVVM` 패턴 구현
 - `SnapKit`을 이용한 `AutoLayout` 구현
-- Code와 StoryBoard를 병합하여 UI 구현
+- `Code`와 `StoryBoard`를 병합하여 UI 구현
 - `CoreData`를 활용한 사용자 데이터 관리
 - `CocoaPod`을 활용한 라이브러리 의존성 관리
 - **`WWDC 22`** 에서 공개된 `UICalendarView`를 활용
