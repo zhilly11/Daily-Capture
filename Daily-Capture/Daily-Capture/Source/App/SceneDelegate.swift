@@ -12,10 +12,11 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         options connectionOptions: UIScene.ConnectionOptions
     ) {
         guard let windowScene: UIWindowScene = (scene as? UIWindowScene) else { return }
-        let mainViewController: MainViewController = .init()
+        let mainViewModel: MainViewModel = .init()
+        let mainViewController: MainViewController = .init(viewModel: mainViewModel)
         
         window = UIWindow(windowScene: windowScene)
-        window?.rootViewController = mainViewController
+        window?.rootViewController = UINavigationController(rootViewController: mainViewController)
         window?.makeKeyAndVisible()
     }
 }
