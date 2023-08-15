@@ -14,10 +14,9 @@
 <br>
 
 ## 🗣 프로젝트 및 개발자 소개
->소개 : 
-프로젝트 기간 : 2023-07 ~ 2023-08 (4주)
+> 프로젝트 기간 : 2023-07 ~ 2023-08 (4주)
 
-|[최지혁(@zhilly)](https://github.com/zhilly11)|[이주명(@vetto)](https://github.com/vetto)|
+|[최지혁 <br>github: @zhilly](https://github.com/zhilly11)|[이주명 <br>github: @vetto](https://github.com/vetto)|
 |:---:|:---:|
 |<img src = "https://i.imgur.com/LI4k2B7.jpg" width=300 height=300>|<img src = "https://cdn.discordapp.com/attachments/535779947118329866/1055718870951940146/1671110054020-0.jpg" width=300 height=300>|
 
