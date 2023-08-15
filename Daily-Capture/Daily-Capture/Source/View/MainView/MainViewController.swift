@@ -133,7 +133,6 @@ final class MainViewController: UIViewController {
         calendarView.snp.makeConstraints {
             $0.top.equalTo(self.searchBar.snp_bottomMargin)
             $0.leading.trailing.equalTo(safeArea)
-            $0.bottom.equalTo(self.view.snp.centerYWithinMargins)
         }
         
         tableView.snp.makeConstraints {
@@ -181,6 +180,7 @@ final class MainViewController: UIViewController {
     private func setupDelegate() {
         searchBar.delegate = self
         tableView.delegate = self
+        calendarView.delegate = self
     }
     
     private func setupCalendar() {
@@ -236,6 +236,30 @@ extension MainViewController: UICalendarSelectionSingleDateDelegate {
         if let nowSelectedDate = dateComponents {
             self.userSelectedDate = nowSelectedDate.date
         }
+    }
+}
+
+extension MainViewController: UICalendarViewDelegate {
+    func calendarView(
+        _ calendarView: UICalendarView,
+        decorationFor dateComponents: DateComponents
+    ) -> UICalendarView.Decoration? {
+        guard let date = dateComponents.date else { return nil }
+        var diariesCount: Int = 0
+        
+        do {
+            let diaries: [Diary] = try DiaryManager.shared.fetchObjects(date: date)
+            diariesCount = diaries.count
+
+        } catch {
+            print(error.localizedDescription)
+        }
+        
+        if diariesCount > 0 {
+            return UICalendarView.Decoration.default(color: .tintColor, size: .medium)
+        }
+        
+        return nil
     }
 }
 
