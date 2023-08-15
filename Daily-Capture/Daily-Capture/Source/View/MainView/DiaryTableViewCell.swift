@@ -22,7 +22,7 @@ final class DiaryTableViewCell: UITableViewCell, ReusableView {
         
         label.textColor = .black
         label.textAlignment = .left
-        label.font = .preferredFont(forTextStyle: .title1)
+        label.font = .preferredFont(forTextStyle: .title2)
         
         return label
     }()

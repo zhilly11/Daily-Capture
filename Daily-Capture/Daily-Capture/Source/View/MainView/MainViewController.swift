@@ -133,7 +133,6 @@ final class MainViewController: UIViewController {
         calendarView.snp.makeConstraints {
             $0.top.equalTo(self.searchBar.snp_bottomMargin)
             $0.leading.trailing.equalTo(safeArea)
-            $0.bottom.equalTo(self.view.snp.centerYWithinMargins)
         }
         
         tableView.snp.makeConstraints {
@@ -180,6 +179,8 @@ final class MainViewController: UIViewController {
     
     private func setupDelegate() {
         searchBar.delegate = self
+        tableView.delegate = self
+        calendarView.delegate = self
     }
     
     private func setupCalendar() {
@@ -197,13 +198,17 @@ final class MainViewController: UIViewController {
     
     private func setupFloatingButton() {
         let buttonAction: UIAction = UIAction { action in
-            let viewModel: DiaryViewModel = .init()
-            let editDiaryViewController: EditDiaryViewController = .init(viewModel: viewModel)
+            let storyboard = UIStoryboard(name: "EditTableViewController", bundle: nil)
             
-            self.navigationItem.backButtonTitle = "뒤로"
-            self.navigationController?.pushViewController(editDiaryViewController, animated: true)
+            guard let editDiaryViewController = storyboard.instantiateInitialViewController() else {
+                return
+            }
+            
+            let navigationController = UINavigationController(rootViewController: editDiaryViewController)
+            
+            self.present(navigationController, animated: true, completion: nil)
         }
-        
+            
         floatingButton.addAction(buttonAction, for: .touchUpInside)
     }
     
@@ -217,6 +222,12 @@ final class MainViewController: UIViewController {
     }
 }
 
+extension MainViewController: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: false)
+    }
+}
+
 extension MainViewController: UICalendarSelectionSingleDateDelegate {
     func dateSelection(
         _ selection: UICalendarSelectionSingleDate,
@@ -225,6 +236,30 @@ extension MainViewController: UICalendarSelectionSingleDateDelegate {
         if let nowSelectedDate = dateComponents {
             self.userSelectedDate = nowSelectedDate.date
         }
+    }
+}
+
+extension MainViewController: UICalendarViewDelegate {
+    func calendarView(
+        _ calendarView: UICalendarView,
+        decorationFor dateComponents: DateComponents
+    ) -> UICalendarView.Decoration? {
+        guard let date = dateComponents.date else { return nil }
+        var diariesCount: Int = 0
+        
+        do {
+            let diaries: [Diary] = try DiaryManager.shared.fetchObjects(date: date)
+            diariesCount = diaries.count
+
+        } catch {
+            print(error.localizedDescription)
+        }
+        
+        if diariesCount > 0 {
+            return UICalendarView.Decoration.default(color: .tintColor, size: .medium)
+        }
+        
+        return nil
     }
 }
 
