@@ -21,6 +21,7 @@ final class EditDiaryViewController: UIViewController {
         let scrollView: UIScrollView = .init()
         
         scrollView.showsVerticalScrollIndicator = false
+        scrollView.keyboardDismissMode = .onDrag
         
         return scrollView
     }()
@@ -49,6 +50,7 @@ final class EditDiaryViewController: UIViewController {
         
         textView.isScrollEnabled = false
         textView.font = .preferredFont(forTextStyle: .title1)
+        textView.textColor = .systemGray3
         
         return textView
     }()
@@ -57,6 +59,7 @@ final class EditDiaryViewController: UIViewController {
         
         textView.isScrollEnabled = false
         textView.font = .preferredFont(forTextStyle: .body)
+        textView.textColor = .systemGray3
         
         return textView
     }()
@@ -125,6 +128,7 @@ final class EditDiaryViewController: UIViewController {
         setupNavigationBarButton()
         setupDelegate()
         setupBindData()
+        setupText()
     }
     
     private func setupView() {
@@ -216,14 +220,6 @@ final class EditDiaryViewController: UIViewController {
     }
     
     private func setupBindData() {
-        diaryViewModel.title
-            .bind(to: titleTextView.rx.text)
-            .disposed(by: disposeBag)
-        
-        diaryViewModel.content
-            .bind(to: contentTextView.rx.text)
-            .disposed(by: disposeBag)
-        
         diaryViewModel.weather
             .bind(to: weatherImageView.rx.image)
             .disposed(by: disposeBag)
@@ -242,6 +238,54 @@ final class EditDiaryViewController: UIViewController {
                 owner.configureImageScrollView(pictures: images)
             })
             .disposed(by: disposeBag)
+        
+        diaryViewModel.title
+            .bind(to: titleTextView.rx.text)
+            .disposed(by: disposeBag)
+        
+        diaryViewModel.content
+            .bind(to: contentTextView.rx.text)
+            .disposed(by: disposeBag)
+        
+        contentTextView.rx.text.orEmpty
+            .distinctUntilChanged()
+            .bind(to: diaryViewModel.content)
+            .disposed(by: disposeBag)
+
+        titleTextView.rx.text.orEmpty
+            .distinctUntilChanged()
+            .bind(to: diaryViewModel.title)
+            .disposed(by: disposeBag)
+    }
+    
+    func setupText(){
+        titleTextView.rx.didBeginEditing
+            .subscribe(onNext: { [self] in
+                if(titleTextView.text == "제목을 입력하세요." ){
+                    titleTextView.text = nil
+                    titleTextView.textColor = .black
+                }}).disposed(by: disposeBag)
+        
+        titleTextView.rx.didEndEditing
+            .subscribe(onNext: { [self] in
+                if(titleTextView.text == nil || titleTextView.text == ""){
+                    titleTextView.text = "제목을 입력하세요."
+                    titleTextView.textColor = .systemGray3
+                }}).disposed(by: disposeBag)
+        
+        contentTextView.rx.didBeginEditing
+            .subscribe(onNext: { [self] in
+                if(contentTextView.text == "내용을 입력하세요." ){
+                    contentTextView.text = nil
+                    contentTextView.textColor = .black
+                }}).disposed(by: disposeBag)
+        
+        contentTextView.rx.didEndEditing
+            .subscribe(onNext: { [self] in
+                if(contentTextView.text == nil || contentTextView.text == ""){
+                    contentTextView.text = "내용을 입력하세요."
+                    contentTextView.textColor = .systemGray3
+                }}).disposed(by: disposeBag)
     }
     
     private func configureImageScrollView(pictures: [UIImage]) {
