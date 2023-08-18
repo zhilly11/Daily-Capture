@@ -2,11 +2,13 @@
 //  Created by zhilly, vetto on 2023/08/10
 
 import Foundation
+
 import RxSwift
 
 final class EditViewModel {
+    // MARK: - Properties
+
     private var diary: Diary
-    
     var selectedPictures: BehaviorSubject<[UIImage]> = .init(
         value: [UIImage(systemName: "1.circle")!,
                 UIImage(systemName: "2.circle")!,
@@ -18,6 +20,7 @@ final class EditViewModel {
     var content: BehaviorSubject<String?> = .init(value: "내용을 입력하세요.")
     var createdAt: BehaviorSubject<Date> = .init(value: Date())
     var weather: BehaviorSubject<UIImage?> = .init(value: UIImage(systemName: "sun.min"))
+    
     var numberOfPictures: Int {
         get {
             do {
@@ -44,6 +47,8 @@ final class EditViewModel {
             }
     }
     
+    // MARK: - Initializer
+
     init() {
         self.diary = Diary(pictures: [],
                            title: .init(),
@@ -52,6 +57,8 @@ final class EditViewModel {
                            weather: nil)
     }
     
+    // MARK: - Methods
+
     func updateDate(date: Date) {
         createdAt.onNext(date)
     }

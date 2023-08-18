@@ -146,6 +146,50 @@ final class MainViewController: UIViewController {
         }
     }
     
+    private func setupDelegate() {
+        searchBar.delegate = self
+        tableView.delegate = self
+        calendarView.delegate = self
+    }
+    
+    private func setupCalendar() {
+        let dateSelection: UICalendarSelectionSingleDate = .init(delegate: self)
+        let currentDate: Date = .init()
+        let calendar: Calendar = Calendar.current
+        let year: Int = calendar.component(.year, from: currentDate)
+        let month: Int = calendar.component(.month, from: currentDate)
+        let day: Int = calendar.component(.day, from: currentDate)
+        
+        dateSelection.setSelected(DateComponents(year: year, month: month, day: day),
+                                  animated: false)
+        calendarView.selectionBehavior = dateSelection
+    }
+    
+    private func setupFloatingButton() {
+        let buttonAction: UIAction = UIAction { action in
+            let storyboard: UIStoryboard = .init(name: "EditTableViewController", bundle: nil)
+            
+            guard let editDiaryViewController = storyboard.instantiateInitialViewController() else {
+                return
+            }
+            
+            let navigationController: UINavigationController = .init(rootViewController: editDiaryViewController)
+            
+            self.present(navigationController, animated: true, completion: nil)
+        }
+            
+        floatingButton.addAction(buttonAction, for: .touchUpInside)
+    }
+    
+    private func bindTableViewData() {
+        viewModel.diaryList
+            .observe(on: MainScheduler.instance)
+            .bind(to: tableView.rx.items(cellIdentifier: DiaryTableViewCell.reuseIdentifier,
+                                         cellType: DiaryTableViewCell.self)) { index, item, cell in
+                cell.configure(with: item)
+            }.disposed(by: disposeBag)
+    }
+    
     private func setupSearchLayout() {
         let safeArea: UILayoutGuide = view.safeAreaLayoutGuide
         
@@ -175,50 +219,6 @@ final class MainViewController: UIViewController {
         if let date = userSelectedDate {
             viewModel.setupDiary(date: date)
         }
-    }
-    
-    private func setupDelegate() {
-        searchBar.delegate = self
-        tableView.delegate = self
-        calendarView.delegate = self
-    }
-    
-    private func setupCalendar() {
-        let dateSelection: UICalendarSelectionSingleDate = .init(delegate: self)
-        let currentDate: Date = .init()
-        let calendar: Calendar = Calendar.current
-        let year: Int = calendar.component(.year, from: currentDate)
-        let month: Int = calendar.component(.month, from: currentDate)
-        let day: Int = calendar.component(.day, from: currentDate)
-        
-        dateSelection.setSelected(DateComponents(year: year, month: month, day: day),
-                                  animated: false)
-        calendarView.selectionBehavior = dateSelection
-    }
-    
-    private func setupFloatingButton() {
-        let buttonAction: UIAction = UIAction { action in
-            let storyboard = UIStoryboard(name: "EditTableViewController", bundle: nil)
-            
-            guard let editDiaryViewController = storyboard.instantiateInitialViewController() else {
-                return
-            }
-            
-            let navigationController = UINavigationController(rootViewController: editDiaryViewController)
-            
-            self.present(navigationController, animated: true, completion: nil)
-        }
-            
-        floatingButton.addAction(buttonAction, for: .touchUpInside)
-    }
-    
-    private func bindTableViewData() {
-        viewModel.diaryList
-            .observe(on: MainScheduler.instance)
-            .bind(to: tableView.rx.items(cellIdentifier: DiaryTableViewCell.reuseIdentifier,
-                                         cellType: DiaryTableViewCell.self)) { index, item, cell in
-                cell.configure(with: item)
-            }.disposed(by: disposeBag)
     }
 }
 

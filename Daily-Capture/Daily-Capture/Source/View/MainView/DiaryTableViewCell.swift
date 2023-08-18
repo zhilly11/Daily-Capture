@@ -2,6 +2,7 @@
 //  Created by zhilly, vetto on 2023/06/30
 
 import UIKit
+
 import SnapKit
 
 final class DiaryTableViewCell: UITableViewCell, ReusableView {

@@ -8,9 +8,14 @@ import RxSwift
 import RxCocoa
 
 final class WeatherPickerViewController: UIViewController {
+    // MARK: - Properties
+
     private let viewModel: WeatherPickerViewModel
     private let disposeBag: DisposeBag = .init()
+    weak var delegate: DataSendableDelegate?
     
+    // MARK: - UI Components
+
     private let pickerView: UIPickerView = .init()
     private let weatherImageView: UIImageView = {
         let imageView: UIImageView = .init(frame: .zero)
@@ -20,22 +25,28 @@ final class WeatherPickerViewController: UIViewController {
         return imageView
     }()
     
-    private let weatherNameList: [String] = ["clear", "cloudy-rainny", "cloudy-sunny", "cloudy", "fullmoon", "heavyrain-storm", "night-rain", "night", "night-clear", "rain", "sunny", "thunder"]
-    
-    weak var delegate: DataSendableDelegate?
-    
+    // MARK: - Initializer
+
     init(viewModel: WeatherPickerViewModel) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
     }
     
+    @available(*, unavailable)
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
+    // MARK: - View Life Cycle
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        configure()
+    }
+    
+    // MARK: - Methods
+
+    private func configure() {
         setupView()
         setupPickerView()
         setupLayout()
@@ -80,41 +91,51 @@ final class WeatherPickerViewController: UIViewController {
     }
     
     private func configureNavigationBarButton() {
-        let rightButton: UIButton = UIButton(type: .custom)
-        rightButton.setTitle("Change", for: .normal)
-        rightButton.setTitleColor(.systemBlue, for: .normal)
-        rightButton.addAction(UIAction(handler: { _ in
-            self.tappedChangeButton()
+        let saveButton: UIButton = UIButton(type: .custom)
+        saveButton.setTitle("저장", for: .normal)
+        saveButton.setTitleColor(.systemBlue, for: .normal)
+        saveButton.addAction(UIAction(handler: { _ in
+            self.tappedSaveButton()
         }), for: .touchUpInside)
         
-        let leftButton: UIButton = UIButton(type: .custom)
-        leftButton.setTitle("Cancel", for: .normal)
-        leftButton.setTitleColor(.systemBlue, for: .normal)
-        leftButton.addAction(UIAction(handler: { _ in
+        let cancelButton: UIButton = UIButton(type: .custom)
+        cancelButton.setTitle("취소", for: .normal)
+        cancelButton.setTitleColor(.systemBlue, for: .normal)
+        cancelButton.addAction(UIAction(handler: { _ in
             self.tappedCancelButton()
         }), for: .touchUpInside)
         
-        navigationItem.rightBarButtonItem = UIBarButtonItem(customView: rightButton)
-        navigationItem.leftBarButtonItem = UIBarButtonItem(customView: leftButton)
+        navigationItem.rightBarButtonItem = UIBarButtonItem(customView: saveButton)
+        navigationItem.leftBarButtonItem = UIBarButtonItem(customView: cancelButton)
     }
     
     private func tappedCancelButton() {
         dismiss(animated: true)
     }
     
-    private func tappedChangeButton() {
+    private func tappedSaveButton() {
         delegate?.sendDate(image: viewModel.weatherImage)
         dismiss(animated: true)
     }
 }
 
 extension WeatherPickerViewController: UIPickerViewDelegate {
-    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        viewModel.weatherText.onNext(weatherNameList[row])
+    func pickerView(
+        _ pickerView: UIPickerView,
+        didSelectRow row: Int,
+        inComponent component: Int
+    ) {
+        viewModel.weatherText.onNext(Constant.weatherNameList[row])
     }
     
-    func pickerView(_ pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int, reusing view: UIView?) -> UIView {
-        let imageView = UIImageView(image: UIImage(named: weatherNameList[row]))
+    func pickerView(
+        _ pickerView: UIPickerView,
+        viewForRow row: Int,
+        forComponent component: Int,
+        reusing view: UIView?
+    ) -> UIView {
+        let weatherImage: UIImage? = .init(named: Constant.weatherNameList[row])
+        let imageView: UIImageView = .init(image: weatherImage)
         
         imageView.frame = CGRect(x: 0, y: 0, width: 80, height: 80)
         
@@ -128,7 +149,7 @@ extension WeatherPickerViewController: UIPickerViewDataSource {
     }
     
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        return weatherNameList.count
+        return Constant.weatherNameList.count
     }
     
     func pickerView(_ pickerView: UIPickerView, rowHeightForComponent component: Int) -> CGFloat {
