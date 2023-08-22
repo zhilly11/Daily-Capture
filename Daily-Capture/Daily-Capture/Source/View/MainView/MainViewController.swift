@@ -137,7 +137,7 @@ final class MainViewController: UIViewController {
         
         tableView.snp.makeConstraints {
             $0.top.equalTo(calendarView.snp.bottom)
-            $0.leading.trailing.bottom.equalTo(safeArea)
+            $0.leading.trailing.bottom.equalTo(self.view)
         }
         
         floatingButton.snp.makeConstraints {
@@ -192,8 +192,6 @@ final class MainViewController: UIViewController {
     }
     
     private func setupSearchLayout() {
-        let safeArea: UILayoutGuide = view.safeAreaLayoutGuide
-        
         calendarView.isHidden = true
         floatingButton.isHidden = true
         
@@ -201,21 +199,20 @@ final class MainViewController: UIViewController {
         tableView.bringSubviewToFront(calendarView)
         tableView.snp.makeConstraints {
             $0.top.equalTo(searchBar.snp.bottom)
-            $0.leading.trailing.bottom.equalTo(safeArea)
+            $0.leading.trailing.bottom.equalTo(self.view)
         }
+        
         viewModel.searchDiary(keyword: "")
     }
     
     private func endSearch() {
-        let safeArea: UILayoutGuide = view.safeAreaLayoutGuide
-        
         calendarView.isHidden = false
         floatingButton.isHidden = false
         
         tableView.snp.removeConstraints()
         tableView.snp.makeConstraints {
             $0.top.equalTo(calendarView.snp.bottom)
-            $0.leading.trailing.bottom.equalTo(safeArea)
+            $0.leading.trailing.bottom.equalTo(self.view)
         }
         
         if let date = userSelectedDate {
