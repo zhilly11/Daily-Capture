@@ -283,7 +283,9 @@ extension EditTableViewController: PHPickerViewControllerDelegate {
         selections = newSelections
         selectedAssetIdentifiers = results.compactMap { $0.assetIdentifier }
         
-        updatePictures()
+        if selectedAssetIdentifiers.count != 0 {
+            updatePictures()
+        }
     }
     
     private func updatePictures() {
