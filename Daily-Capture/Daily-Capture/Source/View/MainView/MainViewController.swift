@@ -163,6 +163,7 @@ final class MainViewController: UIViewController {
         dateSelection.setSelected(DateComponents(year: year, month: month, day: day),
                                   animated: false)
         calendarView.selectionBehavior = dateSelection
+        userSelectedDate = currentDate
     }
     
     private func setupFloatingButton() {
@@ -202,6 +203,7 @@ final class MainViewController: UIViewController {
             $0.top.equalTo(searchBar.snp.bottom)
             $0.leading.trailing.bottom.equalTo(safeArea)
         }
+        viewModel.searchDiary(keyword: "")
     }
     
     private func endSearch() {

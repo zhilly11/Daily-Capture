@@ -69,6 +69,14 @@ final class DiaryManager: CoreDataManageable {
         return result.compactMap({ Diary(from: $0) })
     }
     
+    func fetchObjects() throws -> [Diary] {
+        let fetchRequest: NSFetchRequest<DiaryData> = DiaryData.fetchRequest()
+        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "createdAt", ascending: false)]
+        let result: [DiaryData] = try context.fetch(fetchRequest)
+        
+        return result.compactMap({ Diary(from: $0) })
+    }
+    
     func update(_ diary: Diary) throws {
         guard let objectID: NSManagedObjectID = fetchObjectID(from: diary.objectID) else {
             throw CoreDataError.invalidObjectID
