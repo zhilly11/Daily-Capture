@@ -52,8 +52,10 @@ final class DiaryTableViewCell: UITableViewCell, ReusableView {
     private let createdAtLabel: UILabel = {
         let label: UILabel = .init()
         
+        label.text = "0000.\n00.00."
         label.textColor = .black
         label.textAlignment = .right
+        label.numberOfLines = 2
         label.font = .preferredFont(forTextStyle: .caption2)
         
         return label
@@ -81,7 +83,13 @@ final class DiaryTableViewCell: UITableViewCell, ReusableView {
     }
     
     override func prepareForReuse() {
+        super.prepareForReuse()
         
+        thumbnail.image = nil
+        titleLabel.text = nil
+        bodyLabel.text = nil
+        createdAtLabel.text = nil
+        weatherImage.image = nil
     }
     
     // MARK: - Methods
@@ -105,7 +113,8 @@ final class DiaryTableViewCell: UITableViewCell, ReusableView {
         }
         
         createdAtLabel.snp.makeConstraints {
-            $0.trailing.bottom.equalTo(contentView.layoutMarginsGuide)
+            $0.trailing.bottom.equalTo(contentView.layoutMarginsGuide).priority(.high)
+            $0.width.equalTo(45)
         }
         
         titleAndBodyStackView.snp.makeConstraints {
@@ -117,9 +126,28 @@ final class DiaryTableViewCell: UITableViewCell, ReusableView {
     
     func configure(with diary: Diary) {
         thumbnail.image = diary.pictures.first
-        titleLabel.text = diary.title
-        bodyLabel.text = diary.content
+        
+        if diary.title == "" {
+            titleLabel.text = "제목 없음"
+        } else {
+            titleLabel.text = diary.title
+        }
+        
+        if diary.content == "" {
+            bodyLabel.text = "내용 없음"
+        } else {
+            bodyLabel.text = diary.content
+        }
+        
         weatherImage.image = diary.weather
-        createdAtLabel.text = "06/30"
+        
+        var createdAtString: String = DateFormatter.convertToDate(from: diary.createdAt)
+        
+        if let index = createdAtString.firstIndex(of: ".") {
+            let newString = createdAtString.replacingCharacters(in: index...index, with: ".\n")
+            createdAtLabel.text = newString
+        } else {
+            createdAtLabel.text = createdAtString
+        }
     }
 }

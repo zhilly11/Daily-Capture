@@ -10,11 +10,7 @@ final class EditViewModel {
 
     private var diary: Diary
     var selectedPictures: BehaviorSubject<[UIImage]> = .init(
-        value: [UIImage(systemName: "1.circle")!,
-                UIImage(systemName: "2.circle")!,
-                UIImage(systemName: "3.circle")!,
-                UIImage(systemName: "4.circle")!,
-                UIImage(systemName: "5.circle")!]
+        value: [UIImage(systemName: "photo.on.rectangle.angled")!]
     )
     var title: BehaviorSubject<String> = .init(value: "")
     var content: BehaviorSubject<String?> = .init(value: "내용을 입력하세요.")
