@@ -64,18 +64,10 @@ final class MainViewController: UIViewController {
         return tableView
     }()
     
-    private let floatingButton: UIButton = {
-        let button: UIButton = .init(type: .custom)
-        let configuration: UIImage.SymbolConfiguration = .init(pointSize: 65,
-                                                               weight: .regular,
-                                                               scale: .default)
+    private let addDiaryButton: UIButton = {
+        let button: UIButton = .init(type: .contactAdd)
         
-        button.layer.cornerRadius = button.frame.width / 2
-        button.imageView?.contentMode = .scaleAspectFit
-        button.setImage(UIImage(systemName: "plus.circle.fill",
-                                withConfiguration: configuration), for: .normal)
-        button.tintColor = .tintColor
-        button.clipsToBounds = true
+        button.setImage(UIImage(systemName: "plus"), for: .normal)
         
         return button
     }()
@@ -123,10 +115,16 @@ final class MainViewController: UIViewController {
     private func setupLayout() {
         let safeArea: UILayoutGuide = view.safeAreaLayoutGuide
         
-        [searchBar, calendarView, tableView, floatingButton].forEach(view.addSubview(_:))
+        [addDiaryButton, searchBar, calendarView, tableView].forEach(view.addSubview(_:))
+        
+        addDiaryButton.snp.makeConstraints {
+            $0.top.trailing.equalTo(safeArea)
+            $0.height.width.equalTo(50)
+        }
         
         searchBar.snp.makeConstraints {
-            $0.top.leading.trailing.equalTo(safeArea)
+            $0.trailing.equalTo(addDiaryButton.snp.leading)
+            $0.top.leading.equalTo(safeArea)
             $0.height.equalTo(50)
         }
         
@@ -138,11 +136,6 @@ final class MainViewController: UIViewController {
         tableView.snp.makeConstraints {
             $0.top.equalTo(calendarView.snp.bottom)
             $0.leading.trailing.bottom.equalTo(self.view)
-        }
-        
-        floatingButton.snp.makeConstraints {
-            $0.width.height.equalTo(100)
-            $0.bottom.trailing.equalTo(safeArea).offset(-30)
         }
     }
     
@@ -179,7 +172,7 @@ final class MainViewController: UIViewController {
             self.present(navigationController, animated: true, completion: nil)
         }
             
-        floatingButton.addAction(buttonAction, for: .touchUpInside)
+        addDiaryButton.addAction(buttonAction, for: .touchUpInside)
     }
     
     private func bindTableViewData() {
@@ -192,8 +185,17 @@ final class MainViewController: UIViewController {
     }
     
     private func setupSearchLayout() {
+        let safeArea: UILayoutGuide = view.safeAreaLayoutGuide
+        
         calendarView.isHidden = true
-        floatingButton.isHidden = true
+        addDiaryButton.isHidden = true
+        
+        searchBar.snp.removeConstraints()
+        
+        searchBar.snp.makeConstraints {
+            $0.top.leading.trailing.equalTo(safeArea)
+            $0.height.equalTo(50)
+        }
         
         tableView.snp.removeConstraints()
         tableView.bringSubviewToFront(calendarView)
@@ -206,8 +208,24 @@ final class MainViewController: UIViewController {
     }
     
     private func endSearch() {
+        let safeArea: UILayoutGuide = view.safeAreaLayoutGuide
+        
         calendarView.isHidden = false
-        floatingButton.isHidden = false
+        addDiaryButton.isHidden = false
+        
+        addDiaryButton.snp.removeConstraints()
+        searchBar.snp.removeConstraints()
+        
+        addDiaryButton.snp.makeConstraints {
+            $0.top.trailing.equalTo(safeArea)
+            $0.height.width.equalTo(50)
+        }
+        
+        searchBar.snp.makeConstraints {
+            $0.trailing.equalTo(addDiaryButton.snp.leading)
+            $0.top.leading.equalTo(safeArea)
+            $0.height.equalTo(50)
+        }
         
         tableView.snp.removeConstraints()
         tableView.snp.makeConstraints {
