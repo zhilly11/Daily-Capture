@@ -11,7 +11,7 @@ import RxCocoa
 final class EditTableViewController: UITableViewController {
     // MARK: - Properties
 
-    private let viewModel: EditViewModel = .init()
+    private let viewModel: EditViewModel
     private var disposeBag: DisposeBag = .init()
     private var selections: [String: PHPickerResult] = [:]
     private var selectedAssetIdentifiers: [String] = []
@@ -26,6 +26,24 @@ final class EditTableViewController: UITableViewController {
     @IBOutlet weak private var pageControl: UIPageControl!
     @IBOutlet weak private var pictureSelectCell: UITableViewCell!
     @IBOutlet weak private var createdAtButton: UIButton!
+    
+    // MARK: - Initializer
+    
+    init(viewModel: EditViewModel) {
+        self.viewModel = viewModel
+        super.init(nibName: "EditTableViewController", bundle: nil)
+    }
+    
+    init?(_ coder: NSCoder, _ viewModel: EditViewModel) {
+        self.viewModel = viewModel
+        super.init(coder: coder)
+    }
+    
+    //@available(*, unavailable)
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
     
     // MARK: - View Life Cycle
 

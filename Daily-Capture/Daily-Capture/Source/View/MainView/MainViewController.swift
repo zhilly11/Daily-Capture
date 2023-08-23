@@ -103,7 +103,7 @@ final class MainViewController: UIViewController {
         setupLayout()
         setupDelegate()
         setupCalendar()
-        setupFloatingButton()
+        setupAddDiaryButton()
         bindTableViewData()
     }
     
@@ -159,19 +159,27 @@ final class MainViewController: UIViewController {
         userSelectedDate = currentDate
     }
     
-    private func setupFloatingButton() {
+    private func setupAddDiaryButton() {
         let buttonAction: UIAction = UIAction { action in
-            let storyboard: UIStoryboard = .init(name: "EditTableViewController", bundle: nil)
+            let editViewModel: EditViewModel = .init(diary: Diary(pictures: [],
+                                                                  title: .init(),
+                                                                  content: nil,
+                                                                  createdAt: .init(),
+                                                                  weather: nil))
             
-            guard let editDiaryViewController = storyboard.instantiateInitialViewController() else {
-                return
+            let storyboard: UIStoryboard = .init(name: "EditTableViewController", bundle: nil)
+            let editDiaryViewController = storyboard.instantiateInitialViewController { coder -> EditTableViewController in
+                return .init(coder, editViewModel) ?? EditTableViewController(viewModel: editViewModel)
             }
             
-            let navigationController: UINavigationController = .init(rootViewController: editDiaryViewController)
-            
-            self.present(navigationController, animated: true, completion: nil)
+            if let editDiaryViewController {
+                let navigationController: UINavigationController = .init(rootViewController: editDiaryViewController)
+                self.present(navigationController, animated: true, completion: nil)
+            } else {
+                //TODO: 오류처리
+            }
         }
-            
+        
         addDiaryButton.addAction(buttonAction, for: .touchUpInside)
     }
     
@@ -267,7 +275,7 @@ extension MainViewController: UICalendarViewDelegate {
         do {
             let diaries: [Diary] = try DiaryManager.shared.fetchObjects(date: date)
             diariesCount = diaries.count
-
+            
         } catch {
             print(error.localizedDescription)
         }

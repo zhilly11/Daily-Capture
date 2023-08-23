@@ -45,12 +45,9 @@ final class EditViewModel {
     
     // MARK: - Initializer
 
-    init() {
-        self.diary = Diary(pictures: [],
-                           title: .init(),
-                           content: nil,
-                           createdAt: .init(),
-                           weather: nil)
+    init(diary: Diary) {
+        self.diary = diary
+        setupDiary()
     }
     
     // MARK: - Methods
@@ -77,5 +74,13 @@ final class EditViewModel {
         diary.weather = try self.weather.value()
 
         try diaryManager.add(self.diary)
+    }
+    
+    private func setupDiary() {
+        selectedPictures.onNext(diary.pictures)
+        title.onNext(diary.title)
+        content.onNext(diary.content)
+        createdAt.onNext(diary.createdAt)
+        weather.onNext(diary.weather)
     }
 }

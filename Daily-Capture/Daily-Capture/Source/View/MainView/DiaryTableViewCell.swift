@@ -141,7 +141,7 @@ final class DiaryTableViewCell: UITableViewCell, ReusableView {
         
         weatherImage.image = diary.weather
         
-        var createdAtString: String = DateFormatter.convertToDate(from: diary.createdAt)
+        let createdAtString: String = DateFormatter.convertToDate(from: diary.createdAt)
         
         if let index = createdAtString.firstIndex(of: ".") {
             let newString = createdAtString.replacingCharacters(in: index...index, with: ".\n")
