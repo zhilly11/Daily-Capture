@@ -9,17 +9,11 @@ final class DetailViewModel {
     // MARK: - Properties
     
     private var diary: Diary
-    var selectedPictures: BehaviorSubject<[UIImage]> = .init(
-        value: [UIImage(systemName: "1.circle")!,
-                UIImage(systemName: "2.circle")!,
-                UIImage(systemName: "3.circle")!,
-                UIImage(systemName: "4.circle")!,
-                UIImage(systemName: "5.circle")!]
-    )
+    var selectedPictures: BehaviorSubject<[UIImage]> = .init(value: [])
     var title: BehaviorSubject<String> = .init(value: "")
-    var content: BehaviorSubject<String?> = .init(value: "내용을 입력하세요.")
+    var content: BehaviorSubject<String?> = .init(value: nil)
     var createdAt: BehaviorSubject<Date> = .init(value: Date())
-    var weather: BehaviorSubject<UIImage?> = .init(value: UIImage(systemName: "sun.min"))
+    var weather: BehaviorSubject<UIImage?> = .init(value: nil)
     
     var numberOfPictures: Int {
         get {
@@ -34,52 +28,21 @@ final class DetailViewModel {
         }
     }
     
-    var isSavable: Observable<Bool> {
-        return Observable.combineLatest(title, content)
-            .map { title, content in
-                guard let content = content else { return false }
-                
-                if title.count > 0 && content.count > 0 && content != "내용을 입력하세요." {
-                    return true
-                } else {
-                    return false
-                }
-            }
-    }
-    
     // MARK: - Initializer
     
-    init() {
-        self.diary = Diary(pictures: [],
-                           title: .init(),
-                           content: nil,
-                           createdAt: .init(),
-                           weather: nil)
+    init(diary: Diary) {
+        self.diary = diary
+        
+        updateDiary(diary: diary)
     }
     
     // MARK: - Methods
     
-    func updateDate(date: Date) {
-        createdAt.onNext(date)
-    }
-    
-    func updateWeather(image: UIImage?) {
-        weather.onNext(image)
-    }
-    
-    func updatePictures(pictures: [UIImage]) {
-        selectedPictures.onNext(pictures)
-    }
-    
-    func saveDiary() throws {
-        let diaryManager: DiaryManager = .shared
-        
-        diary.pictures = try self.selectedPictures.value()
-        diary.title = try self.title.value()
-        diary.content = try self.content.value()
-        diary.createdAt = try self.createdAt.value()
-        diary.weather = try self.weather.value()
-        
-        try diaryManager.add(self.diary)
+    func updateDiary(diary: Diary) {
+        selectedPictures.onNext(diary.pictures)
+        createdAt.onNext(diary.createdAt)
+        title.onNext(diary.title)
+        content.onNext(diary.content)
+        weather.onNext(diary.weather)
     }
 }

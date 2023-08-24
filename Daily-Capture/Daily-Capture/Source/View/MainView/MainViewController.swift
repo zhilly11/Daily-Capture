@@ -188,6 +188,13 @@ final class MainViewController: UIViewController {
                                          cellType: DiaryTableViewCell.self)) { index, item, cell in
                 cell.configure(with: item)
             }.disposed(by: disposeBag)
+        
+        tableView.rx.modelSelected(Diary.self)
+            .subscribe { diary in
+                let detailViewModel: DetailViewModel = .init(diary: diary)
+                let detailViewController: DetailViewController = .init(viewModel: detailViewModel)
+                self.navigationController?.pushViewController(detailViewController, animated: true)
+            }.disposed(by: disposeBag)
     }
     
     private func setupSearchLayout() {

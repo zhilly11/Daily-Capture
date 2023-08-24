@@ -38,7 +38,6 @@ final class DetailViewController: UIViewController {
         control.pageIndicatorTintColor = .lightGray
         control.currentPageIndicatorTintColor = .systemBlue
         control.currentPage = 0
-        control.numberOfPages = 5
         
         return control
     }()
@@ -47,7 +46,7 @@ final class DetailViewController: UIViewController {
         
         textView.isScrollEnabled = false
         textView.font = .preferredFont(forTextStyle: .title1)
-        textView.textColor = .systemGray3
+        textView.isUserInteractionEnabled = false
         
         return textView
     }()
@@ -56,7 +55,7 @@ final class DetailViewController: UIViewController {
         
         textView.isScrollEnabled = false
         textView.font = .preferredFont(forTextStyle: .body)
-        textView.textColor = .systemGray3
+        textView.isUserInteractionEnabled = false
         
         return textView
     }()
@@ -96,6 +95,7 @@ final class DetailViewController: UIViewController {
 
     private func setupLayout() {
         let safeArea = view.safeAreaLayoutGuide
+        let safeAreaWidth = safeArea.layoutFrame.width
         let keyboardArea = view.keyboardLayoutGuide
         
         pageControl.bringSubviewToFront(imageScrollView)
@@ -106,7 +106,7 @@ final class DetailViewController: UIViewController {
         view.addSubview(diaryDetailScrollView)
         
         weatherImageView.snp.makeConstraints { make in
-            make.width.equalTo(weatherImageView.snp.height)
+            make.width.height.equalTo(24)
         }
         diaryDetailScrollView.snp.makeConstraints { make in
             make.top.leading.trailing.equalTo(safeArea)
@@ -118,7 +118,7 @@ final class DetailViewController: UIViewController {
         }
         imageScrollView.snp.makeConstraints { make in
             make.top.left.right.equalToSuperview()
-            make.height.equalTo(safeArea).multipliedBy(0.6)
+            make.height.equalTo(safeAreaWidth)
         }
         pageControl.snp.makeConstraints { make in
             make.height.equalTo(20)
@@ -141,11 +141,10 @@ final class DetailViewController: UIViewController {
         navigationController?.navigationBar.isHidden = false
         
         let button: UIButton = .init(type: .custom)
-        button.setTitle("저장", for: .normal)
+        button.setTitle("편집", for: .normal)
         button.setTitleColor(.systemBlue, for: .normal)
         button.addAction(UIAction(handler: { _ in
             self.editDiary()
-            self.navigationController?.popViewController(animated: true)
         }), for: .touchUpInside)
         
         navigationItem.rightBarButtonItem = UIBarButtonItem(customView: button)
@@ -183,27 +182,16 @@ final class DetailViewController: UIViewController {
         diaryViewModel.content
             .bind(to: contentTextView.rx.text)
             .disposed(by: disposeBag)
-        
-        contentTextView.rx.text.orEmpty
-            .distinctUntilChanged()
-            .bind(to: diaryViewModel.content)
-            .disposed(by: disposeBag)
-
-        titleTextView.rx.text.orEmpty
-            .distinctUntilChanged()
-            .bind(to: diaryViewModel.title)
-            .disposed(by: disposeBag)
     }
     
     private func configureImageScrollView(pictures: [UIImage]) {
         let safeAreaWidth = view.safeAreaLayoutGuide.layoutFrame.width
-        let safeAreaHeight = view.safeAreaLayoutGuide.layoutFrame.height
         
         imageScrollView.subviews.forEach { view in
             view.removeFromSuperview()
         }
         imageScrollView.contentSize.width = safeAreaWidth * CGFloat(pictures.count)
-        imageScrollView.contentSize.height = safeAreaHeight * 0.5
+        imageScrollView.contentSize.height = safeAreaWidth
         
         for index in 0..<pictures.count {
             let imageView = UIImageView()
@@ -213,7 +201,7 @@ final class DetailViewController: UIViewController {
             imageView.frame = CGRect(x: xPosition,
                                      y: 0,
                                      width: safeAreaWidth,
-                                     height: safeAreaHeight * 0.6)
+                                     height: safeAreaWidth)
             imageView.image = pictures[index]
             
             imageScrollView.addSubview(imageView)
@@ -221,7 +209,23 @@ final class DetailViewController: UIViewController {
     }
     
     private func editDiary() {
+        let storyboard: UIStoryboard = .init(name: "EditTableViewController", bundle: nil)
         
+        guard let editDiaryViewController = storyboard.instantiateInitialViewController() else {
+            return
+        }
+        let navigationController: UINavigationController = .init(rootViewController: editDiaryViewController)
+        
+        self.present(navigationController, animated: true)
+    }
+    
+    private func createStackView() -> UIStackView {
+        let stackView: UIStackView = .init(arrangedSubviews: [weatherImageView, dateLabel])
+        
+        stackView.axis = .horizontal
+        stackView.spacing = 4
+        
+        return stackView
     }
 }
 
