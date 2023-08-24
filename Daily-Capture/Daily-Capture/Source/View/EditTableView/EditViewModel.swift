@@ -9,6 +9,8 @@ final class EditViewModel {
     // MARK: - Properties
 
     private var diary: Diary
+    var viewTitle: BehaviorSubject<String> = .init(value: "새로운 일기")
+    
     var selectedPictures: BehaviorSubject<[UIImage]> = .init(
         value: [UIImage(systemName: "photo.on.rectangle")!]
     )
@@ -85,6 +87,7 @@ final class EditViewModel {
     }
     
     private func setupDiary() {
+        viewTitle.onNext("일기 편집")
         selectedPictures.onNext(diary.pictures)
         title.onNext(diary.title)
         content.onNext(diary.content)

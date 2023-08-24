@@ -8,7 +8,7 @@ import RxSwift
 final class DetailViewModel {
     // MARK: - Properties
     
-    private var diary: Diary
+    private (set) var diary: Diary 
     var selectedPictures: BehaviorSubject<[UIImage]> = .init(value: [])
     var title: BehaviorSubject<String> = .init(value: "")
     var content: BehaviorSubject<String?> = .init(value: nil)
