@@ -161,13 +161,8 @@ final class MainViewController: UIViewController {
     
     private func setupAddDiaryButton() {
         let buttonAction: UIAction = UIAction { action in
-            let editViewModel: EditViewModel = .init(diary: Diary(pictures: [],
-                                                                  title: .init(),
-                                                                  content: nil,
-                                                                  createdAt: .init(),
-                                                                  weather: nil))
-            
             let storyboard: UIStoryboard = .init(name: "EditTableViewController", bundle: nil)
+            let editViewModel: EditViewModel = .init()            
             let editDiaryViewController = storyboard.instantiateInitialViewController { coder -> EditTableViewController in
                 return .init(coder, editViewModel) ?? EditTableViewController(viewModel: editViewModel)
             }
