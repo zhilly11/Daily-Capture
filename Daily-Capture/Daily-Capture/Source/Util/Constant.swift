@@ -6,31 +6,31 @@ import Foundation
 struct Constant {
     static let weatherNameList: [String] = [
         "clear",
-        "cloudy-rainny",
+        "sunny",
         "cloudy-sunny",
+        "cloudy-rainny",
         "cloudy",
         "fullmoon",
-        "heavyrain-storm",
-        "night-rain",
         "night",
         "night-clear",
+        "night-rain",
         "rain",
-        "sunny",
-        "thunder"
+        "thunder",
+        "heavyrain-storm"
     ]
     
     static let weatherDescription: [String: String] = [
         "clear": "맑음",
-        "cloudy-rainny": "흐림 비",
-        "cloudy-sunny": "흐림 해",
+        "sunny": "흐린뒤 맑음",
+        "cloudy-sunny": "약간 흐림",
+        "cloudy-rainny": "흐린뒤 비",
         "cloudy": "흐림",
         "fullmoon": "보름달",
-        "heavyrain-storm": "천둥 번개",
-        "night-rain": "밤에 비",
-        "night": "밤",
+        "night": "흐린 밤",
         "night-clear": "맑은 밤",
+        "night-rain": "밤에 비옴",
         "rain": "비",
-        "sunny": "해 쨍쨍",
-        "thunder": "천둥"
+        "thunder": "천둥",
+        "heavyrain-storm": "천둥 번개"
     ]
 }
