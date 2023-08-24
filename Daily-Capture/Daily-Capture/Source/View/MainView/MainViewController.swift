@@ -161,21 +161,32 @@ final class MainViewController: UIViewController {
     
     private func setupAddDiaryButton() {
         let buttonAction: UIAction = UIAction { action in
-            let storyboard: UIStoryboard = .init(name: "EditTableViewController", bundle: nil)
-            let editViewModel: EditViewModel = .init()            
-            let editDiaryViewController = storyboard.instantiateInitialViewController { coder -> EditTableViewController in
-                return .init(coder, editViewModel) ?? EditTableViewController(viewModel: editViewModel)
-            }
-            
-            if let editDiaryViewController {
-                let navigationController: UINavigationController = .init(rootViewController: editDiaryViewController)
-                self.present(navigationController, animated: true, completion: nil)
-            } else {
-                //TODO: 오류처리
-            }
+            self.presentEditViewController(with: nil)
         }
         
         addDiaryButton.addAction(buttonAction, for: .touchUpInside)
+    }
+    
+    private func presentEditViewController(with diary: Diary?) {
+        let storyboard: UIStoryboard = .init(name: "EditTableViewController", bundle: nil)
+        let editViewModel: EditViewModel
+        
+        if let diary {
+            editViewModel = .init(diary: diary)
+        } else {
+            editViewModel = .init()
+        }
+        
+        let editDiaryViewController = storyboard.instantiateInitialViewController { coder -> EditTableViewController in
+            return .init(coder, editViewModel) ?? EditTableViewController(viewModel: editViewModel)
+        }
+        
+        if let editDiaryViewController {
+            let navigationController: UINavigationController = .init(rootViewController: editDiaryViewController)
+            self.present(navigationController, animated: true, completion: nil)
+        } else {
+            //TODO: 오류처리
+        }
     }
     
     private func bindTableViewData() {

@@ -66,6 +66,7 @@ final class EditTableViewController: UITableViewController {
     
     private func setupViews() {
         self.tableView.backgroundColor = .systemGray6
+        self.isModalInPresentation = true
     }
     
     private func setupNavigationItem() {
@@ -148,6 +149,10 @@ final class EditTableViewController: UITableViewController {
     }
     
     private func setupBindData() {
+        viewModel.viewTitle
+            .bind(to: self.rx.title)
+            .disposed(by: disposeBag)
+        
         viewModel.title
             .bind(to: titleTextField.rx.text)
             .disposed(by: disposeBag)
@@ -252,6 +257,7 @@ final class EditTableViewController: UITableViewController {
     
     private func tappedCancelButton() {
         let defaultAction: UIAlertAction = .init(title: "변경사항 폐기", style: .destructive) { _ in
+            self.isModalInPresentation = false
             self.dismiss(animated: true)
         }
         let cancelAction: UIAlertAction = .init(title: "계속 편집하기", style: .cancel, handler: nil)
@@ -267,6 +273,7 @@ final class EditTableViewController: UITableViewController {
     private func tappedSaveButton() {
         do {
             try viewModel.saveDiary()
+            self.isModalInPresentation = false
             dismiss(animated: true)
         } catch {
             print(error.localizedDescription.description)

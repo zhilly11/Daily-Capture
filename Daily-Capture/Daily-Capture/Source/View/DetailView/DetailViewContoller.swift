@@ -144,7 +144,7 @@ final class DetailViewController: UIViewController {
         button.setTitle("편집", for: .normal)
         button.setTitleColor(.systemBlue, for: .normal)
         button.addAction(UIAction(handler: { _ in
-            self.editDiary()
+            self.presentEditViewController(with: self.diaryViewModel.diary)
         }), for: .touchUpInside)
         
         navigationItem.rightBarButtonItem = UIBarButtonItem(customView: button)
@@ -208,15 +208,26 @@ final class DetailViewController: UIViewController {
         }
     }
     
-    private func editDiary() {
+    private func presentEditViewController(with diary: Diary?) {
         let storyboard: UIStoryboard = .init(name: "EditTableViewController", bundle: nil)
+        let editViewModel: EditViewModel
         
-        guard let editDiaryViewController = storyboard.instantiateInitialViewController() else {
-            return
+        if let diary {
+            editViewModel = .init(diary: diary)
+        } else {
+            editViewModel = .init()
         }
-        let navigationController: UINavigationController = .init(rootViewController: editDiaryViewController)
         
-        self.present(navigationController, animated: true)
+        let editDiaryViewController = storyboard.instantiateInitialViewController { coder -> EditTableViewController in
+            return .init(coder, editViewModel) ?? EditTableViewController(viewModel: editViewModel)
+        }
+        
+        if let editDiaryViewController {
+            let navigationController: UINavigationController = .init(rootViewController: editDiaryViewController)
+            self.present(navigationController, animated: true, completion: nil)
+        } else {
+            //TODO: 오류처리
+        }
     }
     
     private func createStackView() -> UIStackView {
