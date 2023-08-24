@@ -15,7 +15,7 @@ final class EditViewModel {
     var title: BehaviorSubject<String> = .init(value: "")
     var content: BehaviorSubject<String?> = .init(value: "내용을 입력하세요.")
     var createdAt: BehaviorSubject<Date> = .init(value: Date())
-    var weather: BehaviorSubject<UIImage?> = .init(value: UIImage(systemName: "sun.min"))
+    var weather: BehaviorSubject<UIImage?> = .init(value: UIImage(named: "clear"))
     
     var numberOfPictures: Int {
         get {

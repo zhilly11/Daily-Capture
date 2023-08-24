@@ -123,13 +123,13 @@ final class EditTableViewController: UITableViewController {
     
     private func setupWeatherSelectButton() {
         let popUpButtonClosure: UIActionHandler = { [weak self] action in
-            self?.viewModel.updateWeather(image: UIImage(named: action.title))
+            self?.viewModel.updateWeather(image: action.image)
         }
         
         var weatherMenu: [UIAction] = .init()
         
         Constant.weatherNameList.forEach { weatherName in
-            weatherMenu.append(UIAction(title: weatherName,
+            weatherMenu.append(UIAction(title: Constant.weatherDescription[weatherName] ?? .init(),
                                         image: UIImage(named: weatherName),
                                         handler: popUpButtonClosure))
         }
