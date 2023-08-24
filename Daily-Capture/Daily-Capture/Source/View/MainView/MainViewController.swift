@@ -64,18 +64,10 @@ final class MainViewController: UIViewController {
         return tableView
     }()
     
-    private let floatingButton: UIButton = {
-        let button: UIButton = .init(type: .custom)
-        let configuration: UIImage.SymbolConfiguration = .init(pointSize: 65,
-                                                               weight: .regular,
-                                                               scale: .default)
+    private let addDiaryButton: UIButton = {
+        let button: UIButton = .init(type: .contactAdd)
         
-        button.layer.cornerRadius = button.frame.width / 2
-        button.imageView?.contentMode = .scaleAspectFit
-        button.setImage(UIImage(systemName: "plus.circle.fill",
-                                withConfiguration: configuration), for: .normal)
-        button.tintColor = .tintColor
-        button.clipsToBounds = true
+        button.setImage(UIImage(systemName: "plus"), for: .normal)
         
         return button
     }()
@@ -111,7 +103,7 @@ final class MainViewController: UIViewController {
         setupLayout()
         setupDelegate()
         setupCalendar()
-        setupFloatingButton()
+        setupAddDiaryButton()
         bindTableViewData()
     }
     
@@ -123,10 +115,16 @@ final class MainViewController: UIViewController {
     private func setupLayout() {
         let safeArea: UILayoutGuide = view.safeAreaLayoutGuide
         
-        [searchBar, calendarView, tableView, floatingButton].forEach(view.addSubview(_:))
+        [addDiaryButton, searchBar, calendarView, tableView].forEach(view.addSubview(_:))
+        
+        addDiaryButton.snp.makeConstraints {
+            $0.top.trailing.equalTo(safeArea)
+            $0.height.width.equalTo(50)
+        }
         
         searchBar.snp.makeConstraints {
-            $0.top.leading.trailing.equalTo(safeArea)
+            $0.trailing.equalTo(addDiaryButton.snp.leading)
+            $0.top.leading.equalTo(safeArea)
             $0.height.equalTo(50)
         }
         
@@ -137,12 +135,7 @@ final class MainViewController: UIViewController {
         
         tableView.snp.makeConstraints {
             $0.top.equalTo(calendarView.snp.bottom)
-            $0.leading.trailing.bottom.equalTo(safeArea)
-        }
-        
-        floatingButton.snp.makeConstraints {
-            $0.width.height.equalTo(100)
-            $0.bottom.trailing.equalTo(safeArea).offset(-30)
+            $0.leading.trailing.bottom.equalTo(self.view)
         }
     }
     
@@ -163,22 +156,26 @@ final class MainViewController: UIViewController {
         dateSelection.setSelected(DateComponents(year: year, month: month, day: day),
                                   animated: false)
         calendarView.selectionBehavior = dateSelection
+        userSelectedDate = currentDate
     }
     
-    private func setupFloatingButton() {
+    private func setupAddDiaryButton() {
         let buttonAction: UIAction = UIAction { action in
             let storyboard: UIStoryboard = .init(name: "EditTableViewController", bundle: nil)
-            
-            guard let editDiaryViewController = storyboard.instantiateInitialViewController() else {
-                return
+            let editViewModel: EditViewModel = .init()            
+            let editDiaryViewController = storyboard.instantiateInitialViewController { coder -> EditTableViewController in
+                return .init(coder, editViewModel) ?? EditTableViewController(viewModel: editViewModel)
             }
             
-            let navigationController: UINavigationController = .init(rootViewController: editDiaryViewController)
-            
-            self.present(navigationController, animated: true, completion: nil)
+            if let editDiaryViewController {
+                let navigationController: UINavigationController = .init(rootViewController: editDiaryViewController)
+                self.present(navigationController, animated: true, completion: nil)
+            } else {
+                //TODO: 오류처리
+            }
         }
-            
-        floatingButton.addAction(buttonAction, for: .touchUpInside)
+        
+        addDiaryButton.addAction(buttonAction, for: .touchUpInside)
     }
     
     private func bindTableViewData() {
@@ -201,26 +198,49 @@ final class MainViewController: UIViewController {
         let safeArea: UILayoutGuide = view.safeAreaLayoutGuide
         
         calendarView.isHidden = true
-        floatingButton.isHidden = true
+        addDiaryButton.isHidden = true
+        
+        searchBar.snp.removeConstraints()
+        
+        searchBar.snp.makeConstraints {
+            $0.top.leading.trailing.equalTo(safeArea)
+            $0.height.equalTo(50)
+        }
         
         tableView.snp.removeConstraints()
         tableView.bringSubviewToFront(calendarView)
         tableView.snp.makeConstraints {
             $0.top.equalTo(searchBar.snp.bottom)
-            $0.leading.trailing.bottom.equalTo(safeArea)
+            $0.leading.trailing.bottom.equalTo(self.view)
         }
+        
+        viewModel.searchDiary(keyword: "")
     }
     
     private func endSearch() {
         let safeArea: UILayoutGuide = view.safeAreaLayoutGuide
         
         calendarView.isHidden = false
-        floatingButton.isHidden = false
+        addDiaryButton.isHidden = false
+        
+        addDiaryButton.snp.removeConstraints()
+        searchBar.snp.removeConstraints()
+        
+        addDiaryButton.snp.makeConstraints {
+            $0.top.trailing.equalTo(safeArea)
+            $0.height.width.equalTo(50)
+        }
+        
+        searchBar.snp.makeConstraints {
+            $0.trailing.equalTo(addDiaryButton.snp.leading)
+            $0.top.leading.equalTo(safeArea)
+            $0.height.equalTo(50)
+        }
         
         tableView.snp.removeConstraints()
         tableView.snp.makeConstraints {
             $0.top.equalTo(calendarView.snp.bottom)
-            $0.leading.trailing.bottom.equalTo(safeArea)
+            $0.leading.trailing.bottom.equalTo(self.view)
         }
         
         if let date = userSelectedDate {
@@ -257,7 +277,7 @@ extension MainViewController: UICalendarViewDelegate {
         do {
             let diaries: [Diary] = try DiaryManager.shared.fetchObjects(date: date)
             diariesCount = diaries.count
-
+            
         } catch {
             print(error.localizedDescription)
         }

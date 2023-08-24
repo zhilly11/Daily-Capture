@@ -33,7 +33,14 @@ final class MainViewModel {
     
     func searchDiary(keyword: String) {
         do {
-            let diaries: [Diary] = try diaryManager.search(keyword: keyword)
+            var diaries: [Diary]
+            
+            if keyword == "" {
+                diaries = try diaryManager.fetchObjects()
+            } else {
+                diaries = try diaryManager.search(keyword: keyword)
+            }
+            
             diaryList.onNext(diaries)
         } catch {
             // TODO: 오류처리 구현 ex) Alert으로 사용자에게 알려주기

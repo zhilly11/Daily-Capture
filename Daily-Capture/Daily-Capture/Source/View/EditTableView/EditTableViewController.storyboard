@@ -10,7 +10,7 @@
         <!--EditTableViewController-->
         <scene sceneID="SNf-aT-9s5">
             <objects>
-                <tableViewController title="EditTableViewController" id="fjr-uw-anT" customClass="EditTableViewController" customModule="Daily_Capture" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="EditTableViewController" title="EditTableViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="fjr-uw-anT" customClass="EditTableViewController" customModule="Daily_Capture" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="insetGrouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" estimatedSectionHeaderHeight="-1" sectionFooterHeight="18" estimatedSectionFooterHeight="-1" id="h4y-zH-ror">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
