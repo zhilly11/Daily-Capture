@@ -19,6 +19,7 @@ final class EditTableViewController: UITableViewController {
     // MARK: - UI Components
 
     @IBOutlet weak private var imageContainerView: UIView!
+    @IBOutlet weak private var editTableView: UITableView!
     @IBOutlet weak private var titleTextField: UITextField!
     @IBOutlet weak private var contentTextView: UITextView!
     @IBOutlet weak private var weatherSelectButton: UIButton!
@@ -67,11 +68,10 @@ final class EditTableViewController: UITableViewController {
     private func setupViews() {
         self.tableView.backgroundColor = .systemGray6
         self.isModalInPresentation = true
+        self.editTableView.keyboardDismissMode = .onDrag
     }
     
     private func setupNavigationItem() {
-        self.title = "새로운 일기"
-        
         let saveButton: UIButton = UIButton(type: .custom)
         saveButton.setTitle("저장", for: .normal)
         saveButton.setTitleColor(.systemBlue, for: .normal)
@@ -191,7 +191,10 @@ final class EditTableViewController: UITableViewController {
         viewModel.isSavable
             .bind(to: saveButton.rx.isEnabled)
             .disposed(by: disposeBag)
-        
+    }
+    
+    private func setupNumberOfPage() {
+        pageControl.numberOfPages = viewModel.numberOfPictures
     }
     
     private func configureImageScrollView(pictures: [UIImage]) {

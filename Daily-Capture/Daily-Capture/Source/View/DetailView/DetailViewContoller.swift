@@ -85,6 +85,7 @@ final class DetailViewController: UIViewController {
         setupNavigationBarButton()
         setupDelegate()
         setupBindData()
+        setupNumberOfPage()
     }
     
     private func setupView() {
@@ -182,6 +183,10 @@ final class DetailViewController: UIViewController {
         diaryViewModel.content
             .bind(to: contentTextView.rx.text)
             .disposed(by: disposeBag)
+    }
+    
+    private func setupNumberOfPage() {
+        pageControl.numberOfPages = diaryViewModel.numberOfPictures
     }
     
     private func configureImageScrollView(pictures: [UIImage]) {

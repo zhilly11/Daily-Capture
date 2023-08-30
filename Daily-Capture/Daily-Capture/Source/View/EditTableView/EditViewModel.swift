@@ -11,13 +11,13 @@ final class EditViewModel {
     private var diary: Diary
     var viewTitle: BehaviorSubject<String> = .init(value: "새로운 일기")
     
-    var selectedPictures: BehaviorSubject<[UIImage]> = .init(
+    let selectedPictures: BehaviorSubject<[UIImage]> = .init(
         value: [UIImage(systemName: "photo.on.rectangle")!]
     )
-    var title: BehaviorSubject<String> = .init(value: "")
-    var content: BehaviorSubject<String?> = .init(value: "내용을 입력하세요.")
-    var createdAt: BehaviorSubject<Date> = .init(value: Date())
-    var weather: BehaviorSubject<UIImage?> = .init(value: UIImage(named: "clear"))
+    let title: BehaviorSubject<String> = .init(value: "")
+    let content: BehaviorSubject<String?> = .init(value: "내용을 입력하세요.")
+    let createdAt: BehaviorSubject<Date> = .init(value: Date())
+    let weather: BehaviorSubject<UIImage?> = .init(value: UIImage(named: "clear"))
     
     var numberOfPictures: Int {
         get {

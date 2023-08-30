@@ -9,11 +9,11 @@ final class DetailViewModel {
     // MARK: - Properties
     
     private (set) var diary: Diary 
-    var selectedPictures: BehaviorSubject<[UIImage]> = .init(value: [])
-    var title: BehaviorSubject<String> = .init(value: "")
-    var content: BehaviorSubject<String?> = .init(value: nil)
-    var createdAt: BehaviorSubject<Date> = .init(value: Date())
-    var weather: BehaviorSubject<UIImage?> = .init(value: nil)
+    let selectedPictures: BehaviorSubject<[UIImage]> = .init(value: [])
+    let title: BehaviorSubject<String> = .init(value: "")
+    let content: BehaviorSubject<String?> = .init(value: nil)
+    let createdAt: BehaviorSubject<Date> = .init(value: Date())
+    let weather: BehaviorSubject<UIImage?> = .init(value: nil)
     
     var numberOfPictures: Int {
         get {
