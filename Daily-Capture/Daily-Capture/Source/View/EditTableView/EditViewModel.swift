@@ -9,6 +9,7 @@ final class EditViewModel {
     // MARK: - Properties
 
     private var diary: Diary
+    private var isNewDiary: Bool = false
     var viewTitle: BehaviorSubject<String> = .init(value: "새로운 일기")
     
     let selectedPictures: BehaviorSubject<[UIImage]> = .init(
@@ -53,6 +54,7 @@ final class EditViewModel {
                            content: nil,
                            createdAt: .init(),
                            weather: nil)
+        self.isNewDiary = true
     }
 
     init(diary: Diary) {
@@ -74,7 +76,24 @@ final class EditViewModel {
         selectedPictures.onNext(pictures)
     }
     
+    func createChangedDairy() throws -> Diary {
+        let diary: Diary = .init(pictures: try selectedPictures.value(),
+                                 title: try title.value(),
+                                 content: try content.value(),
+                                 createdAt: try createdAt.value(),
+                                 weather: try weather.value())
+        return diary
+    }
+    
     func saveDiary() throws {
+        if isNewDiary {
+            try createDiary()
+        } else {
+            try updateDiary()
+        }
+    }
+    
+    func createDiary() throws {
         let diaryManager: DiaryManager = .shared
         
         diary.pictures = try self.selectedPictures.value()
@@ -86,6 +105,18 @@ final class EditViewModel {
         try diaryManager.add(self.diary)
     }
     
+    func updateDiary() throws {
+        let diaryManager: DiaryManager = .shared
+        
+        diary.pictures = try self.selectedPictures.value()
+        diary.title = try self.title.value()
+        diary.content = try self.content.value()
+        diary.createdAt = try self.createdAt.value()
+        diary.weather = try self.weather.value()
+
+        try diaryManager.update(self.diary)
+    }
+    
     private func setupDiary() {
         viewTitle.onNext("일기 편집")
         selectedPictures.onNext(diary.pictures)
@@ -93,9 +124,5 @@ final class EditViewModel {
         content.onNext(diary.content)
         createdAt.onNext(diary.createdAt)
         weather.onNext(diary.weather)
-    }
-    
-    private func setupNewDiary() {
-        
     }
 }

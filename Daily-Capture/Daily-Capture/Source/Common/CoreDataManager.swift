@@ -93,8 +93,8 @@ final class DiaryManager: CoreDataManageable {
         
         diaryObject.setValue(diary.title, forKey: "title")
         diaryObject.setValue(diary.content, forKey: "content")
-        diaryObject.setValue(diary.createdAt, forKey: "createdAd")
-        diaryObject.setValue(diary.weather, forKey: "weather")
+        diaryObject.setValue(diary.createdAt, forKey: "createdAt")
+        diaryObject.setValue(diary.weather?.pngData(), forKey: "weather")
         diaryObject.setValue(imageData, forKey: "pictures")
         
         if context.hasChanges {

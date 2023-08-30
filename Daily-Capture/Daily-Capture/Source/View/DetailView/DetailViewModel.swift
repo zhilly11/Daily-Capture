@@ -8,7 +8,7 @@ import RxSwift
 final class DetailViewModel {
     // MARK: - Properties
     
-    private (set) var diary: Diary 
+    private (set) var diary: Diary
     let selectedPictures: BehaviorSubject<[UIImage]> = .init(value: [])
     let title: BehaviorSubject<String> = .init(value: "")
     let content: BehaviorSubject<String?> = .init(value: nil)
@@ -44,5 +44,11 @@ final class DetailViewModel {
         title.onNext(diary.title)
         content.onNext(diary.content)
         weather.onNext(diary.weather)
+    }
+    
+    func changeDiary(diary: Diary) {
+        self.diary = diary
+        
+        updateDiary(diary: diary)
     }
 }

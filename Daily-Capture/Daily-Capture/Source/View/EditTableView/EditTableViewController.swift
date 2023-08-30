@@ -15,6 +15,7 @@ final class EditTableViewController: UITableViewController {
     private var disposeBag: DisposeBag = .init()
     private var selections: [String: PHPickerResult] = [:]
     private var selectedAssetIdentifiers: [String] = []
+    weak var diaryDelegate: DiarySendableDelegate?
     
     // MARK: - UI Components
 
@@ -63,6 +64,7 @@ final class EditTableViewController: UITableViewController {
         setupWeatherSelectButton()
         setupCellTappedAction()
         setupBindData()
+        setupNumberOfPage()
     }
     
     private func setupViews() {
@@ -275,6 +277,7 @@ final class EditTableViewController: UITableViewController {
     
     private func tappedSaveButton() {
         do {
+            try diaryDelegate?.update(of: viewModel.createChangedDairy())
             try viewModel.saveDiary()
             self.isModalInPresentation = false
             dismiss(animated: true)

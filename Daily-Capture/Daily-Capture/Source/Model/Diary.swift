@@ -31,6 +31,7 @@ struct Diary: ManagedObjectModel {
             self.weather = UIImage(data: weatherImageData)
         }
         
+        self.objectID = diaryData.objectID.uriRepresentation().absoluteString
         self.pictures = pictures
         self.title = title
         self.createdAt = createdAt

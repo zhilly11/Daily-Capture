@@ -228,6 +228,7 @@ final class DetailViewController: UIViewController {
         }
         
         if let editDiaryViewController {
+            editDiaryViewController.diaryDelegate = self
             let navigationController: UINavigationController = .init(rootViewController: editDiaryViewController)
             self.present(navigationController, animated: true, completion: nil)
         } else {
@@ -253,5 +254,11 @@ extension DetailViewController: UIScrollViewDelegate {
     
     private func selectedPage(currentPage: Int) {
         pageControl.currentPage = currentPage
+    }
+}
+
+extension DetailViewController: DiarySendableDelegate {
+    func update(of diary: Diary) {
+        diaryViewModel.changeDiary(diary: diary)
     }
 }

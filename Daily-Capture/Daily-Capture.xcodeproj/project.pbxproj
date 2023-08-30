@@ -15,6 +15,7 @@
 		981B43592A779996000F25CA /* DataSendableDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 981B43582A779996000F25CA /* DataSendableDelegate.swift */; };
 		981B437C2A9498D6000F25CA /* DetailViewContoller.swift in Sources */ = {isa = PBXBuildFile; fileRef = 981B437B2A9498D6000F25CA /* DetailViewContoller.swift */; };
 		981B437E2A9498FC000F25CA /* DetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 981B437D2A9498FC000F25CA /* DetailViewModel.swift */; };
+		981B43802A9F4412000F25CA /* DiarySendableDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 981B437F2A9F4412000F25CA /* DiarySendableDelegate.swift */; };
 		B44F9F3C2A83B109001CA0D9 /* EditTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B44F9F3A2A83B109001CA0D9 /* EditTableViewController.swift */; };
 		B44F9F412A83BAAE001CA0D9 /* EditTableViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B44F9F402A83BAAE001CA0D9 /* EditTableViewController.storyboard */; };
 		B44F9F432A841A1D001CA0D9 /* EditViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B44F9F422A841A1D001CA0D9 /* EditViewModel.swift */; };
@@ -50,6 +51,7 @@
 		981B43582A779996000F25CA /* DataSendableDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataSendableDelegate.swift; sourceTree = "<group>"; };
 		981B437B2A9498D6000F25CA /* DetailViewContoller.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewContoller.swift; sourceTree = "<group>"; };
 		981B437D2A9498FC000F25CA /* DetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewModel.swift; sourceTree = "<group>"; };
+		981B437F2A9F4412000F25CA /* DiarySendableDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiarySendableDelegate.swift; sourceTree = "<group>"; };
 		B44F9F3A2A83B109001CA0D9 /* EditTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditTableViewController.swift; sourceTree = "<group>"; };
 		B44F9F402A83BAAE001CA0D9 /* EditTableViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = EditTableViewController.storyboard; sourceTree = "<group>"; };
 		B44F9F422A841A1D001CA0D9 /* EditViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditViewModel.swift; sourceTree = "<group>"; };
@@ -211,6 +213,7 @@
 				B4B3B9FF2A554AED0096A206 /* ManagedObjectModel.swift */,
 				981B43582A779996000F25CA /* DataSendableDelegate.swift */,
 				B4B3BA052A5553940096A206 /* CoreDataManageable.swift */,
+				981B437F2A9F4412000F25CA /* DiarySendableDelegate.swift */,
 			);
 			path = Protocol;
 			sourceTree = "<group>";
@@ -393,6 +396,7 @@
 				B4B3B9FD2A5546A50096A206 /* DiaryData+CoreDataClass.swift in Sources */,
 				B45C26C12A4DA163009333AB /* MainViewController.swift in Sources */,
 				981B434B2A71125B000F25CA /* CalendarViewContoller.swift in Sources */,
+				981B43802A9F4412000F25CA /* DiarySendableDelegate.swift in Sources */,
 				B45C26BD2A4DA163009333AB /* AppDelegate.swift in Sources */,
 				981B434F2A7282FD000F25CA /* CalendarViewModel.swift in Sources */,
 				B4B3BA002A554AED0096A206 /* ManagedObjectModel.swift in Sources */,
