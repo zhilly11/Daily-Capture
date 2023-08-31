@@ -145,7 +145,8 @@ final class DetailViewController: UIViewController {
         button.setTitle("편집", for: .normal)
         button.setTitleColor(.systemBlue, for: .normal)
         button.addAction(UIAction(handler: { _ in
-            self.presentEditViewController(with: self.diaryViewModel.diary)
+//            self.presentEditViewController(with: self.diaryViewModel.diary)
+            self.tappedEditButton()
         }), for: .touchUpInside)
         
         navigationItem.rightBarButtonItem = UIBarButtonItem(customView: button)
@@ -211,6 +212,25 @@ final class DetailViewController: UIViewController {
             
             imageScrollView.addSubview(imageView)
         }
+    }
+    
+    private func tappedEditButton() {
+        let editAction: UIAlertAction = .init(title: "수정", style: .default) { _ in
+            self.presentEditViewController(with: self.diaryViewModel.diary)
+        }
+        let deleteAction: UIAlertAction = .init(title: "삭제", style: .destructive) { _ in
+            try! DiaryManager.shared.remove(self.diaryViewModel.diary)
+            self.isModalInPresentation = false
+            self.navigationController?.popViewController(animated: true)
+        }
+        let cancelAction: UIAlertAction = .init(title: "취소", style: .cancel, handler: nil)
+        let alert: UIAlertController = .init(title: nil,
+                                             message: "일기를 편집하시겠어요?",
+                                             preferredStyle: .actionSheet)
+        
+        [editAction, deleteAction, cancelAction].forEach(alert.addAction(_:))
+        
+        present(alert, animated: true)
     }
     
     private func presentEditViewController(with diary: Diary?) {

@@ -3,6 +3,7 @@
 
 import UIKit
 
+import Foundation
 import SnapKit
 import RxSwift
 import RxCocoa
@@ -94,6 +95,9 @@ final class MainViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         setupView()
+        viewModel.setupDiary(date: self.userSelectedDate!)
+        let dateComponents = userSelectedDate!.convertToDay()
+        calendarView.reloadDecorations(forDateComponents: [dateComponents], animated: true)
     }
     
     // MARK: - Methods
