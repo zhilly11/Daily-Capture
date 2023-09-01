@@ -16,6 +16,7 @@ final class EditTableViewController: UITableViewController {
     private var selections: [String: PHPickerResult] = [:]
     private var selectedAssetIdentifiers: [String] = []
     weak var diaryDelegate: DiarySendableDelegate?
+    weak var dateDelegate: DateSendableDelegate?
     
     // MARK: - UI Components
 
@@ -57,7 +58,12 @@ final class EditTableViewController: UITableViewController {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(true)
         
-        
+        do {
+            let date = try viewModel.createDate()
+            dateDelegate?.sendDate(date)
+        } catch {
+            print("error")
+        }
     }
     
     // MARK: - Methods
@@ -77,6 +83,10 @@ final class EditTableViewController: UITableViewController {
         self.tableView.backgroundColor = .systemGray6
         self.isModalInPresentation = true
         self.editTableView.keyboardDismissMode = .onDrag
+        
+        if !viewModel.isNewDiary {
+            contentTextView.textColor = .black
+        }
     }
     
     private func setupNavigationItem() {
@@ -117,7 +127,7 @@ final class EditTableViewController: UITableViewController {
     private func setupTextViewPlaceHolder(){
         contentTextView.rx.didBeginEditing
             .subscribe(onNext: { [self] in
-                if(contentTextView.text == "내용을 입력하세요." ){
+                if(contentTextView.text == "내용을 입력하세요."){
                     contentTextView.text = nil
                     contentTextView.textColor = .black
                 }}).disposed(by: disposeBag)

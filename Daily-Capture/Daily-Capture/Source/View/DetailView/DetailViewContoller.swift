@@ -9,6 +9,7 @@ final class DetailViewController: UIViewController {
     
     private var diaryViewModel: DetailViewModel
     private var disposeBag: DisposeBag = .init()
+    weak var dateDelegate: DateSendableDelegate?
     
     // MARK: - UI Components
 
@@ -77,6 +78,17 @@ final class DetailViewController: UIViewController {
         super.viewDidLoad()
         
         setup()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(true)
+        
+        do {
+            let date = try diaryViewModel.createDate()
+            dateDelegate?.sendDate(date)
+        } catch {
+            print("error")
+        }
     }
     
     private func setup() {

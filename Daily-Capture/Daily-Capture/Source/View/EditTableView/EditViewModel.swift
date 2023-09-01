@@ -9,7 +9,7 @@ final class EditViewModel {
     // MARK: - Properties
 
     private var diary: Diary
-    private var isNewDiary: Bool = false
+    var isNewDiary: Bool = false
     var viewTitle: BehaviorSubject<String> = .init(value: "새로운 일기")
     
     let selectedPictures: BehaviorSubject<[UIImage]> = .init(
@@ -115,6 +115,10 @@ final class EditViewModel {
         diary.weather = try self.weather.value()
 
         try diaryManager.update(self.diary)
+    }
+    
+    func createDate() throws -> Date {
+        return try createdAt.value()
     }
     
     private func setupDiary() {

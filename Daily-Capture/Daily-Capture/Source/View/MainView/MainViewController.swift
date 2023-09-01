@@ -95,9 +95,9 @@ final class MainViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         setupView()
-        viewModel.setupDiary(date: self.userSelectedDate!)
-        let dateComponents = userSelectedDate!.convertToDay()
-        calendarView.reloadDecorations(forDateComponents: [dateComponents], animated: true)
+//        viewModel.setupDiary(date: self.userSelectedDate!)
+//        let dateComponents = userSelectedDate!.convertToDay()
+//        calendarView.reloadDecorations(forDateComponents: [dateComponents], animated: true)
     }
     
     // MARK: - Methods
@@ -186,6 +186,7 @@ final class MainViewController: UIViewController {
         }
         
         if let editDiaryViewController {
+            editDiaryViewController.dateDelegate = self
             let navigationController: UINavigationController = .init(rootViewController: editDiaryViewController)
             self.present(navigationController, animated: true, completion: nil)
         } else {
@@ -205,6 +206,7 @@ final class MainViewController: UIViewController {
             .subscribe { diary in
                 let detailViewModel: DetailViewModel = .init(diary: diary)
                 let detailViewController: DetailViewController = .init(viewModel: detailViewModel)
+                detailViewController.dateDelegate = self
                 self.navigationController?.pushViewController(detailViewController, animated: true)
             }.disposed(by: disposeBag)
     }
@@ -328,5 +330,23 @@ extension MainViewController: UISearchBarDelegate {
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         viewModel.searchDiary(keyword: searchText)
+    }
+}
+
+extension MainViewController: DateSendableDelegate {
+    func sendDate(_ date: Date) {
+        reloadView(date: date)
+    }
+    
+    func reloadView(date: Date) {
+        viewModel.setupDiary(date: self.userSelectedDate!)
+        reloadCalendarView(date: self.userSelectedDate!)
+        reloadCalendarView(date: date)
+    }
+    
+    func reloadCalendarView(date: Date) {
+        let dateComponent = date.convertToDay()
+        
+        calendarView.reloadDecorations(forDateComponents: [dateComponent], animated: true)
     }
 }

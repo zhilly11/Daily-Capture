@@ -51,4 +51,8 @@ final class DetailViewModel {
         
         updateDiary(diary: diary)
     }
+    
+    func createDate() throws -> Date {
+        return try createdAt.value()
+    }
 }
