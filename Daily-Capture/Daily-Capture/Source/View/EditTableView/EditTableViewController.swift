@@ -54,6 +54,12 @@ final class EditTableViewController: UITableViewController {
         configure()
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(true)
+        
+        
+    }
+    
     // MARK: - Methods
 
     private func configure() {
@@ -352,12 +358,8 @@ extension EditTableViewController: PHPickerViewControllerDelegate {
     }
 }
 
-extension EditTableViewController: DataSendableDelegate {
-    func sendDate(image: UIImage?) {
-        self.viewModel.updateWeather(image: image)
-    }
-    
-    func sendDate(date: Date) {
+extension EditTableViewController: DateSendableDelegate {
+    func sendDate(_ date: Date) {
         self.viewModel.updateDate(date: date)
     }
 }

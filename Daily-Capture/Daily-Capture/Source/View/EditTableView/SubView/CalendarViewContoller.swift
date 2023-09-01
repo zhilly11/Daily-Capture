@@ -12,7 +12,7 @@ final class CalendarViewController: UIViewController {
 
     private let viewModel: CalendarViewModel
     private let disposeBag: DisposeBag = .init()
-    weak var delegate: DataSendableDelegate?
+    weak var delegate: DateSendableDelegate?
     
     // MARK: - UI Components
 
@@ -116,7 +116,7 @@ final class CalendarViewController: UIViewController {
     }
     
     private func tappedSaveButton() {
-        delegate?.sendDate(date: viewModel.getSelectedDate)
+        delegate?.sendDate(viewModel.getSelectedDate)
         dismiss(animated: true)
     }
 }

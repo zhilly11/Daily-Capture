@@ -3,7 +3,12 @@
 
 import UIKit
 
-protocol DataSendableDelegate: AnyObject {
-    func sendDate(image: UIImage?)
-    func sendDate(date: Date)
+//protocol ImageSendableDelegate: AnyObject {
+//    func sendImage(_ image: UIImage?)
+//}
+
+protocol DateSendableDelegate: AnyObject {
+    func sendDate(_ date: Date)
 }
+
+//protocol DataSendableDelegate: ImageSendableDelegate, DateSendableDelegate {}
