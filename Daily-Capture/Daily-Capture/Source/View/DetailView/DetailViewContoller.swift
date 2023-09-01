@@ -157,7 +157,6 @@ final class DetailViewController: UIViewController {
         button.setTitle("편집", for: .normal)
         button.setTitleColor(.systemBlue, for: .normal)
         button.addAction(UIAction(handler: { _ in
-//            self.presentEditViewController(with: self.diaryViewModel.diary)
             self.tappedEditButton()
         }), for: .touchUpInside)
         
