@@ -187,7 +187,9 @@ final class MainViewController: UIViewController {
             let navigationController: UINavigationController = .init(rootViewController: editDiaryViewController)
             self.present(navigationController, animated: true, completion: nil)
         } else {
-            //TODO: 오류처리
+            let alert: UIAlertController = AlertFactory.make(.failure(title: "새로운 일기 쓰기 실패",
+                                                                      message: "나중에 다시 시도해주세요"))
+            self.present(alert, animated: true)
         }
     }
     
@@ -228,7 +230,13 @@ final class MainViewController: UIViewController {
             $0.leading.trailing.bottom.equalTo(self.view)
         }
         
-        viewModel.searchDiary(keyword: "")
+        do {
+            try viewModel.searchDiary(keyword: "")
+        } catch {
+            let alert: UIAlertController = AlertFactory.make(.failure(title: "일기 검색 실패",
+                                                                      message: "나중에 다시 시도해주세요."))
+            self.present(alert, animated: true)
+        }
     }
     
     private func endSearch() {
@@ -326,7 +334,13 @@ extension MainViewController: UISearchBarDelegate {
     }
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        viewModel.searchDiary(keyword: searchText)
+        do {
+            try viewModel.searchDiary(keyword: "")
+        } catch {
+            let alert: UIAlertController = AlertFactory.make(.failure(title: "일기 검색 실패",
+                                                                      message: "나중에 다시 시도해주세요."))
+            self.present(alert, animated: true)
+        }
     }
 }
 

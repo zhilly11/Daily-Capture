@@ -26,25 +26,19 @@ final class MainViewModel {
             let diaries: [Diary] = try diaryManager.fetchObjects(date: createAt)
             diaryList.onNext(diaries)
         } catch {
-            // TODO: 오류처리 구현 ex) Alert으로 사용자에게 알려주기
-            NSLog("Diaries Fetch Failed")
+            fatalError("Diaries Fetch Failed")
         }
     }
     
-    func searchDiary(keyword: String) {
-        do {
-            var diaries: [Diary]
-            
-            if keyword == "" {
-                diaries = try diaryManager.fetchObjects()
-            } else {
-                diaries = try diaryManager.search(keyword: keyword)
-            }
-            
-            diaryList.onNext(diaries)
-        } catch {
-            // TODO: 오류처리 구현 ex) Alert으로 사용자에게 알려주기
-            NSLog("Diaries Fetch Failed")
+    func searchDiary(keyword: String) throws {
+        var diaries: [Diary]
+        
+        if keyword == "" {
+            diaries = try diaryManager.fetchObjects()
+        } else {
+            diaries = try diaryManager.search(keyword: keyword)
         }
+        
+        diaryList.onNext(diaries)
     }
 }

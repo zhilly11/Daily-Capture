@@ -263,7 +263,9 @@ final class DetailViewController: UIViewController {
             let navigationController: UINavigationController = .init(rootViewController: editDiaryViewController)
             self.present(navigationController, animated: true, completion: nil)
         } else {
-            //TODO: 오류처리
+            let alert: UIAlertController = AlertFactory.make(.failure(title: "새로운 일기 쓰기 실패",
+                                                                      message: "나중에 다시 시도해주세요"))
+            self.present(alert, animated: true)
         }
     }
     
