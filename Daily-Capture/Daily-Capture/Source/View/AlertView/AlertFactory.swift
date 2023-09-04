@@ -1,0 +1,29 @@
+//  Daily-Capture - AlertFactory.swift
+//  Created by zhilly, vetto on 2023/09/04
+
+import UIKit
+
+enum AlertKind {
+    case failure(title: String?, message: String?)
+    case exit
+}
+
+final class AlertFactory {
+    private enum Constant {
+        static let exitAlertTitle: String = "종료"
+        static let exitAlertMessage: String = "다이어리 불러오기 실패하여 앱을 종료합니다."
+    }
+    
+    static func make(_ alertKind: AlertKind) -> UIAlertController {
+        switch alertKind {
+        case .failure(let title, let message):
+            return FailureAlert(title: title,
+                                message: message,
+                                preferredStyle: .alert)
+        case .exit:
+            return ExitAlert(title: Constant.exitAlertTitle,
+                             message: Constant.exitAlertMessage,
+                             preferredStyle: .alert)
+        }
+    }
+}

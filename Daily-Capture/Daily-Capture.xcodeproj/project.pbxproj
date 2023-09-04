@@ -14,6 +14,9 @@
 		981B437C2A9498D6000F25CA /* DetailViewContoller.swift in Sources */ = {isa = PBXBuildFile; fileRef = 981B437B2A9498D6000F25CA /* DetailViewContoller.swift */; };
 		981B437E2A9498FC000F25CA /* DetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 981B437D2A9498FC000F25CA /* DetailViewModel.swift */; };
 		981B43802A9F4412000F25CA /* DiarySendableDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 981B437F2A9F4412000F25CA /* DiarySendableDelegate.swift */; };
+		B41DD34B2AA55DDF00D53B1C /* AlertFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = B41DD34A2AA55DDF00D53B1C /* AlertFactory.swift */; };
+		B41DD34D2AA5645300D53B1C /* FailureAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = B41DD34C2AA5645300D53B1C /* FailureAlert.swift */; };
+		B41DD34F2AA5646700D53B1C /* ExitAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = B41DD34E2AA5646700D53B1C /* ExitAlert.swift */; };
 		B44F9F3C2A83B109001CA0D9 /* EditTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B44F9F3A2A83B109001CA0D9 /* EditTableViewController.swift */; };
 		B44F9F412A83BAAE001CA0D9 /* EditTableViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B44F9F402A83BAAE001CA0D9 /* EditTableViewController.storyboard */; };
 		B44F9F432A841A1D001CA0D9 /* EditViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B44F9F422A841A1D001CA0D9 /* EditViewModel.swift */; };
@@ -48,6 +51,9 @@
 		981B437B2A9498D6000F25CA /* DetailViewContoller.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewContoller.swift; sourceTree = "<group>"; };
 		981B437D2A9498FC000F25CA /* DetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewModel.swift; sourceTree = "<group>"; };
 		981B437F2A9F4412000F25CA /* DiarySendableDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiarySendableDelegate.swift; sourceTree = "<group>"; };
+		B41DD34A2AA55DDF00D53B1C /* AlertFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertFactory.swift; sourceTree = "<group>"; };
+		B41DD34C2AA5645300D53B1C /* FailureAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FailureAlert.swift; sourceTree = "<group>"; };
+		B41DD34E2AA5646700D53B1C /* ExitAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExitAlert.swift; sourceTree = "<group>"; };
 		B44F9F3A2A83B109001CA0D9 /* EditTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditTableViewController.swift; sourceTree = "<group>"; };
 		B44F9F402A83BAAE001CA0D9 /* EditTableViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = EditTableViewController.storyboard; sourceTree = "<group>"; };
 		B44F9F422A841A1D001CA0D9 /* EditViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditViewModel.swift; sourceTree = "<group>"; };
@@ -101,6 +107,16 @@
 				981B437D2A9498FC000F25CA /* DetailViewModel.swift */,
 			);
 			path = DetailView;
+			sourceTree = "<group>";
+		};
+		B41DD3492AA55DC800D53B1C /* AlertView */ = {
+			isa = PBXGroup;
+			children = (
+				B41DD34A2AA55DDF00D53B1C /* AlertFactory.swift */,
+				B41DD34C2AA5645300D53B1C /* FailureAlert.swift */,
+				B41DD34E2AA5646700D53B1C /* ExitAlert.swift */,
+			);
+			path = AlertView;
 			sourceTree = "<group>";
 		};
 		B44F9F392A83B028001CA0D9 /* EditTableView */ = {
@@ -256,6 +272,7 @@
 				B45C26D32A4DA1CF009333AB /* MainView */,
 				B44F9F392A83B028001CA0D9 /* EditTableView */,
 				981B437A2A94988D000F25CA /* DetailView */,
+				B41DD3492AA55DC800D53B1C /* AlertView */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -397,11 +414,14 @@
 				981B437E2A9498FC000F25CA /* DetailViewModel.swift in Sources */,
 				B45C26BF2A4DA163009333AB /* SceneDelegate.swift in Sources */,
 				B4B3BA062A5553940096A206 /* CoreDataManageable.swift in Sources */,
+				B41DD34B2AA55DDF00D53B1C /* AlertFactory.swift in Sources */,
 				B44F9F3C2A83B109001CA0D9 /* EditTableViewController.swift in Sources */,
 				B4FC76112A4EB0C800C19FF0 /* Diary.swift in Sources */,
 				B4FC76182A4EBA7400C19FF0 /* ReusableView.swift in Sources */,
 				B493085E2A55425300D8AB64 /* CoreDataDiary.xcdatamodeld in Sources */,
 				B4FC76152A4EBA1E00C19FF0 /* DiaryTableViewCell.swift in Sources */,
+				B41DD34D2AA5645300D53B1C /* FailureAlert.swift in Sources */,
+				B41DD34F2AA5646700D53B1C /* ExitAlert.swift in Sources */,
 				B4B3BA092A555A000096A206 /* CoreDataError.swift in Sources */,
 				B4B3BA0D2A557C570096A206 /* Date+.swift in Sources */,
 				B44F9F452A84DB2A001CA0D9 /* Constant.swift in Sources */,
