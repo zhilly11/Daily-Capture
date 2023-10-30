@@ -11,17 +11,12 @@ import Then
 
 final class MainViewController: UIViewController {
     // MARK: - Properties
-    private var userSelectedDate: Date? {
-        didSet {
-            if let date = userSelectedDate {
-                viewModel.setupDiary(date: date)
-            }
-        }
-    }
+    
     private let viewModel: MainViewModel
     private let disposeBag: DisposeBag = .init()
     
     // MARK: - UI Components
+    
     private let calendarView: DiaryCalendarView = .init()
     
     private let searchBar = UISearchBar().then {
@@ -125,7 +120,7 @@ final class MainViewController: UIViewController {
         dateSelection.setSelected(DateComponents(year: year, month: month, day: day),
                                   animated: false)
         calendarView.selectionBehavior = dateSelection
-        userSelectedDate = currentDate
+        viewModel.userSelectedDate = currentDate
     }
     
     private func setupAddDiaryButton() {
@@ -233,7 +228,7 @@ final class MainViewController: UIViewController {
             $0.leading.trailing.bottom.equalTo(self.view)
         }
         
-        if let date = userSelectedDate {
+        if let date = viewModel.userSelectedDate {
             viewModel.setupDiary(date: date)
         }
     }
@@ -251,7 +246,7 @@ extension MainViewController: UICalendarSelectionSingleDateDelegate {
         didSelectDate dateComponents: DateComponents?
     ) {
         if let nowSelectedDate = dateComponents {
-            self.userSelectedDate = nowSelectedDate.date
+            viewModel.userSelectedDate = nowSelectedDate.date
         }
     }
 }
@@ -318,8 +313,8 @@ extension MainViewController: DateSendableDelegate {
     }
     
     func reloadView(date: Date) {
-        viewModel.setupDiary(date: self.userSelectedDate!)
-        reloadCalendarView(date: self.userSelectedDate!)
+        viewModel.setupDiary(date: viewModel.userSelectedDate!)
+        reloadCalendarView(date: viewModel.userSelectedDate!)
         reloadCalendarView(date: date)
     }
     

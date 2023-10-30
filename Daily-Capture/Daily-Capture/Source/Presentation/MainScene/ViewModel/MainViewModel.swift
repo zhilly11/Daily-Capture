@@ -8,6 +8,14 @@ import RxSwift
 final class MainViewModel {
     // MARK: - Properties
 
+    var userSelectedDate: Date? {
+        didSet {
+            if let date = userSelectedDate {
+                self.setupDiary(date: date)
+            }
+        }
+    }
+    
     let diaryList: BehaviorSubject<[Diary]> = .init(value: [])
     private let disposeBag: DisposeBag = .init()
     private let diaryManager: DiaryManager = DiaryManager.shared

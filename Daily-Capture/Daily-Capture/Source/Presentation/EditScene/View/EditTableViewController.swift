@@ -11,16 +11,15 @@ import Then
 
 final class EditTableViewController: UITableViewController {
     // MARK: - Properties
-
+    
     private let viewModel: EditViewModel
     private var disposeBag: DisposeBag = .init()
-    private var selections: [String: PHPickerResult] = [:]
-    private var selectedAssetIdentifiers: [String] = []
+    
     weak var diaryDelegate: DiarySendableDelegate?
     weak var dateDelegate: DateSendableDelegate?
     
     // MARK: - UI Components
-
+    
     @IBOutlet weak private var imageContainerView: UIView!
     @IBOutlet weak private var editTableView: UITableView!
     @IBOutlet weak private var titleTextField: UITextField!
@@ -47,10 +46,9 @@ final class EditTableViewController: UITableViewController {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
     
     // MARK: - View Life Cycle
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         configure()
@@ -68,7 +66,7 @@ final class EditTableViewController: UITableViewController {
     }
     
     // MARK: - Methods
-
+    
     private func configure() {
         setupViews()
         setupNavigationItem()
@@ -264,7 +262,7 @@ final class EditTableViewController: UITableViewController {
             configuration.selectionLimit = 5
             configuration.filter = .any(of: [.images])
             configuration.preferredAssetRepresentationMode = .current
-            configuration.preselectedAssetIdentifiers = selectedAssetIdentifiers
+            configuration.preselectedAssetIdentifiers = viewModel.selectedAssetIdentifiers
             
             return configuration
         }()
@@ -316,6 +314,7 @@ final class EditTableViewController: UITableViewController {
         let navigationViewController: UINavigationController = .init(
             rootViewController: calendarViewController
         )
+        
         calendarViewController.delegate = self
         
         self.present(navigationViewController, animated: true)
@@ -325,16 +324,19 @@ final class EditTableViewController: UITableViewController {
 extension EditTableViewController: PHPickerViewControllerDelegate {
     func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
         picker.dismiss(animated: true)
+        
         var newSelections: [String: PHPickerResult] = [:]
+        
         for result in results {
             if let identifier = result.assetIdentifier {
-                newSelections[identifier] = selections[identifier] ?? result
+                newSelections[identifier] = viewModel.selections[identifier] ?? result
             }
         }
-        selections = newSelections
-        selectedAssetIdentifiers = results.compactMap { $0.assetIdentifier }
         
-        if selectedAssetIdentifiers.count != 0 {
+        viewModel.selections = newSelections
+        viewModel.selectedAssetIdentifiers = results.compactMap { $0.assetIdentifier }
+        
+        if viewModel.selectedAssetIdentifiers.count != 0 {
             updatePictures()
         }
     }
@@ -343,7 +345,7 @@ extension EditTableViewController: PHPickerViewControllerDelegate {
         let dispatchGroup: DispatchGroup = .init()
         var imageDictionary: [String: UIImage] = [:]
         
-        for (identifier, result) in selections {
+        for (identifier, result) in viewModel.selections {
             dispatchGroup.enter()
             let itemProvider: NSItemProvider = result.itemProvider
             
@@ -360,7 +362,7 @@ extension EditTableViewController: PHPickerViewControllerDelegate {
         dispatchGroup.notify(queue: DispatchQueue.main) {
             var pictures: [UIImage] = []
             
-            for identifier in self.selectedAssetIdentifiers {
+            for identifier in self.viewModel.selectedAssetIdentifiers {
                 if let image = imageDictionary[identifier] {
                     pictures.append(image)
                 }

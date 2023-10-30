@@ -2,6 +2,7 @@
 //  Created by zhilly, vetto on 2023/08/10
 
 import Foundation
+import PhotosUI
 
 import RxSwift
 
@@ -10,11 +11,10 @@ final class EditViewModel {
 
     private var diary: Diary
     var isNewDiary: Bool = false
+    var selections: [String: PHPickerResult] = [:]
+    var selectedAssetIdentifiers: [String] = []
+    let selectedPictures: BehaviorSubject<[UIImage]> = .init(value: [UIImage(systemName: "photo.on.rectangle")!])
     var viewTitle: BehaviorSubject<String> = .init(value: "새로운 일기")
-    
-    let selectedPictures: BehaviorSubject<[UIImage]> = .init(
-        value: [UIImage(systemName: "photo.on.rectangle")!]
-    )
     let title: BehaviorSubject<String> = .init(value: "")
     let content: BehaviorSubject<String?> = .init(value: "내용을 입력하세요.")
     let createdAt: BehaviorSubject<Date> = .init(value: Date())
