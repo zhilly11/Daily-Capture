@@ -26,6 +26,7 @@
 		B45C26C12A4DA163009333AB /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B45C26C02A4DA163009333AB /* MainViewController.swift */; };
 		B45C26C62A4DA164009333AB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B45C26C52A4DA164009333AB /* Assets.xcassets */; };
 		B45C26C92A4DA164009333AB /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B45C26C72A4DA164009333AB /* LaunchScreen.storyboard */; };
+		B48B970D2AEF3B71007FBF13 /* DiaryCalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B48B970C2AEF3B71007FBF13 /* DiaryCalendarView.swift */; };
 		B493085E2A55425300D8AB64 /* CoreDataDiary.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = B493085C2A55425300D8AB64 /* CoreDataDiary.xcdatamodeld */; };
 		B4B3B9FD2A5546A50096A206 /* DiaryData+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4B3B9FB2A5546A50096A206 /* DiaryData+CoreDataClass.swift */; };
 		B4B3B9FE2A5546A50096A206 /* DiaryData+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4B3B9FC2A5546A50096A206 /* DiaryData+CoreDataProperties.swift */; };
@@ -65,6 +66,7 @@
 		B45C26C52A4DA164009333AB /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B45C26C82A4DA164009333AB /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		B45C26CA2A4DA164009333AB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		B48B970C2AEF3B71007FBF13 /* DiaryCalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryCalendarView.swift; sourceTree = "<group>"; };
 		B493085D2A55425300D8AB64 /* CoreDataDiary.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = CoreDataDiary.xcdatamodel; sourceTree = "<group>"; };
 		B4B3B9FB2A5546A50096A206 /* DiaryData+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DiaryData+CoreDataClass.swift"; sourceTree = "<group>"; };
 		B4B3B9FC2A5546A50096A206 /* DiaryData+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DiaryData+CoreDataProperties.swift"; sourceTree = "<group>"; };
@@ -207,6 +209,14 @@
 			path = MainView;
 			sourceTree = "<group>";
 		};
+		B48B970B2AEF3B4E007FBF13 /* CustomView */ = {
+			isa = PBXGroup;
+			children = (
+				B48B970C2AEF3B71007FBF13 /* DiaryCalendarView.swift */,
+			);
+			path = CustomView;
+			sourceTree = "<group>";
+		};
 		B4B3BA012A5553570096A206 /* Common */ = {
 			isa = PBXGroup;
 			children = (
@@ -273,6 +283,7 @@
 				B44F9F392A83B028001CA0D9 /* EditTableView */,
 				981B437A2A94988D000F25CA /* DetailView */,
 				B41DD3492AA55DC800D53B1C /* AlertView */,
+				B48B970B2AEF3B4E007FBF13 /* CustomView */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -424,6 +435,7 @@
 				B41DD34F2AA5646700D53B1C /* ExitAlert.swift in Sources */,
 				B4B3BA092A555A000096A206 /* CoreDataError.swift in Sources */,
 				B4B3BA0D2A557C570096A206 /* Date+.swift in Sources */,
+				B48B970D2AEF3B71007FBF13 /* DiaryCalendarView.swift in Sources */,
 				B44F9F452A84DB2A001CA0D9 /* Constant.swift in Sources */,
 				B4B3BA032A5553680096A206 /* CoreDataManager.swift in Sources */,
 				B44F9F432A841A1D001CA0D9 /* EditViewModel.swift in Sources */,
