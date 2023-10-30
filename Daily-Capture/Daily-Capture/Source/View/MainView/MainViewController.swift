@@ -2,11 +2,12 @@
 //  Created by zhilly, vetto on 2023/06/29
 
 import UIKit
-
 import Foundation
-import SnapKit
-import RxSwift
+
 import RxCocoa
+import RxSwift
+import SnapKit
+import Then
 
 final class MainViewController: UIViewController {
     // MARK: - Properties
@@ -21,38 +22,24 @@ final class MainViewController: UIViewController {
     private let disposeBag: DisposeBag = .init()
     
     // MARK: - UI Components
-    
-    private let searchBar: UISearchBar = {
-        let searchBar: UISearchBar = .init()
-        let backgroundImage: UIImage = .init()
-        
-        searchBar.backgroundImage = backgroundImage
-        searchBar.placeholder = "검색"
-        searchBar.setValue("취소", forKey: "cancelButtonText")
-        
-        return searchBar
-    }()
-    
     private let calendarView: DiaryCalendarView = .init()
     
-    private let tableView: UITableView = {
-        let tableView: UITableView = .init(frame: .zero, style: .insetGrouped)
-        
-        tableView.rowHeight = UITableView.automaticDimension
-        tableView.estimatedRowHeight = 100
-        tableView.register(DiaryTableViewCell.self,
-                           forCellReuseIdentifier: DiaryTableViewCell.reuseIdentifier)
-        
-        return tableView
-    }()
+    private let searchBar = UISearchBar().then {
+        $0.backgroundImage = UIImage()
+        $0.placeholder = "검색"
+        $0.setValue("취소", forKey: "cancelButtonText")
+    }
     
-    private let addDiaryButton: UIButton = {
-        let button: UIButton = .init(type: .contactAdd)
-        
-        button.setImage(UIImage(systemName: "plus"), for: .normal)
-        
-        return button
-    }()
+    private let tableView = UITableView().then {
+        $0.rowHeight = UITableView.automaticDimension
+        $0.estimatedRowHeight = 100
+        $0.register(DiaryTableViewCell.self,
+                    forCellReuseIdentifier: DiaryTableViewCell.reuseIdentifier)
+    }
+    
+    private let addDiaryButton = UIButton(type: .contactAdd).then {
+        $0.setImage(UIImage(systemName: "plus"), for: .normal)
+    }
     
     // MARK: - Initializer
     

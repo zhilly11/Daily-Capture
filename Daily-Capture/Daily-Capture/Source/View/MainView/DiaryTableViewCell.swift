@@ -4,71 +4,50 @@
 import UIKit
 
 import SnapKit
+import Then
 
 final class DiaryTableViewCell: UITableViewCell, ReusableView {
     
     // MARK: - UI Components
     
-    private let thumbnail: UIImageView = {
-        let imageView: UIImageView = .init(image: UIImage(systemName: "rays"))
-        
-        imageView.layer.cornerRadius = 10
-        imageView.clipsToBounds = true
-        
-        return imageView
-    }()
+    private let thumbnail = UIImageView().then {
+        $0.image = UIImage(systemName: "rays")
+        $0.layer.cornerRadius = 10
+        $0.clipsToBounds = true
+    }
     
-    private let titleLabel: UILabel = {
-        let label: UILabel = .init()
-        
-        label.textColor = .black
-        label.textAlignment = .left
-        label.font = .preferredFont(forTextStyle: .title2)
-        
-        return label
-    }()
+    private let titleLabel = UILabel().then {
+        $0.textColor = .black
+        $0.textAlignment = .left
+        $0.font = .preferredFont(forTextStyle: .title2)
+    }
     
-    private let bodyLabel: UILabel = {
-        let label: UILabel = .init()
-        
-        label.textColor = .black
-        label.textAlignment = .left
-        label.font = .preferredFont(forTextStyle: .body)
-        label.lineBreakMode = .byWordWrapping
-        label.numberOfLines = 5
-        
-        return label
-    }()
+    private let bodyLabel = UILabel().then {
+        $0.textColor = .black
+        $0.textAlignment = .left
+        $0.font = .preferredFont(forTextStyle: .body)
+        $0.lineBreakMode = .byWordWrapping
+        $0.numberOfLines = 5
+    }
     
-    private let weatherImage: UIImageView = {
-        let imageView: UIImageView = .init(image: UIImage(systemName: "rays"))
-        
-        imageView.layer.cornerRadius = 10
-        imageView.clipsToBounds = true
-        
-        return imageView
-    }()
+    private let weatherImage = UIImageView().then {
+        $0.image = UIImage(systemName: "rays")
+        $0.layer.cornerRadius = 10
+        $0.clipsToBounds = true
+    }
     
-    private let createdAtLabel: UILabel = {
-        let label: UILabel = .init()
-        
-        label.text = "0000.\n00.00."
-        label.textColor = .black
-        label.textAlignment = .right
-        label.numberOfLines = 2
-        label.font = .preferredFont(forTextStyle: .caption2)
-        
-        return label
-    }()
+    private let createdAtLabel = UILabel().then {
+        $0.text = "0000.\n00.00."
+        $0.textColor = .black
+        $0.textAlignment = .right
+        $0.font = .preferredFont(forTextStyle: .caption2)
+        $0.numberOfLines = 2
+    }
     
-    private let titleAndBodyStackView: UIStackView = {
-        let stackView: UIStackView = .init()
-        
-        stackView.axis = .vertical
-        stackView.spacing = 8
-        
-        return stackView
-    }()
+    private let titleAndBodyStackView = UIStackView().then {
+        $0.axis = .vertical
+        $0.spacing = 8
+    }
     
     // MARK: - Initializer
     

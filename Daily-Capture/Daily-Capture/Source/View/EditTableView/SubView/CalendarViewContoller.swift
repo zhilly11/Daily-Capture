@@ -3,9 +3,9 @@
 
 import UIKit
 
-import SnapKit
-import RxSwift
 import RxCocoa
+import RxSwift
+import SnapKit
 
 final class CalendarViewController: UIViewController {
     // MARK: - Properties
