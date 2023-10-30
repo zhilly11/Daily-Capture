@@ -298,10 +298,12 @@ extension MainViewController: UISearchBarDelegate {
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         do {
-            try viewModel.searchDiary(keyword: "")
+            try viewModel.searchDiary(keyword: searchText)
         } catch {
-            let alert: UIAlertController = AlertFactory.make(.failure(title: "일기 검색 실패",
-                                                                      message: "나중에 다시 시도해주세요."))
+            let alert: UIAlertController = AlertFactory.make(
+                .failure(title: "일기 검색 실패", message: "나중에 다시 시도해주세요.")
+            )
+            
             self.present(alert, animated: true)
         }
     }
