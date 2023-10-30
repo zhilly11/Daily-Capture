@@ -1,9 +1,8 @@
 //  Daily-Capture - DataSendableDelegate.swift
 //  Created by zhilly, vetto on 2023/07/31
 
-import UIKit
+import Foundation
 
-protocol DataSendableDelegate: AnyObject {
-    func sendDate(image: UIImage?)
-    func sendDate(date: Date)
+protocol DateSendableDelegate: AnyObject {
+    func sendDate(_ date: Date)
 }

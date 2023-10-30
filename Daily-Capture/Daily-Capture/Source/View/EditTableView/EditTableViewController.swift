@@ -2,20 +2,26 @@
 //  Created by zhilly, vetto on 2023/08/09
 
 import UIKit
-import RxCocoa
-import RxSwift
-import SnapKit
 import PhotosUI
 
+import SnapKit
+import RxSwift
+import RxCocoa
+
 final class EditTableViewController: UITableViewController {
-    
-    private let viewModel: EditViewModel = .init()
+    // MARK: - Properties
+
+    private let viewModel: EditViewModel
     private var disposeBag: DisposeBag = .init()
-    
     private var selections: [String: PHPickerResult] = [:]
     private var selectedAssetIdentifiers: [String] = []
+    weak var diaryDelegate: DiarySendableDelegate?
+    weak var dateDelegate: DateSendableDelegate?
     
+    // MARK: - UI Components
+
     @IBOutlet weak private var imageContainerView: UIView!
+    @IBOutlet weak private var editTableView: UITableView!
     @IBOutlet weak private var titleTextField: UITextField!
     @IBOutlet weak private var contentTextView: UITextView!
     @IBOutlet weak private var weatherSelectButton: UIButton!
@@ -24,48 +30,82 @@ final class EditTableViewController: UITableViewController {
     @IBOutlet weak private var pictureSelectCell: UITableViewCell!
     @IBOutlet weak private var createdAtButton: UIButton!
     
+    // MARK: - Initializer
+    
+    init(viewModel: EditViewModel) {
+        self.viewModel = viewModel
+        super.init(nibName: "EditTableViewController", bundle: nil)
+    }
+    
+    init?(_ coder: NSCoder, _ viewModel: EditViewModel) {
+        self.viewModel = viewModel
+        super.init(coder: coder)
+    }
+    
+    @available(*, unavailable)
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+    
+    // MARK: - View Life Cycle
+
     override func viewDidLoad() {
         super.viewDidLoad()
         configure()
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(true)
+        
+        do {
+            let date = try viewModel.createDate()
+            dateDelegate?.sendDate(date)
+        } catch {
+            print("error")
+        }
+    }
+    
+    // MARK: - Methods
+
     private func configure() {
         setupViews()
         setupNavigationItem()
         setupLayout()
-        setupText()
+        setupTextViewPlaceHolder()
         setupWeatherSelectButton()
         setupCellTappedAction()
         setupBindData()
-    }
-    
-    private func setupCellTappedAction() {
-        let tapGestureRecognizer: UITapGestureRecognizer = .init(
-            target: self,
-            action: #selector(pictureSelectCellTapped(_:))
-        )
-        pictureSelectCell.addGestureRecognizer(tapGestureRecognizer)
+        setupNumberOfPage()
     }
     
     private func setupViews() {
         self.tableView.backgroundColor = .systemGray6
+        self.isModalInPresentation = true
+        self.editTableView.keyboardDismissMode = .onDrag
+        
+        if !viewModel.isNewDiary {
+            contentTextView.textColor = .black
+        }
     }
     
     private func setupNavigationItem() {
-        self.title = "새로운 일기"
+        let saveButton: UIButton = UIButton(type: .custom)
+        saveButton.setTitle("저장", for: .normal)
+        saveButton.setTitleColor(.systemBlue, for: .normal)
+        saveButton.addAction(UIAction(handler: { _ in
+            self.tappedSaveButton()
+        }), for: .touchUpInside)
         
-        let cancelButton = UIBarButtonItem(title: "뒤로",
-                                           style: .plain,
-                                           target: self,
-                                           action: #selector(cancelButtonTapped))
+        let cancelButton: UIButton = UIButton(type: .custom)
+        cancelButton.setTitle("취소", for: .normal)
+        cancelButton.setTitleColor(.systemBlue, for: .normal)
+        cancelButton.addAction(UIAction(handler: { _ in
+            self.tappedCancelButton()
+        }), for: .touchUpInside)
         
-        let saveButton = UIBarButtonItem(title: "저장",
-                                         style: .plain,
-                                         target: self,
-                                         action: #selector(saveButtonTapped))
-        
-        navigationItem.leftBarButtonItem = cancelButton
-        navigationItem.rightBarButtonItem = saveButton
+        navigationItem.rightBarButtonItem = UIBarButtonItem(customView: saveButton)
+        navigationItem.leftBarButtonItem = UIBarButtonItem(customView: cancelButton)
         navigationItem.rightBarButtonItem?.isEnabled = false
     }
     
@@ -84,15 +124,31 @@ final class EditTableViewController: UITableViewController {
         }
     }
     
+    private func setupTextViewPlaceHolder(){
+        contentTextView.rx.didBeginEditing
+            .subscribe(onNext: { [self] in
+                if(contentTextView.text == "내용을 입력하세요."){
+                    contentTextView.text = nil
+                    contentTextView.textColor = .black
+                }}).disposed(by: disposeBag)
+        
+        contentTextView.rx.didEndEditing
+            .subscribe(onNext: { [self] in
+                if(contentTextView.text == nil || contentTextView.text == ""){
+                    contentTextView.text = "내용을 입력하세요."
+                    contentTextView.textColor = .systemGray3
+                }}).disposed(by: disposeBag)
+    }
+    
     private func setupWeatherSelectButton() {
         let popUpButtonClosure: UIActionHandler = { [weak self] action in
-            self?.viewModel.updateWeather(image: UIImage(named: action.title))
+            self?.viewModel.updateWeather(image: action.image)
         }
         
         var weatherMenu: [UIAction] = .init()
         
         Constant.weatherNameList.forEach { weatherName in
-            weatherMenu.append(UIAction(title: weatherName,
+            weatherMenu.append(UIAction(title: Constant.weatherDescription[weatherName] ?? .init(),
                                         image: UIImage(named: weatherName),
                                         handler: popUpButtonClosure))
         }
@@ -101,7 +157,20 @@ final class EditTableViewController: UITableViewController {
         weatherSelectButton.showsMenuAsPrimaryAction = true
     }
     
+    private func setupCellTappedAction() {
+        let tapGestureRecognizer: UITapGestureRecognizer = .init(
+            target: self,
+            action: #selector(pictureSelectCellTapped(_:))
+        )
+        
+        pictureSelectCell.addGestureRecognizer(tapGestureRecognizer)
+    }
+    
     private func setupBindData() {
+        viewModel.viewTitle
+            .bind(to: self.rx.title)
+            .disposed(by: disposeBag)
+        
         viewModel.title
             .bind(to: titleTextField.rx.text)
             .disposed(by: disposeBag)
@@ -140,7 +209,10 @@ final class EditTableViewController: UITableViewController {
         viewModel.isSavable
             .bind(to: saveButton.rx.isEnabled)
             .disposed(by: disposeBag)
-        
+    }
+    
+    private func setupNumberOfPage() {
+        pageControl.numberOfPages = viewModel.numberOfPictures
     }
     
     private func configureImageScrollView(pictures: [UIImage]) {
@@ -155,8 +227,8 @@ final class EditTableViewController: UITableViewController {
         imageScrollView.contentSize.height = contentViewWidth
         
         for index in 0..<pictures.count {
-            let imageView = UIImageView()
-            let xPosition = contentViewWidth * CGFloat(index)
+            let imageView: UIImageView = .init()
+            let xPosition: CGFloat = contentViewWidth * CGFloat(index)
             
             imageView.contentMode = .scaleAspectFit
             imageView.frame = CGRect(x: xPosition,
@@ -171,7 +243,7 @@ final class EditTableViewController: UITableViewController {
     
     override func scrollViewDidScroll(_ scrollView: UIScrollView) {
         if scrollView == imageScrollView {
-            let position = imageScrollView.contentOffset.x / imageScrollView.frame.size.width
+            let position: CGFloat = imageScrollView.contentOffset.x / imageScrollView.frame.size.width
             selectedPage(currentPage: Int(position))
         }
     }
@@ -193,7 +265,7 @@ final class EditTableViewController: UITableViewController {
             return configuration
         }()
         
-        let picker = PHPickerViewController(configuration: configuration)
+        let picker: PHPickerViewController = .init(configuration: configuration)
         
         picker.delegate = self
         
@@ -204,8 +276,9 @@ final class EditTableViewController: UITableViewController {
         pageControl.currentPage = currentPage
     }
     
-    @objc func cancelButtonTapped() {
+    private func tappedCancelButton() {
         let defaultAction: UIAlertAction = .init(title: "변경사항 폐기", style: .destructive) { _ in
+            self.isModalInPresentation = false
             self.dismiss(animated: true)
         }
         let cancelAction: UIAlertAction = .init(title: "계속 편집하기", style: .cancel, handler: nil)
@@ -214,12 +287,15 @@ final class EditTableViewController: UITableViewController {
                                              preferredStyle: .actionSheet)
         
         [defaultAction, cancelAction].forEach(alert.addAction(_:))
+        
         present(alert, animated: true)
     }
     
-    @objc func saveButtonTapped() {
+    private func tappedSaveButton() {
         do {
+            try diaryDelegate?.update(of: viewModel.createChangedDairy())
             try viewModel.saveDiary()
+            self.isModalInPresentation = false
             dismiss(animated: true)
         } catch {
             print(error.localizedDescription.description)
@@ -254,16 +330,18 @@ extension EditTableViewController: PHPickerViewControllerDelegate {
         selections = newSelections
         selectedAssetIdentifiers = results.compactMap { $0.assetIdentifier }
         
-        updatePictures()
+        if selectedAssetIdentifiers.count != 0 {
+            updatePictures()
+        }
     }
     
     private func updatePictures() {
-        let dispatchGroup = DispatchGroup()
+        let dispatchGroup: DispatchGroup = .init()
         var imageDictionary: [String: UIImage] = [:]
         
         for (identifier, result) in selections {
             dispatchGroup.enter()
-            let itemProvider = result.itemProvider
+            let itemProvider: NSItemProvider = result.itemProvider
             
             if itemProvider.canLoadObject(ofClass: UIImage.self) {
                 itemProvider.loadObject(ofClass: UIImage.self) { loadImage, error in
@@ -290,30 +368,8 @@ extension EditTableViewController: PHPickerViewControllerDelegate {
     }
 }
 
-extension EditTableViewController: DataSendableDelegate {
-    func sendDate(image: UIImage?) {
-        self.viewModel.updateWeather(image: image)
-    }
-    
-    func sendDate(date: Date) {
+extension EditTableViewController: DateSendableDelegate {
+    func sendDate(_ date: Date) {
         self.viewModel.updateDate(date: date)
-    }
-}
-
-extension EditTableViewController {
-    func setupText(){
-        contentTextView.rx.didBeginEditing
-            .subscribe(onNext: { [self] in
-                if(contentTextView.text == "내용을 입력하세요." ){
-                    contentTextView.text = nil
-                    contentTextView.textColor = .black
-                }}).disposed(by: disposeBag)
-        
-        contentTextView.rx.didEndEditing
-            .subscribe(onNext: { [self] in
-                if(contentTextView.text == nil || contentTextView.text == ""){
-                    contentTextView.text = "내용을 입력하세요."
-                    contentTextView.textColor = .systemGray3
-                }}).disposed(by: disposeBag)
     }
 }

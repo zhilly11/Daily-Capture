@@ -29,4 +29,11 @@ extension Date {
         let endOfDay: Date? = calendar.date(byAdding: components, to: startOfDay())
         return endOfDay ?? self
     }
+    
+    func convertToDay() -> DateComponents {
+        let calendar = Calendar.current
+        let components = calendar.dateComponents([.year, .month, .day], from: self)
+
+        return components
+    }
 }

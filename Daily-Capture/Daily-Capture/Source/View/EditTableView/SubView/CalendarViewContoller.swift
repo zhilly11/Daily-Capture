@@ -8,9 +8,14 @@ import RxSwift
 import RxCocoa
 
 final class CalendarViewController: UIViewController {
+    // MARK: - Properties
+
     private let viewModel: CalendarViewModel
     private let disposeBag: DisposeBag = .init()
+    weak var delegate: DateSendableDelegate?
     
+    // MARK: - UI Components
+
     private let calendarView: UICalendarView = {
         let calendarView: UICalendarView = .init()
         let gregorianCalendar: Calendar = .init(identifier: .gregorian)
@@ -32,20 +37,28 @@ final class CalendarViewController: UIViewController {
         return calendarView
     }()
     
-    weak var delegate: DataSendableDelegate?
-    
+    // MARK: - Initializer
+
     init(viewModel: CalendarViewModel) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
     }
     
+    @available(*, unavailable)
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
+    // MARK: - View Life Cycle
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        configure()
+    }
+    
+    // MARK: - Methods
+
+    private func configure() {
         setupView()
         setupCalendarView()
         setupLayout()
@@ -60,7 +73,6 @@ final class CalendarViewController: UIViewController {
     private func setupCalendarView() {
         let singleDateSelection = UICalendarSelectionSingleDate(delegate: self)
         
-        calendarView.delegate = self
         calendarView.selectionBehavior = singleDateSelection
     }
     
@@ -81,35 +93,35 @@ final class CalendarViewController: UIViewController {
     }
     
     private func configureNavigationBarButton() {
-        let rightButton: UIButton = UIButton(type: .custom)
-        rightButton.setTitle("Change", for: .normal)
-        rightButton.setTitleColor(.systemBlue, for: .normal)
-        rightButton.addAction(UIAction(handler: { _ in
-            self.tappedChangeButton()
+        let saveButton: UIButton = UIButton(type: .custom)
+        saveButton.setTitle("저장", for: .normal)
+        saveButton.setTitleColor(.systemBlue, for: .normal)
+        saveButton.addAction(UIAction(handler: { _ in
+            self.tappedSaveButton()
         }), for: .touchUpInside)
         
-        let leftButton: UIButton = UIButton(type: .custom)
-        leftButton.setTitle("Cancel", for: .normal)
-        leftButton.setTitleColor(.systemBlue, for: .normal)
-        leftButton.addAction(UIAction(handler: { _ in
+        let cancelButton: UIButton = UIButton(type: .custom)
+        cancelButton.setTitle("취소", for: .normal)
+        cancelButton.setTitleColor(.systemBlue, for: .normal)
+        cancelButton.addAction(UIAction(handler: { _ in
             self.tappedCancelButton()
         }), for: .touchUpInside)
         
-        navigationItem.rightBarButtonItem = UIBarButtonItem(customView: rightButton)
-        navigationItem.leftBarButtonItem = UIBarButtonItem(customView: leftButton)
+        navigationItem.rightBarButtonItem = UIBarButtonItem(customView: saveButton)
+        navigationItem.leftBarButtonItem = UIBarButtonItem(customView: cancelButton)
     }
     
     private func tappedCancelButton() {
         dismiss(animated: true)
     }
     
-    private func tappedChangeButton() {
-        delegate?.sendDate(date: viewModel.getSelectedDate)
+    private func tappedSaveButton() {
+        delegate?.sendDate(viewModel.getSelectedDate)
         dismiss(animated: true)
     }
 }
 
-extension CalendarViewController: UICalendarSelectionSingleDateDelegate, UICalendarViewDelegate {
+extension CalendarViewController: UICalendarSelectionSingleDateDelegate {
     func dateSelection(
         _ selection: UICalendarSelectionSingleDate,
         didSelectDate dateComponents: DateComponents?

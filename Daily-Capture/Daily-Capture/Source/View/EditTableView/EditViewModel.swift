@@ -2,22 +2,24 @@
 //  Created by zhilly, vetto on 2023/08/10
 
 import Foundation
+
 import RxSwift
 
 final class EditViewModel {
+    // MARK: - Properties
+
     private var diary: Diary
+    var isNewDiary: Bool = false
+    var viewTitle: BehaviorSubject<String> = .init(value: "새로운 일기")
     
-    var selectedPictures: BehaviorSubject<[UIImage]> = .init(
-        value: [UIImage(systemName: "1.circle")!,
-                UIImage(systemName: "2.circle")!,
-                UIImage(systemName: "3.circle")!,
-                UIImage(systemName: "4.circle")!,
-                UIImage(systemName: "5.circle")!]
+    let selectedPictures: BehaviorSubject<[UIImage]> = .init(
+        value: [UIImage(systemName: "photo.on.rectangle")!]
     )
-    var title: BehaviorSubject<String> = .init(value: "")
-    var content: BehaviorSubject<String?> = .init(value: "내용을 입력하세요.")
-    var createdAt: BehaviorSubject<Date> = .init(value: Date())
-    var weather: BehaviorSubject<UIImage?> = .init(value: UIImage(systemName: "sun.min"))
+    let title: BehaviorSubject<String> = .init(value: "")
+    let content: BehaviorSubject<String?> = .init(value: "내용을 입력하세요.")
+    let createdAt: BehaviorSubject<Date> = .init(value: Date())
+    let weather: BehaviorSubject<UIImage?> = .init(value: UIImage(named: "clear"))
+    
     var numberOfPictures: Int {
         get {
             do {
@@ -44,14 +46,24 @@ final class EditViewModel {
             }
     }
     
+    // MARK: - Initializer
+    
     init() {
         self.diary = Diary(pictures: [],
                            title: .init(),
                            content: nil,
                            createdAt: .init(),
                            weather: nil)
+        self.isNewDiary = true
+    }
+
+    init(diary: Diary) {
+        self.diary = diary
+        setupDiary()
     }
     
+    // MARK: - Methods
+
     func updateDate(date: Date) {
         createdAt.onNext(date)
     }
@@ -64,7 +76,24 @@ final class EditViewModel {
         selectedPictures.onNext(pictures)
     }
     
+    func createChangedDairy() throws -> Diary {
+        let diary: Diary = .init(pictures: try selectedPictures.value(),
+                                 title: try title.value(),
+                                 content: try content.value(),
+                                 createdAt: try createdAt.value(),
+                                 weather: try weather.value())
+        return diary
+    }
+    
     func saveDiary() throws {
+        if isNewDiary {
+            try createDiary()
+        } else {
+            try updateDiary()
+        }
+    }
+    
+    func createDiary() throws {
         let diaryManager: DiaryManager = .shared
         
         diary.pictures = try self.selectedPictures.value()
@@ -74,5 +103,30 @@ final class EditViewModel {
         diary.weather = try self.weather.value()
 
         try diaryManager.add(self.diary)
+    }
+    
+    func updateDiary() throws {
+        let diaryManager: DiaryManager = .shared
+        
+        diary.pictures = try self.selectedPictures.value()
+        diary.title = try self.title.value()
+        diary.content = try self.content.value()
+        diary.createdAt = try self.createdAt.value()
+        diary.weather = try self.weather.value()
+
+        try diaryManager.update(self.diary)
+    }
+    
+    func createDate() throws -> Date {
+        return try createdAt.value()
+    }
+    
+    private func setupDiary() {
+        viewTitle.onNext("일기 편집")
+        selectedPictures.onNext(diary.pictures)
+        title.onNext(diary.title)
+        content.onNext(diary.content)
+        createdAt.onNext(diary.createdAt)
+        weather.onNext(diary.weather)
     }
 }
