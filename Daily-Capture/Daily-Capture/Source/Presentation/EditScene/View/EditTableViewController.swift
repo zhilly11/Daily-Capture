@@ -4,22 +4,22 @@
 import UIKit
 import PhotosUI
 
-import SnapKit
-import RxSwift
 import RxCocoa
+import RxSwift
+import SnapKit
+import Then
 
 final class EditTableViewController: UITableViewController {
     // MARK: - Properties
-
+    
     private let viewModel: EditViewModel
     private var disposeBag: DisposeBag = .init()
-    private var selections: [String: PHPickerResult] = [:]
-    private var selectedAssetIdentifiers: [String] = []
+    
     weak var diaryDelegate: DiarySendableDelegate?
     weak var dateDelegate: DateSendableDelegate?
     
     // MARK: - UI Components
-
+    
     @IBOutlet weak private var imageContainerView: UIView!
     @IBOutlet weak private var editTableView: UITableView!
     @IBOutlet weak private var titleTextField: UITextField!
@@ -46,10 +46,9 @@ final class EditTableViewController: UITableViewController {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
     
     // MARK: - View Life Cycle
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         configure()
@@ -67,7 +66,7 @@ final class EditTableViewController: UITableViewController {
     }
     
     // MARK: - Methods
-
+    
     private func configure() {
         setupViews()
         setupNavigationItem()
@@ -90,54 +89,58 @@ final class EditTableViewController: UITableViewController {
     }
     
     private func setupNavigationItem() {
-        let saveButton: UIButton = UIButton(type: .custom)
-        saveButton.setTitle("저장", for: .normal)
-        saveButton.setTitleColor(.systemBlue, for: .normal)
-        saveButton.addAction(UIAction(handler: { _ in
-            self.tappedSaveButton()
-        }), for: .touchUpInside)
+        let saveButton = UIButton(type: .custom).then {
+            $0.setTitle("저장", for: .normal)
+            $0.setTitleColor(.systemBlue, for: .normal)
+            $0.addAction(UIAction(handler: { _ in self.tappedSaveButton() }), for: .touchUpInside)
+        }
         
-        let cancelButton: UIButton = UIButton(type: .custom)
-        cancelButton.setTitle("취소", for: .normal)
-        cancelButton.setTitleColor(.systemBlue, for: .normal)
-        cancelButton.addAction(UIAction(handler: { _ in
-            self.tappedCancelButton()
-        }), for: .touchUpInside)
+        let cancelButton = UIButton(type: .custom).then {
+            $0.setTitle("취소", for: .normal)
+            $0.setTitleColor(.systemBlue, for: .normal)
+            $0.addAction(UIAction(handler: { _ in self.tappedCancelButton()}), for: .touchUpInside)
+        }
         
-        navigationItem.rightBarButtonItem = UIBarButtonItem(customView: saveButton)
-        navigationItem.leftBarButtonItem = UIBarButtonItem(customView: cancelButton)
-        navigationItem.rightBarButtonItem?.isEnabled = false
+        navigationItem.do {
+            $0.leftBarButtonItem = UIBarButtonItem(customView: cancelButton)
+            $0.rightBarButtonItem = UIBarButtonItem(customView: saveButton)
+            $0.rightBarButtonItem?.isEnabled = false
+        }
     }
     
     private func setupLayout() {
         pageControl.bringSubviewToFront(imageScrollView)
         [imageScrollView, pageControl].forEach(imageContainerView.addSubview(_:))
         
-        imageScrollView.snp.makeConstraints { make in
-            make.width.height.equalTo(imageContainerView)
-            make.top.leading.trailing.bottom.equalToSuperview()
+        imageScrollView.snp.makeConstraints {
+            $0.width.height.equalTo(imageContainerView)
+            $0.top.leading.trailing.bottom.equalToSuperview()
         }
         
-        pageControl.snp.makeConstraints { make in
-            make.height.equalTo(20)
-            make.leading.trailing.bottom.equalTo(imageScrollView)
+        pageControl.snp.makeConstraints {
+            $0.height.equalTo(20)
+            $0.leading.trailing.bottom.equalTo(imageScrollView)
         }
     }
     
     private func setupTextViewPlaceHolder(){
         contentTextView.rx.didBeginEditing
             .subscribe(onNext: { [self] in
-                if(contentTextView.text == "내용을 입력하세요."){
+                if(contentTextView.text == "내용을 입력하세요.") {
                     contentTextView.text = nil
                     contentTextView.textColor = .black
-                }}).disposed(by: disposeBag)
+                }
+            })
+            .disposed(by: disposeBag)
         
         contentTextView.rx.didEndEditing
             .subscribe(onNext: { [self] in
-                if(contentTextView.text == nil || contentTextView.text == ""){
+                if(contentTextView.text == nil || contentTextView.text == "") {
                     contentTextView.text = "내용을 입력하세요."
                     contentTextView.textColor = .systemGray3
-                }}).disposed(by: disposeBag)
+                }
+            })
+            .disposed(by: disposeBag)
     }
     
     private func setupWeatherSelectButton() {
@@ -158,7 +161,7 @@ final class EditTableViewController: UITableViewController {
     }
     
     private func setupCellTappedAction() {
-        let tapGestureRecognizer: UITapGestureRecognizer = .init(
+        let tapGestureRecognizer = UITapGestureRecognizer(
             target: self,
             action: #selector(pictureSelectCellTapped(_:))
         )
@@ -220,22 +223,21 @@ final class EditTableViewController: UITableViewController {
             return
         }
         
-        imageScrollView.subviews.forEach { view in
-            view.removeFromSuperview()
+        imageScrollView.do {
+            $0.subviews.forEach { view in
+                view.removeFromSuperview()
+            }
+            $0.contentSize.width = contentViewWidth * CGFloat(pictures.count)
+            $0.contentSize.height = contentViewWidth
         }
-        imageScrollView.contentSize.width = contentViewWidth * CGFloat(pictures.count)
-        imageScrollView.contentSize.height = contentViewWidth
         
         for index in 0..<pictures.count {
-            let imageView: UIImageView = .init()
             let xPosition: CGFloat = contentViewWidth * CGFloat(index)
-            
-            imageView.contentMode = .scaleAspectFit
-            imageView.frame = CGRect(x: xPosition,
-                                     y: 0,
-                                     width: contentViewWidth,
-                                     height: contentViewWidth)
-            imageView.image = pictures[index]
+            let imageView = UIImageView().then {
+                $0.contentMode = .scaleAspectFit
+                $0.frame = CGRect(x: xPosition, y: 0, width: contentViewWidth, height: contentViewWidth)
+                $0.image = pictures[index]
+            }
             
             imageScrollView.addSubview(imageView)
         }
@@ -260,7 +262,7 @@ final class EditTableViewController: UITableViewController {
             configuration.selectionLimit = 5
             configuration.filter = .any(of: [.images])
             configuration.preferredAssetRepresentationMode = .current
-            configuration.preselectedAssetIdentifiers = selectedAssetIdentifiers
+            configuration.preselectedAssetIdentifiers = viewModel.selectedAssetIdentifiers
             
             return configuration
         }()
@@ -312,6 +314,7 @@ final class EditTableViewController: UITableViewController {
         let navigationViewController: UINavigationController = .init(
             rootViewController: calendarViewController
         )
+        
         calendarViewController.delegate = self
         
         self.present(navigationViewController, animated: true)
@@ -321,16 +324,19 @@ final class EditTableViewController: UITableViewController {
 extension EditTableViewController: PHPickerViewControllerDelegate {
     func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
         picker.dismiss(animated: true)
+        
         var newSelections: [String: PHPickerResult] = [:]
+        
         for result in results {
             if let identifier = result.assetIdentifier {
-                newSelections[identifier] = selections[identifier] ?? result
+                newSelections[identifier] = viewModel.selections[identifier] ?? result
             }
         }
-        selections = newSelections
-        selectedAssetIdentifiers = results.compactMap { $0.assetIdentifier }
         
-        if selectedAssetIdentifiers.count != 0 {
+        viewModel.selections = newSelections
+        viewModel.selectedAssetIdentifiers = results.compactMap { $0.assetIdentifier }
+        
+        if viewModel.selectedAssetIdentifiers.count != 0 {
             updatePictures()
         }
     }
@@ -339,7 +345,7 @@ extension EditTableViewController: PHPickerViewControllerDelegate {
         let dispatchGroup: DispatchGroup = .init()
         var imageDictionary: [String: UIImage] = [:]
         
-        for (identifier, result) in selections {
+        for (identifier, result) in viewModel.selections {
             dispatchGroup.enter()
             let itemProvider: NSItemProvider = result.itemProvider
             
@@ -356,7 +362,7 @@ extension EditTableViewController: PHPickerViewControllerDelegate {
         dispatchGroup.notify(queue: DispatchQueue.main) {
             var pictures: [UIImage] = []
             
-            for identifier in self.selectedAssetIdentifiers {
+            for identifier in self.viewModel.selectedAssetIdentifiers {
                 if let image = imageDictionary[identifier] {
                     pictures.append(image)
                 }

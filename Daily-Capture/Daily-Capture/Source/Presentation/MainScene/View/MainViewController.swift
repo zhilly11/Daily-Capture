@@ -2,76 +2,39 @@
 //  Created by zhilly, vetto on 2023/06/29
 
 import UIKit
-
 import Foundation
-import SnapKit
-import RxSwift
+
 import RxCocoa
+import RxSwift
+import SnapKit
+import Then
 
 final class MainViewController: UIViewController {
     // MARK: - Properties
-    private var userSelectedDate: Date? {
-        didSet {
-            if let date = userSelectedDate {
-                viewModel.setupDiary(date: date)
-            }
-        }
-    }
+    
     private let viewModel: MainViewModel
     private let disposeBag: DisposeBag = .init()
     
     // MARK: - UI Components
     
-    private let searchBar: UISearchBar = {
-        let searchBar: UISearchBar = .init()
-        let backgroundImage: UIImage = .init()
-        
-        searchBar.backgroundImage = backgroundImage
-        searchBar.placeholder = "검색"
-        searchBar.setValue("취소", forKey: "cancelButtonText")
-        
-        return searchBar
-    }()
+    private let calendarView: DiaryCalendarView = .init()
     
-    private let calendarView: UICalendarView = {
-        let calendarView: UICalendarView = .init()
-        let gregorianCalendar: Calendar = .init(identifier: .gregorian)
-        let fromDateComponents: DateComponents = .init(calendar: Calendar(identifier: .gregorian),
-                                                       year: 2022,
-                                                       month: 1,
-                                                       day: 1)
-        guard let fromDate = fromDateComponents.date else {
-            return UICalendarView()
-        }
-        
-        let calendarViewDateRange: DateInterval = .init(start: fromDate, end: Date())
-        
-        calendarView.calendar = gregorianCalendar
-        calendarView.locale = Locale(identifier: "ko_KR")
-        calendarView.fontDesign = .rounded
-        calendarView.availableDateRange = calendarViewDateRange
-        
-        return calendarView
-    }()
+    private let searchBar = UISearchBar().then {
+        $0.backgroundImage = UIImage()
+        $0.placeholder = "검색"
+        $0.setValue("취소", forKey: "cancelButtonText")
+    }
     
-    private let tableView: UITableView = {
-        let tableView: UITableView = .init(frame: .zero, style: .insetGrouped)
-        
-        tableView.rowHeight = UITableView.automaticDimension
-        tableView.estimatedRowHeight = 100
-        tableView.register(DiaryTableViewCell.self,
-                           forCellReuseIdentifier: DiaryTableViewCell.reuseIdentifier)
-        
-        return tableView
-    }()
+    private let tableView = UITableView().then {
+        $0.rowHeight = UITableView.automaticDimension
+        $0.estimatedRowHeight = 100
+        $0.register(DiaryTableViewCell.self,
+                    forCellReuseIdentifier: DiaryTableViewCell.reuseIdentifier)
+    }
     
-    private let addDiaryButton: UIButton = {
-        let button: UIButton = .init(type: .contactAdd)
-        
-        button.setImage(UIImage(systemName: "plus"), for: .normal)
-        
-        return button
-    }()
+    private let addDiaryButton = UIButton(type: .contactAdd).then {
+        $0.setImage(UIImage(systemName: "plus"), for: .normal)
+    }
     
     // MARK: - Initializer
     
@@ -157,7 +120,7 @@ final class MainViewController: UIViewController {
         dateSelection.setSelected(DateComponents(year: year, month: month, day: day),
                                   animated: false)
         calendarView.selectionBehavior = dateSelection
-        userSelectedDate = currentDate
+        viewModel.userSelectedDate = currentDate
     }
     
     private func setupAddDiaryButton() {
@@ -265,7 +228,7 @@ final class MainViewController: UIViewController {
             $0.leading.trailing.bottom.equalTo(self.view)
         }
         
-        if let date = userSelectedDate {
+        if let date = viewModel.userSelectedDate {
             viewModel.setupDiary(date: date)
         }
     }
@@ -283,7 +246,7 @@ extension MainViewController: UICalendarSelectionSingleDateDelegate {
         didSelectDate dateComponents: DateComponents?
     ) {
         if let nowSelectedDate = dateComponents {
-            self.userSelectedDate = nowSelectedDate.date
+            viewModel.userSelectedDate = nowSelectedDate.date
         }
     }
 }
@@ -335,10 +298,12 @@ extension MainViewController: UISearchBarDelegate {
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         do {
-            try viewModel.searchDiary(keyword: "")
+            try viewModel.searchDiary(keyword: searchText)
         } catch {
-            let alert: UIAlertController = AlertFactory.make(.failure(title: "일기 검색 실패",
-                                                                      message: "나중에 다시 시도해주세요."))
+            let alert: UIAlertController = AlertFactory.make(
+                .failure(title: "일기 검색 실패", message: "나중에 다시 시도해주세요.")
+            )
+            
             self.present(alert, animated: true)
         }
     }
@@ -350,8 +315,8 @@ extension MainViewController: DateSendableDelegate {
     }
     
     func reloadView(date: Date) {
-        viewModel.setupDiary(date: self.userSelectedDate!)
-        reloadCalendarView(date: self.userSelectedDate!)
+        viewModel.setupDiary(date: viewModel.userSelectedDate!)
+        reloadCalendarView(date: viewModel.userSelectedDate!)
         reloadCalendarView(date: date)
     }
     
