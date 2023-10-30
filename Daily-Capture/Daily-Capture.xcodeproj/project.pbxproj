@@ -102,34 +102,33 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		981B437A2A94988D000F25CA /* DetailView */ = {
+		981B437A2A94988D000F25CA /* DetailScene */ = {
 			isa = PBXGroup;
 			children = (
-				981B437B2A9498D6000F25CA /* DetailViewContoller.swift */,
-				981B437D2A9498FC000F25CA /* DetailViewModel.swift */,
+				B4E786DB2AEF6DEC00467413 /* View */,
+				B4E786DC2AEF6DF900467413 /* ViewModel */,
 			);
-			path = DetailView;
+			path = DetailScene;
 			sourceTree = "<group>";
 		};
-		B41DD3492AA55DC800D53B1C /* AlertView */ = {
+		B41DD3492AA55DC800D53B1C /* AlertFactory */ = {
 			isa = PBXGroup;
 			children = (
 				B41DD34A2AA55DDF00D53B1C /* AlertFactory.swift */,
 				B41DD34C2AA5645300D53B1C /* FailureAlert.swift */,
 				B41DD34E2AA5646700D53B1C /* ExitAlert.swift */,
 			);
-			path = AlertView;
+			path = AlertFactory;
 			sourceTree = "<group>";
 		};
-		B44F9F392A83B028001CA0D9 /* EditTableView */ = {
+		B44F9F392A83B028001CA0D9 /* EditScene */ = {
 			isa = PBXGroup;
 			children = (
+				B4E786D92AEF6DB000467413 /* View */,
+				B4E786DA2AEF6DB700467413 /* ViewModel */,
 				B44F9F462A8566F8001CA0D9 /* SubView */,
-				B44F9F402A83BAAE001CA0D9 /* EditTableViewController.storyboard */,
-				B44F9F3A2A83B109001CA0D9 /* EditTableViewController.swift */,
-				B44F9F422A841A1D001CA0D9 /* EditViewModel.swift */,
 			);
-			path = EditTableView;
+			path = EditScene;
 			sourceTree = "<group>";
 		};
 		B44F9F462A8566F8001CA0D9 /* SubView */ = {
@@ -171,6 +170,7 @@
 		B45C26D02A4DA169009333AB /* Resource */ = {
 			isa = PBXGroup;
 			children = (
+				B44F9F442A84DB2A001CA0D9 /* Constant.swift */,
 				B45C26CA2A4DA164009333AB /* Info.plist */,
 				B45C26C52A4DA164009333AB /* Assets.xcassets */,
 				B45C26C72A4DA164009333AB /* LaunchScreen.storyboard */,
@@ -181,32 +181,30 @@
 		B45C26D12A4DA1BD009333AB /* Source */ = {
 			isa = PBXGroup;
 			children = (
-				B45C26D22A4DA1C8009333AB /* App */,
-				B4FC761C2A54099F00C19FF0 /* View */,
-				B4FC760F2A4EB0B700C19FF0 /* Model */,
-				B4B3BA012A5553570096A206 /* Common */,
+				B45C26D22A4DA1C8009333AB /* Application */,
+				B4FC761C2A54099F00C19FF0 /* Presentation */,
+				B4FC760F2A4EB0B700C19FF0 /* Domain */,
 				B4FC76162A4EBA3F00C19FF0 /* Util */,
 			);
 			path = Source;
 			sourceTree = "<group>";
 		};
-		B45C26D22A4DA1C8009333AB /* App */ = {
+		B45C26D22A4DA1C8009333AB /* Application */ = {
 			isa = PBXGroup;
 			children = (
 				B45C26BC2A4DA163009333AB /* AppDelegate.swift */,
 				B45C26BE2A4DA163009333AB /* SceneDelegate.swift */,
 			);
-			path = App;
+			path = Application;
 			sourceTree = "<group>";
 		};
-		B45C26D32A4DA1CF009333AB /* MainView */ = {
+		B45C26D32A4DA1CF009333AB /* MainScene */ = {
 			isa = PBXGroup;
 			children = (
-				B45C26C02A4DA163009333AB /* MainViewController.swift */,
-				B4FC76122A4EB28500C19FF0 /* MainViewModel.swift */,
-				B4FC76142A4EBA1E00C19FF0 /* DiaryTableViewCell.swift */,
+				B4E786DE2AEF6E1D00467413 /* View */,
+				B4E786DD2AEF6E1600467413 /* ViewModel */,
 			);
-			path = MainView;
+			path = MainScene;
 			sourceTree = "<group>";
 		};
 		B48B970B2AEF3B4E007FBF13 /* CustomView */ = {
@@ -217,16 +215,7 @@
 			path = CustomView;
 			sourceTree = "<group>";
 		};
-		B4B3BA012A5553570096A206 /* Common */ = {
-			isa = PBXGroup;
-			children = (
-				B4B3BA022A5553680096A206 /* CoreDataManager.swift */,
-				B4B3BA072A5559DF0096A206 /* Error */,
-			);
-			path = Common;
-			sourceTree = "<group>";
-		};
-		B4B3BA042A5553760096A206 /* Protocol */ = {
+		B4B3BA042A5553760096A206 /* Protocols */ = {
 			isa = PBXGroup;
 			children = (
 				B4FC76172A4EBA7400C19FF0 /* ReusableView.swift */,
@@ -235,7 +224,7 @@
 				B4B3BA052A5553940096A206 /* CoreDataManageable.swift */,
 				981B437F2A9F4412000F25CA /* DiarySendableDelegate.swift */,
 			);
-			path = Protocol;
+			path = Protocols;
 			sourceTree = "<group>";
 		};
 		B4B3BA072A5559DF0096A206 /* Error */ = {
@@ -255,7 +244,65 @@
 			path = Extensions;
 			sourceTree = "<group>";
 		};
-		B4FC760F2A4EB0B700C19FF0 /* Model */ = {
+		B4E786D92AEF6DB000467413 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				B44F9F3A2A83B109001CA0D9 /* EditTableViewController.swift */,
+				B44F9F402A83BAAE001CA0D9 /* EditTableViewController.storyboard */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		B4E786DA2AEF6DB700467413 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				B44F9F422A841A1D001CA0D9 /* EditViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		B4E786DB2AEF6DEC00467413 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				981B437B2A9498D6000F25CA /* DetailViewContoller.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		B4E786DC2AEF6DF900467413 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				981B437D2A9498FC000F25CA /* DetailViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		B4E786DD2AEF6E1600467413 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				B4FC76122A4EB28500C19FF0 /* MainViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		B4E786DE2AEF6E1D00467413 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				B45C26C02A4DA163009333AB /* MainViewController.swift */,
+				B4E786DF2AEF6E4600467413 /* Cells */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		B4E786DF2AEF6E4600467413 /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				B4FC76142A4EBA1E00C19FF0 /* DiaryTableViewCell.swift */,
+			);
+			path = Cells;
+			sourceTree = "<group>";
+		};
+		B4E786E02AEF6ECB00467413 /* Entities */ = {
 			isa = PBXGroup;
 			children = (
 				B4FC76102A4EB0C800C19FF0 /* Diary.swift */,
@@ -263,29 +310,46 @@
 				B4B3B9FB2A5546A50096A206 /* DiaryData+CoreDataClass.swift */,
 				B4B3B9FC2A5546A50096A206 /* DiaryData+CoreDataProperties.swift */,
 			);
-			path = Model;
+			path = Entities;
+			sourceTree = "<group>";
+		};
+		B4E786E12AEF6EE000467413 /* Managers */ = {
+			isa = PBXGroup;
+			children = (
+				B4B3BA022A5553680096A206 /* CoreDataManager.swift */,
+			);
+			path = Managers;
+			sourceTree = "<group>";
+		};
+		B4FC760F2A4EB0B700C19FF0 /* Domain */ = {
+			isa = PBXGroup;
+			children = (
+				B4E786E02AEF6ECB00467413 /* Entities */,
+			);
+			path = Domain;
 			sourceTree = "<group>";
 		};
 		B4FC76162A4EBA3F00C19FF0 /* Util */ = {
 			isa = PBXGroup;
 			children = (
-				B44F9F442A84DB2A001CA0D9 /* Constant.swift */,
+				B4E786E12AEF6EE000467413 /* Managers */,
 				B4B3BA0A2A557C420096A206 /* Extensions */,
-				B4B3BA042A5553760096A206 /* Protocol */,
+				B4B3BA042A5553760096A206 /* Protocols */,
+				B4B3BA072A5559DF0096A206 /* Error */,
 			);
 			path = Util;
 			sourceTree = "<group>";
 		};
-		B4FC761C2A54099F00C19FF0 /* View */ = {
+		B4FC761C2A54099F00C19FF0 /* Presentation */ = {
 			isa = PBXGroup;
 			children = (
-				B45C26D32A4DA1CF009333AB /* MainView */,
-				B44F9F392A83B028001CA0D9 /* EditTableView */,
-				981B437A2A94988D000F25CA /* DetailView */,
-				B41DD3492AA55DC800D53B1C /* AlertView */,
+				B45C26D32A4DA1CF009333AB /* MainScene */,
+				B44F9F392A83B028001CA0D9 /* EditScene */,
+				981B437A2A94988D000F25CA /* DetailScene */,
+				B41DD3492AA55DC800D53B1C /* AlertFactory */,
 				B48B970B2AEF3B4E007FBF13 /* CustomView */,
 			);
-			path = View;
+			path = Presentation;
 			sourceTree = "<group>";
 		};
 		E939F9E4351A97F7756D1390 /* Pods */ = {
